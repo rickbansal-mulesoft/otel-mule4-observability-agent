@@ -1,6 +1,6 @@
 # OpenTelemetry Mule4 Observablity Agent Extension
 
-Add description ...
+This Mule 4 extension will capture and forward trace telemetry data to an OpenTelemetry collector.
 
 
 ...
