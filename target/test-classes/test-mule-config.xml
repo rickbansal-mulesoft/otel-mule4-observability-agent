@@ -1,0 +1,19 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:opentelemetry-mule4-observablity-agent="http://www.mulesoft.org/schema/mule/opentelemetry-mule4-observablity-agent"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/opentelemetry-mule4-observablity-agent http://www.mulesoft.org/schema/mule/opentelemetry-mule4-observablity-agent/current/mule-opentelemetry-mule4-observablity-agent.xsd">
+
+    <opentelemetry-mule4-observablity-agent:config name="config" configId="configId">
+        <opentelemetry-mule4-observablity-agent:connection requiredParameter="aValue" />
+    </opentelemetry-mule4-observablity-agent:config>
+
+    <flow name="sayHiFlow">
+        <opentelemetry-mule4-observablity-agent:say-hi person="Mariano Gonzalez"/>
+    </flow>
+
+    <flow name="retrieveInfoFlow">
+        <opentelemetry-mule4-observablity-agent:retrieve-info config-ref="config"/>
+    </flow>
+
+</mule>

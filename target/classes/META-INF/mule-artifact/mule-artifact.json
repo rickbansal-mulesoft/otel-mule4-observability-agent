@@ -1,0 +1,29 @@
+{
+  "extensionModelLoaderDescriptor": {
+    "id": "java",
+    "attributes": {
+      "type": "org.mule.extension.otel.mule4.observablity.agent.internal.OTelMule4ObservablityAgentExtension",
+      "version": "1.0.53-SNAPSHOT"
+    }
+  },
+  "name": "OpenTelemetry Mule 4 Observablity Agent",
+  "requiredProduct": "MULE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "privilegedExportedPackages": [],
+      "privilegedArtifactIds": [],
+      "exportedPackages": [
+        "org.mule.extension.otel.mule4.observablity.agent.internal.config.resource",
+        "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace",
+        "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter"
+      ],
+      "exportedResources": []
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  },
+  "minMuleVersion": "4.1.1"
+}

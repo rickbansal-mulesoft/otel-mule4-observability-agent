@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension-documentation>
+    <configs>
+        <config name="config">
+            <description><![CDATA[Default configuration]]></description>
+            <parameters>
+                <parameter name="traceExporter">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="expirationPolicy">
+                    <description><![CDATA[Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.]]></description>
+                </parameter>
+                <parameter name="serviceName">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="resourceAttributes">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </config>
+    </configs>
+    <connections>
+        <connection name="connection">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="reconnection">
+                    <description><![CDATA[When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy]]></description>
+                </parameter>
+            </parameters>
+        </connection>
+    </connections>
+    <extension name="OpenTelemetry Mule 4 Observablity Agent">
+        <description><![CDATA[This is the main class of an extension, is the entry point from which configurations, connection providers, operations and sources are going to be declared. <p>]]></description>
+        <parameters/>
+    </extension>
+    <operations>
+        <operation name="retrieveConfigInfo">
+            <description><![CDATA[Example of an operation that uses the configuration and a connection instance to perform some action.]]></description>
+            <parameters>
+                <parameter name="outputMimeType">
+                    <description><![CDATA[The mime type of the payload that this operation outputs.]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+    </operations>
+    <sources/>
+    <types>
+        <type name="org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig">
+            <description><![CDATA[]]></description>
+            <parameters/>
+        </type>
+        <type name="org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="traceCollectorEndpoint">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="transportProtocol">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="compression">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="timeout">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="headers">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </type>
+        <type name="org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.Attribute">
+            <description><![CDATA[This class is a default extension of the KeyValuePair class]]></description>
+            <parameters>
+                <parameter name="key">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="value">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </type>
+    </types>
+</extension-documentation>
