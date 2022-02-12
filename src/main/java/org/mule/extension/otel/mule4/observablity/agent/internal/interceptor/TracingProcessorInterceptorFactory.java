@@ -78,9 +78,10 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 	{
 		boolean is = false;
 		
-		if (isFirstProcessor(location) || 
-			isProcessorType(location, ObservabilitySemantics.HTTP_REQUESTER) ||
-			isProcessorType(location, ObservabilitySemantics.LOGGER))
+		if (isFirstProcessor(location) 
+			|| isProcessorType(location, ObservabilitySemantics.HTTP_REQUESTER)
+			|| isProcessorType(location, ObservabilitySemantics.LOGGER) 
+			|| isProcessorType(location, ObservabilitySemantics.DB_SELECT))
 		{
 			is = true;
 		}

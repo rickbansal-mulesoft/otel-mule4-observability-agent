@@ -7,17 +7,17 @@ import javax.xml.namespace.QName;
 
 import org.mule.extension.http.api.HttpRequestAttributes;
 import org.mule.extension.http.api.HttpResponseAttributes;
-import org.mule.extension.http.api.request.builder.HttpRequesterRequestBuilder;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.MuleConnectorConfigStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.trace.MuleSoftTraceStore;
-import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
 import org.mule.runtime.api.component.ComponentIdentifier;
 import org.mule.runtime.api.event.Event;
-import org.mule.runtime.api.interception.ProcessorParameterValue;
-import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.notification.EnrichedServerNotification;
 import org.mule.runtime.api.notification.MessageProcessorNotification;
 import org.mule.runtime.api.notification.PipelineMessageNotification;
 import org.mule.runtime.api.util.MultiMap;
+//import org.mule.runtime.ast.api.ComponentAst;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -27,6 +27,7 @@ import io.opentelemetry.api.trace.SpanBuilder;
 @SuppressWarnings("unchecked")
 public class MuleNotificationParser
 {
+	private static Logger logger = LoggerFactory.getLogger(MuleNotificationParser.class);
 
 	// ============================================================================================
 	// Notification Helper Methods - get individual notification details
@@ -142,7 +143,7 @@ public class MuleNotificationParser
 	{
 		HttpRequestAttributes httpRequestAttributes = getMessageAttributes(notification);
 
-		if (httpRequestAttributes != null)
+		try
 		{
 			spanBuilder.setAttribute("scheme", httpRequestAttributes.getScheme());
 			spanBuilder.setAttribute("method", httpRequestAttributes.getMethod());
@@ -150,6 +151,10 @@ public class MuleNotificationParser
 			spanBuilder.setAttribute("request.path", httpRequestAttributes.getRequestPath());
 			spanBuilder.setAttribute("user.agent", httpRequestAttributes.getHeaders().get("user-agent"));
 			spanBuilder.setAttribute("host", httpRequestAttributes.getHeaders().get("host"));
+		}
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
 		}
 
 		return spanBuilder;
@@ -159,10 +164,14 @@ public class MuleNotificationParser
 	// Annotate the span with various HTTP Requester attributes
 	// --------------------------------------------------------------------------------------------
 	public static SpanBuilder addHttpRequesterAttributesToSpan(EnrichedServerNotification notification,
+                                                               MuleConnectorConfigStore muleConnectorConfigStore,
 			                                                   SpanBuilder spanBuilder)
 	{
 		Map<String, String> requesterAttributes = getComponentAnnotation("{config}componentParameters", notification);
-		
+		String configRef = requesterAttributes.get("config-ref");
+	
+		MuleConnectorConfigStore.HttpRequesterConfig httpRequesterConfig = (MuleConnectorConfigStore.HttpRequesterConfig) muleConnectorConfigStore.getConfig(configRef);
+
 		/*
 		Map<String,TypedValue<?>> variables = notification.getEvent().getVariables();
 		
@@ -181,16 +190,51 @@ public class MuleNotificationParser
 			httpRequestBuilder.setHeaders(headers);
 		}
 		*/
-		
-		if (requesterAttributes != null)
+		try 
 		{
 			spanBuilder.setAttribute("scheme", "HTTP");
 			spanBuilder.setAttribute("method", requesterAttributes.get("method"));
 			spanBuilder.setAttribute("request.path", requesterAttributes.get("path"));
+			spanBuilder.setAttribute("requester.host", httpRequesterConfig.getHost());
+			spanBuilder.setAttribute("requester.port", httpRequesterConfig.getPort());			
 		}
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
+		}
+
 		return spanBuilder;
 	}
 
+	// --------------------------------------------------------------------------------------------
+	// Annotate the span with various Database attributes
+	// --------------------------------------------------------------------------------------------
+	public static SpanBuilder addDatabaseAttributesToSpan(EnrichedServerNotification notification,
+			                                              MuleConnectorConfigStore muleConnectorConfigStore,
+			                                              SpanBuilder spanBuilder)
+	{		
+		Map<String, String> componentParameters = getComponentAnnotation("{config}componentParameters", notification);
+		
+		String sql = componentParameters.get("sql");
+		String configRef = componentParameters.get("config-ref");
+
+		MuleConnectorConfigStore.DbConfig dbConfig =  (MuleConnectorConfigStore.DbConfig)muleConnectorConfigStore.getConfig(configRef);
+		
+		try
+		{
+			spanBuilder.setAttribute("sql.statement", sql);
+			spanBuilder.setAttribute("db.host", dbConfig.getHost());
+			spanBuilder.setAttribute("db.port", dbConfig.getPort());
+			spanBuilder.setAttribute("db.user", dbConfig.getUser());
+			spanBuilder.setAttribute("db.name", dbConfig.getDbName());
+		}
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
+		}
+		return spanBuilder;
+	}
+	
 	// --------------------------------------------------------------------------------------------
 	// Annotate the span with various HTTP Response attributes
 	// --------------------------------------------------------------------------------------------
@@ -202,7 +246,7 @@ public class MuleNotificationParser
 		Span span = traceStore.getMessageProcessorSpan(MuleNotificationParser.getMuleSoftTraceId(notification), 
                                                        MuleNotificationParser.getFlowId(notification), 
                                                        MuleNotificationParser.getSpanId(notification));
-		if (responseAttributes != null)
+		try
 		{
 			MultiMap<String, String> responseHeaders = responseAttributes.getHeaders();
 	
@@ -210,6 +254,10 @@ public class MuleNotificationParser
 			span.setAttribute("response.reason.phrase", responseAttributes.getReasonPhrase());
 			span.setAttribute("response.content.length", responseHeaders.get("content-length"));
 			span.setAttribute("response.date", responseHeaders.get("date"));
+		}
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
 		}
 	}
 	
@@ -231,6 +279,7 @@ public class MuleNotificationParser
 			span.addEvent("logger.output.event", eventAttributes);
 		}
 	}
+	
 	
 	// --------------------------------------------------------------------------------------------
 	// Generic helpers

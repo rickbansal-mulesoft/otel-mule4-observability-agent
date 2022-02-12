@@ -2,6 +2,8 @@ package org.mule.extension.otel.mule4.observablity.agent.internal.config;
 
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.OTelResourceConfig;
+import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
+import org.mule.runtime.core.api.config.MuleConfiguration;
 
 //----------------------------------------------------------------------------------
 //	This class is a helper/wrapper class which stores all of the high level config
@@ -16,11 +18,13 @@ public class OTelSdkConfig
 {
 	private final OTelResourceConfig 	resourceConfig;
 	private final OtlpExporterConfig 	traceExporterConfig;
+	private final MuleConfiguration		muleConfiguration;
 
-	public OTelSdkConfig(OTelResourceConfig r, OtlpExporterConfig t)
+	public OTelSdkConfig(OTelResourceConfig r, OtlpExporterConfig t, MuleConfiguration m)
 	{
 		this.resourceConfig = r;
 		this.traceExporterConfig = t;
+		this.muleConfiguration = m;
 	}
 
 	public OTelResourceConfig getResourceConfig()
@@ -31,5 +35,10 @@ public class OTelSdkConfig
 	public OtlpExporterConfig getTraceExporterConfig()
 	{
 		return traceExporterConfig;
+	}
+	
+	public MuleConfiguration getMuleConfiguration()
+	{
+		return muleConfiguration;
 	}
 }

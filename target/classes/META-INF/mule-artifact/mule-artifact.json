@@ -3,7 +3,7 @@
     "id": "java",
     "attributes": {
       "type": "org.mule.extension.otel.mule4.observablity.agent.internal.OTelMule4ObservablityAgentExtension",
-      "version": "1.0.53-SNAPSHOT"
+      "version": "1.0.76-SNAPSHOT"
     }
   },
   "name": "OpenTelemetry Mule 4 Observablity Agent",

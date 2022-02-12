@@ -21,6 +21,8 @@ import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.api.exception.MuleException;
 import org.mule.runtime.api.lifecycle.Startable;
 import org.mule.runtime.api.notification.NotificationListenerRegistry;
+import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
+import org.mule.runtime.core.api.config.MuleConfiguration;
 
 import java.util.function.Supplier;
 import javax.inject.Inject;
@@ -105,6 +107,9 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	
 	@Inject
 	NotificationListenerRegistry notificationListenerRegistry;
+	
+	@Inject 
+	MuleConfiguration muleConfiguration;
 
 	@SuppressWarnings("unused")
 	@Override
@@ -120,7 +125,8 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 		//	OpenTelemetry Mule Notification Handler receives its first event/notification.
 		//------------------------------------------------------------------------------
 		Supplier<OtelSdkConnection> otelSdkConnection = () -> OtelSdkConnection.getInstance(new OTelSdkConfig(getResource(), 
-				 						                                                                      getTraceExporter()));
+				 						                                                                      getTraceExporter(),
+				 						                                                                      muleConfiguration));
 		
 		OTelMuleNotificationHandler otelMuleNotificationHandler = new OTelMuleNotificationHandler(otelSdkConnection);
 		

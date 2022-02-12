@@ -1,6 +1,5 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.notification;
 
-import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
@@ -8,8 +7,10 @@ import io.opentelemetry.context.Context;
 
 import org.mule.runtime.api.notification.MessageProcessorNotification;
 import org.mule.runtime.api.notification.PipelineMessageNotification;
+import org.mule.runtime.core.api.config.MuleConfiguration;
 import org.mule.runtime.api.component.ComponentIdentifier;
 import org.mule.extension.http.api.HttpRequestAttributes;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.MuleConnectorConfigStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
 import org.mule.extension.otel.mule4.observablity.agent.internal.context.propagation.HttpRequestAttributesGetter;
 import org.mule.extension.otel.mule4.observablity.agent.internal.context.propagation.OTelContextPropagator;
@@ -26,8 +27,9 @@ public class OTelMuleNotificationHandler
 	private static Logger logger = LoggerFactory.getLogger(OTelMuleNotificationHandler.class);
 
 	private static MuleSoftTraceStore traceStore = new MuleSoftTraceStore();
+	
 	private OtelSdkConnection otelSdkConnection;
-
+	private MuleConnectorConfigStore muleConnectorConfigStore;
 	private final Supplier<OtelSdkConnection> sdkConnectionSupplier;
 
 	// --------------------------------------------------------------------------------------------
@@ -56,6 +58,24 @@ public class OTelMuleNotificationHandler
 		return otelSdkConnection.getTracer().get();
 	}
 
+	private MuleConfiguration getMuleConfiguration()
+	{
+		if (otelSdkConnection == null)
+		{
+			otelSdkConnection = sdkConnectionSupplier.get();
+		}
+		return otelSdkConnection.getMuleConfiguration().get();
+	}
+	
+	private MuleConnectorConfigStore getMuleConnectorConfigStore()
+	{
+		if (muleConnectorConfigStore == null)
+		{
+			muleConnectorConfigStore = MuleConnectorConfigStore.getInstance(getMuleConfiguration());
+		}
+		
+		return muleConnectorConfigStore;
+	}
 	// ============================================================================================
 	// FLOW RELATED NOTIFICATION EVENTS
 	// ============================================================================================
@@ -76,7 +96,7 @@ public class OTelMuleNotificationHandler
 		spanBuilder.setAttribute(ObservabilitySemantics.START_DATETIME_ATTRIBUTE, startInstant.toString());
 		
 		ComponentIdentifier sourceIdentifier = MuleNotificationParser.getSourceIdentifier(notification);
-
+		
 		if (!traceStore.isTracePresent(MuleNotificationParser.getMuleSoftTraceId(notification)))
 		{
 			try
@@ -167,7 +187,8 @@ public class OTelMuleNotificationHandler
 		try
 		{
 			docName = MuleNotificationParser.getDocName(notification);
-		} catch (Exception e)
+		} 
+		catch (Exception e)
 		{
 			// Suppress
 		}
@@ -180,14 +201,19 @@ public class OTelMuleNotificationHandler
 		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(ObservabilitySemantics.HTTP_REQUESTER))
 		{
 			spanBuilder.setSpanKind(SpanKind.CLIENT);
-			MuleNotificationParser.addHttpRequesterAttributesToSpan(notification, spanBuilder);
+			MuleNotificationParser.addHttpRequesterAttributesToSpan(notification, getMuleConnectorConfigStore(), spanBuilder);
 		}
 
 		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(ObservabilitySemantics.HTTP_LISTENER))
 		{
 			MuleNotificationParser.addHttpListenerAttributesToSpan(notification, spanBuilder);
 		}
-
+		
+		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(ObservabilitySemantics.DB_SELECT))
+		{			
+			MuleNotificationParser.addDatabaseAttributesToSpan(notification, getMuleConnectorConfigStore(), spanBuilder);
+		}
+		
 		traceStore.addMessageProcessorSpan(MuleNotificationParser.getMuleSoftTraceId(notification), 
 		                                   MuleNotificationParser.getFlowId(notification), 
 		                                   MuleNotificationParser.getSpanId(notification), 

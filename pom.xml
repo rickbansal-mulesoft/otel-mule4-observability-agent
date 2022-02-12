@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mulesoft.extensions.rickbansal.otel</groupId>
 	<artifactId>otel-mule4-observability-agent</artifactId>
-	<version>1.0.53-SNAPSHOT</version>
+	<version>1.0.76-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 	<name>OpenTelemetry Mule 4 Observability Agent Extension</name>
 
@@ -84,6 +84,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.12.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
 		</dependency>
 	</dependencies>
 

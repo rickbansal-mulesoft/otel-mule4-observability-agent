@@ -98,11 +98,26 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 			catch (Exception e)
 			{
 				// do nothing for now
-				logger.debug("around::Intercepted logger message resolved with error: " + e.getMessage());
+				logger.debug("around::Intercepted logger processor resolved with error: " + e.getMessage());
 			}			
 			logger.debug("around::Intercepted a logger processor");
 		}
 		
+		if (isDatabaseProcessor(location))
+		{
+			ProcessorParameterValue processorParameterValue = parameters.get("config-ref");
+			
+			try
+			{ 
+				Object object = processorParameterValue.resolveValue();
+			}
+			catch (Exception e)
+			{
+				// do nothing for now
+				logger.debug("around::Intercepted db processor resolved with error: " + e.getMessage());
+			}
+			logger.debug("around::Intercepted a database processor");
+		}
 		/*
 		if (isHttpRequestProcessor(location))
 		{			
@@ -152,4 +167,10 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 	{
 		return TracingProcessorInterceptorFactory.isProcessorType(location, ObservabilitySemantics.LOGGER);
 	}
+	
+	private boolean isDatabaseProcessor(ComponentLocation location)
+	{
+		return TracingProcessorInterceptorFactory.isProcessorType(location, ObservabilitySemantics.DB_SELECT);
+	}
+	
 }

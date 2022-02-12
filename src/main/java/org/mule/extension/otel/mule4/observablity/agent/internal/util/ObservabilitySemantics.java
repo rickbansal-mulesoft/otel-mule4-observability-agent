@@ -16,6 +16,7 @@ public class ObservabilitySemantics
 	public static final String HTTP_REQUESTER				= "http:request";
 	public static final String FLOW							= "flow";
 	public static final String LOGGER						= "mule:logger";
+	public static final String DB_SELECT					= "db:select";
 
 	public static final String FLOW_NAME_ATTRIBUTE			= "flow.name";
 	public static final String SERVER_ID_ATTRIBUTE			= "server.id";
@@ -28,4 +29,7 @@ public class ObservabilitySemantics
 	
 	public static final String TRACEPARENT 					= "traceparent";
 	public static final String TRACESTATE 					= "tracestate";
+	
+	public static final String HTTP_REQUESTER_URI_NS 		= "http://www.mulesoft.org/schema/mule/http";
+	public static final String DB_URI_NS 					= "http://www.mulesoft.org/schema/mule/db";	
 }

@@ -12,8 +12,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import javax.inject.Inject;
+
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.OTelSdkConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
+import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
+import org.mule.runtime.core.api.config.MuleConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +37,8 @@ public final class OtelSdkConnection
 	private static OtelSdkConnection otelSdkConnection;
 	private final Tracer tracer;
 	private final TextMapPropagator textMapPropagator;
-
+	private final MuleConfiguration muleConfiguration;
+	
 	//------------------------------------------------------------------------------------------------
 	//	Singleton 
 	//------------------------------------------------------------------------------------------------
@@ -75,7 +80,7 @@ public final class OtelSdkConnection
 			//----------------------------------------------------------------------------------------
 			//	Configure the OpenTelemety SDK using properties from the various configuration editors.
 			//	For now, only resource and exporter properties have editors; however, in the future,
-			//	this will/coould be expanded to include metric and log property editors.
+			//	this will/could be expanded to include metric and log property editors.
 			//----------------------------------------------------------------------------------------
 			if (otelSdkConfig.getResourceConfig() != null)
 			{
@@ -90,11 +95,12 @@ public final class OtelSdkConnection
 
 			builder.addPropertiesSupplier(propertiesSupplier);
 		}
-		openTelemetry = builder.build().getOpenTelemetrySdk();
 		
-		tracer = openTelemetry.getTracer(name, version);
-		
+		openTelemetry     = builder.build().getOpenTelemetrySdk();
+		tracer            = openTelemetry.getTracer(name, version);
 		textMapPropagator = openTelemetry.getPropagators().getTextMapPropagator();
+		
+		muleConfiguration = otelSdkConfig.getMuleConfiguration();
 	}
 
 	public void invalidate()
@@ -102,6 +108,11 @@ public final class OtelSdkConnection
 		// Nothing to invalidate.
 	}
 
+	public Optional<MuleConfiguration> getMuleConfiguration()
+	{
+		return Optional.ofNullable(muleConfiguration);
+	}
+	
 	public static Optional<OtelSdkConnection> get()
 	{
 		return Optional.ofNullable(otelSdkConnection);
