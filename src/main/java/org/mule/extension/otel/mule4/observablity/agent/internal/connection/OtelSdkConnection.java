@@ -4,22 +4,29 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
-import  io.opentelemetry.context.propagation.TextMapPropagator;
+import io.opentelemetry.context.propagation.TextMapPropagator;
 
+import java.io.FileReader;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
-import javax.inject.Inject;
-
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.OTelSdkConfig;
-import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
 import org.mule.runtime.core.api.config.MuleConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * This is a Singleton class represents a connection to the local OpenTelemetry SDK.  
@@ -31,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class OtelSdkConnection
 {
-	private final Logger logger = LoggerFactory.getLogger(OtelSdkConnection.class);
+	private static final Logger logger = LoggerFactory.getLogger(OtelSdkConnection.class);
 	private final OpenTelemetry openTelemetry;
 	
 	private static OtelSdkConnection otelSdkConnection;
@@ -133,12 +140,80 @@ public final class OtelSdkConnection
 	{
 		if (otelSdkConnection == null)
 		{
-			otelSdkConnection = new OtelSdkConnection(ObservabilitySemantics.INSTRUMENTATION_NAME,
-					                                  ObservabilitySemantics.INSTRUMENTATION_VERSION, 
+			otelSdkConnection = new OtelSdkConnection(Constants.INSTRUMENTATION_NAME,
+						                              getAgentVersion(otelSdkConfig),
 					                                  otelSdkConfig);
 		}
 		return otelSdkConnection;
 	}
+	
+	//------------------------------------------------------------------------------------------------
+	//	Helper method to retrieve the current version of the extension by parsing through the 
+	// 	classloader-model.json file.
+	//------------------------------------------------------------------------------------------------
+	private static String getAgentVersion(OTelSdkConfig otelSdkConfig)
+	{
+		String version = Constants.INSTRUMENTATION_VERSION_DEFAULT;
+
+		try
+		{
+		    DefaultMuleConfiguration defaultMuleConfiguration = (DefaultMuleConfiguration) otelSdkConfig.getMuleConfiguration();
+		    
+			String filePath = defaultMuleConfiguration.getMuleHomeDirectory() + "/apps/" + 
+                              defaultMuleConfiguration.getDataFolderName() + "/META-INF/mule-artifact/classloader-model.json";
+			
+			JsonElement jsonElement = JsonParser.parseReader(new FileReader(filePath));
+			
+			if (!jsonElement.isJsonObject())
+				return version;
+			
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+			
+			if (!jsonObject.has("dependencies"))
+				return version;
+						
+			Iterator<JsonElement> dependenciesIt = jsonObject.get("dependencies").getAsJsonArray().iterator();
+			
+			while (dependenciesIt.hasNext())	
+			{				
+				Set<Entry<String, JsonElement>> dependencySet = dependenciesIt.next().getAsJsonObject().entrySet();
+				
+				Iterator<Entry<String, JsonElement>> setIt = dependencySet.iterator();
+				
+				while (setIt.hasNext())
+				{
+					Entry<String, JsonElement> entry = setIt.next();
+					
+					if (entry.getValue().isJsonObject())
+					{
+						JsonObject jo = entry.getValue().getAsJsonObject();
+						
+						if (jo.has("artifactId"))
+						{
+							String artificatId = jo.get("artifactId").getAsString();
+							
+							if (artificatId.equalsIgnoreCase(Constants.AGENT_ARTIFACT_ID))
+								version = jo.get("version").getAsString();
+							
+							break;  	// from inner loop
+						}
+					}
+
+					logger.debug("Entry:  " + entry.toString());				
+				}
+				
+				if (!version.equalsIgnoreCase(Constants.INSTRUMENTATION_VERSION_DEFAULT))
+					break;				// from outer loop
+			}
+		}
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
+		}
+		
+		return version;
+	}
+	
 	
 	//------------------------------------------------------------------------------------------------
 	//	Retrieve a Tracer object:

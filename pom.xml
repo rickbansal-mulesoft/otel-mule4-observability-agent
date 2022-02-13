@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mulesoft.extensions.rickbansal.otel</groupId>
 	<artifactId>otel-mule4-observability-agent</artifactId>
-	<version>1.0.76-SNAPSHOT</version>
+	<version>1.0.87-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 	<name>OpenTelemetry Mule 4 Observability Agent Extension</name>
 
@@ -34,6 +34,11 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>properties-maven-plugin</artifactId> 
+				<version>1.0.0</version> <executions> <execution> <phase>generate-resources</phase> 
+				<goals> <goal>write-project-properties</goal> </goals> <configuration> <outputFile> 
+				${project.build.outputDirectory}/app.properties </outputFile> </configuration> 
+				</execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 
@@ -89,6 +94,13 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.11.0</version>
+		</dependency>
+
+		<!-- provided Google support -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.9.0</version>
 		</dependency>
 	</dependencies>
 

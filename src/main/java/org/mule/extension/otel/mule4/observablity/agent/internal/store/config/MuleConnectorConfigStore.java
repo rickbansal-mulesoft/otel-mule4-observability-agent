@@ -1,4 +1,4 @@
-package org.mule.extension.otel.mule4.observablity.agent.internal.config;
+package org.mule.extension.otel.mule4.observablity.agent.internal.store.config;
 
 import java.io.File;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
 import org.mule.runtime.core.api.config.MuleConfiguration;
 import org.slf4j.Logger;
@@ -26,6 +26,16 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 //	Connector, HTTP Requester, ...).  This information is not available through the current APIs;
 //	hence, it is being collected by parsing through all of the Mule configuration XML files.
 //------------------------------------------------------------------------------------------------
+/**
+ *  Singleton {@code MuleConnectorConfigStore} class for storing various configuration details on 
+ *  a variety of MuleSoft connectors.  For now the following connector types are supported:
+ *  <ul>
+ *  	<li> {@code Database Connector} </li>
+ *  	<li> {@code HTTP Request Connector} </li>
+ *  </ul>
+ *  
+ *  @see #getInstance(MuleConfiguration)
+ */
 public class MuleConnectorConfigStore
 {
 	private static Logger logger = LoggerFactory.getLogger(MuleConnectorConfigStore.class);
@@ -37,15 +47,18 @@ public class MuleConnectorConfigStore
 	//--------------------------------------------------------------------------------------------
 	private Map<String, Object> configurations = new ConcurrentHashMap<>();
 	
+	//--------------------------------------------------------------------------------------------
+	//	Singleton constructor  
+	//--------------------------------------------------------------------------------------------
 	private MuleConnectorConfigStore(MuleConfiguration muleConfiguration)
 	{
-	    DefaultMuleConfiguration defaultMuleConfiguration = (DefaultMuleConfiguration)muleConfiguration;;
+	    DefaultMuleConfiguration defaultMuleConfiguration = (DefaultMuleConfiguration)muleConfiguration;
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	    dbf.setNamespaceAware(true);
 	    
-	    String httpNS = ObservabilitySemantics.HTTP_REQUESTER_URI_NS;
-	    String dbNS   = ObservabilitySemantics.DB_URI_NS;
+	    String httpNS = Constants.HTTP_REQUESTER_URI_NS;
+	    String dbNS   = Constants.DB_URI_NS;
 
 		if (muleConfiguration != null)
 		{			
@@ -64,7 +77,7 @@ public class MuleConnectorConfigStore
 			    try 
 			    {
 			    	//----------------------------------------------------------------------------
-			    	//	Create a DOM Document Builder and parse in the Mule Configuration XML file.
+			    	//	Create a DOM Document Builder and parse in the Mule Configuration XML file
 			    	//----------------------------------------------------------------------------
 					DocumentBuilder db = dbf.newDocumentBuilder();
 		
@@ -90,6 +103,9 @@ public class MuleConnectorConfigStore
 							String host = e2.getAttribute("host");
 							String port = e2.getAttribute("port");
 							
+					    	//--------------------------------------------------------------------
+							// 	Create and store a HttpRequesterConfig into the configuration store
+					    	//--------------------------------------------------------------------							
 							configurations.put(configName, new HttpRequesterConfig(host, (port == "" ? "80": port)));
 						}
 					}
@@ -110,12 +126,16 @@ public class MuleConnectorConfigStore
 							String configName = e.getAttribute("name");
 							
 							Element e2 = (Element)e.getElementsByTagNameNS(dbNS, "*").item(0);
+							String type = e2.getLocalName();
 							String host = e2.getAttribute("host");
 							String port = e2.getAttribute("port");
 							String user = e2.getAttribute("user");
 							String database = e2.getAttribute("database");
 							
-							configurations.put(configName, new DbConfig(host, port, user, database));
+					    	//--------------------------------------------------------------------
+							// 	Create and store a DbConfig into the configuration store
+					    	//--------------------------------------------------------------------							
+							configurations.put(configName, new DbConfig(host, port, user, database, type));
 						}
 					}
 			    }
@@ -132,10 +152,11 @@ public class MuleConnectorConfigStore
 	//	if it doesn't already exist.
 	//------------------------------------------------------------------------------------------------
 	/**
+	 * Retrieve the singleton instance of this MuleConnectorConfigStore object. 
 	 * 
-	 * @param muleConfiguration
-	 * @param notification
-	 * @return
+	 * @param muleConfiguration - Default Mule Configuration
+	 * 
+	 * @return Singleton {@code MuleConnectorConfigStore}
 	 */
 	public static synchronized MuleConnectorConfigStore getInstance(MuleConfiguration muleConfiguration)
 	{
@@ -144,6 +165,21 @@ public class MuleConnectorConfigStore
 			muleConnectorConfigStore = new MuleConnectorConfigStore(muleConfiguration);
 		}
 		return muleConnectorConfigStore;
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	//	Retreive either a DB or HTTP Requester Configuration
+	//------------------------------------------------------------------------------------------------
+	/**
+	 * 	Retreive either a DB or HTTP Requester Configuration
+	 * 
+	 * @param key - name of the {@code config-reg} to retrieve
+	 * 
+	 * @return {@code DbConfig} or {@code HttpRequesterConfig }
+	 */
+	public Object getConfig(String key)
+	{
+		return configurations.get(key);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -180,13 +216,15 @@ public class MuleConnectorConfigStore
 		private String port;
 		private String user;
 		private String dbName;
+		private String connectionType;
 		
-		public DbConfig(String host, String port, String user, String dbName)
+		public DbConfig(String host, String port, String user, String dbName, String connectionType)
 		{
 			this.host = host;
 			this.port = port;
 			this.user = user;
 			this.dbName = dbName;
+			this.connectionType = connectionType;
 		}
 		
 		public String getHost()
@@ -208,10 +246,10 @@ public class MuleConnectorConfigStore
 		{
 			return dbName;
 		}
+		
+		public String getConnectionType() 
+		{
+			return connectionType;
+		}
 	}	
-	
-	public Object getConfig(String key)
-	{
-		return configurations.get(key);
-	}
 }

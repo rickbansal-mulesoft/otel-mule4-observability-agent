@@ -1,6 +1,6 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.interceptor;
 
-import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.api.component.ComponentIdentifier;
 import org.mule.runtime.api.component.location.ComponentLocation;
 import org.mule.runtime.api.interception.ProcessorInterceptor;
@@ -79,9 +79,8 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 		boolean is = false;
 		
 		if (isFirstProcessor(location) 
-			|| isProcessorType(location, ObservabilitySemantics.HTTP_REQUESTER)
-			|| isProcessorType(location, ObservabilitySemantics.LOGGER) 
-			|| isProcessorType(location, ObservabilitySemantics.DB_SELECT))
+			|| isProcessorType(location, Constants.HTTP_REQUESTER)
+			|| isProcessorType(location, Constants.LOGGER))
 		{
 			is = true;
 		}
@@ -98,6 +97,6 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 		ComponentIdentifier componentIdentifier = location.getComponentIdentifier().getIdentifier();
 		String sourceComponent = componentIdentifier.getNamespace() + ":" + componentIdentifier.getName();
 		
-		return (sourceComponent.equals(processorType)) ? true : false;
+		return (sourceComponent.matches("^"+ processorType + "$")) ? true : false;
 	}
 }

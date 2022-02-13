@@ -10,12 +10,12 @@ import org.mule.runtime.api.notification.PipelineMessageNotification;
 import org.mule.runtime.core.api.config.MuleConfiguration;
 import org.mule.runtime.api.component.ComponentIdentifier;
 import org.mule.extension.http.api.HttpRequestAttributes;
-import org.mule.extension.otel.mule4.observablity.agent.internal.config.MuleConnectorConfigStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
 import org.mule.extension.otel.mule4.observablity.agent.internal.context.propagation.HttpRequestAttributesGetter;
 import org.mule.extension.otel.mule4.observablity.agent.internal.context.propagation.OTelContextPropagator;
+import org.mule.extension.otel.mule4.observablity.agent.internal.store.config.MuleConnectorConfigStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.trace.MuleSoftTraceStore;
-import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +93,7 @@ public class OTelMuleNotificationHandler
 		
 		SpanBuilder spanBuilder = getTracer().spanBuilder(MuleNotificationParser.getSpanName(notification)).setStartTimestamp(startInstant);
 		
-		spanBuilder.setAttribute(ObservabilitySemantics.START_DATETIME_ATTRIBUTE, startInstant.toString());
+		spanBuilder.setAttribute(Constants.START_DATETIME_ATTRIBUTE, startInstant.toString());
 		
 		ComponentIdentifier sourceIdentifier = MuleNotificationParser.getSourceIdentifier(notification);
 		
@@ -101,12 +101,12 @@ public class OTelMuleNotificationHandler
 		{
 			try
 			{
-				spanBuilder.setAttribute(ObservabilitySemantics.FLOW_NAME_ATTRIBUTE, MuleNotificationParser.getDocName(notification));
-				spanBuilder.setAttribute(ObservabilitySemantics.SERVER_ID_ATTRIBUTE, MuleNotificationParser.getServerId(notification));
+				spanBuilder.setAttribute(Constants.FLOW_NAME_ATTRIBUTE, MuleNotificationParser.getDocName(notification));
+				spanBuilder.setAttribute(Constants.SERVER_ID_ATTRIBUTE, MuleNotificationParser.getServerId(notification));
 
 				sourceComponent = sourceIdentifier.getNamespace() + ":" + sourceIdentifier.getName();
 
-				if (sourceComponent.equalsIgnoreCase(ObservabilitySemantics.HTTP_LISTENER))
+				if (sourceComponent.equalsIgnoreCase(Constants.HTTP_LISTENER))
 				{
 					spanBuilder.setSpanKind(SpanKind.SERVER);
 					MuleNotificationParser.addHttpListenerAttributesToSpan(notification, spanBuilder);
@@ -137,7 +137,7 @@ public class OTelMuleNotificationHandler
 			}
 
 			if (docName != null)
-				spanBuilder.setAttribute(ObservabilitySemantics.DOC_NAME_ATTRIBUTE, docName);
+				spanBuilder.setAttribute(Constants.DOC_NAME_ATTRIBUTE, docName);
 			
 			traceStore.addPipelineSpan(MuleNotificationParser.getMuleSoftTraceId(notification), 
 					                   MuleNotificationParser.getFlowId(notification), 
@@ -182,7 +182,7 @@ public class OTelMuleNotificationHandler
 		
 		SpanBuilder spanBuilder = getTracer().spanBuilder(MuleNotificationParser.getSpanName(notification)).setStartTimestamp(startInstant);
 		
-		spanBuilder.setAttribute(ObservabilitySemantics.START_DATETIME_ATTRIBUTE, startInstant.toString());
+		spanBuilder.setAttribute(Constants.START_DATETIME_ATTRIBUTE, startInstant.toString());
 
 		try
 		{
@@ -195,21 +195,21 @@ public class OTelMuleNotificationHandler
 
 		if (docName != null)
 		{
-			spanBuilder.setAttribute(ObservabilitySemantics.DOC_NAME_ATTRIBUTE, docName);
+			spanBuilder.setAttribute(Constants.DOC_NAME_ATTRIBUTE, docName);
 		}
 
-		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(ObservabilitySemantics.HTTP_REQUESTER))
+		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(Constants.HTTP_REQUESTER))
 		{
 			spanBuilder.setSpanKind(SpanKind.CLIENT);
 			MuleNotificationParser.addHttpRequesterAttributesToSpan(notification, getMuleConnectorConfigStore(), spanBuilder);
 		}
 
-		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(ObservabilitySemantics.HTTP_LISTENER))
+		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(Constants.HTTP_LISTENER))
 		{
 			MuleNotificationParser.addHttpListenerAttributesToSpan(notification, spanBuilder);
 		}
 		
-		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(ObservabilitySemantics.DB_SELECT))
+		if (MuleNotificationParser.getComponentId(notification).matches(Constants.DB_MATCHER))
 		{			
 			MuleNotificationParser.addDatabaseAttributesToSpan(notification, getMuleConnectorConfigStore(), spanBuilder);
 		}
@@ -227,11 +227,11 @@ public class OTelMuleNotificationHandler
 	{
 		logger.debug("Handling end event");
 		
-		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(ObservabilitySemantics.HTTP_REQUESTER))
+		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(Constants.HTTP_REQUESTER))
 		{			
 			MuleNotificationParser.addHttpResponseAttributesToSpan(notification, traceStore);
 		}
-		else if(MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(ObservabilitySemantics.LOGGER))
+		else if(MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(Constants.LOGGER))
 		{
 			MuleNotificationParser.addLoggerEventsToSpan(notification, traceStore);
 		}

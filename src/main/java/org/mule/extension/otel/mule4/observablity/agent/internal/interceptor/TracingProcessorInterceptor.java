@@ -4,7 +4,7 @@ import org.mule.extension.http.api.request.builder.HttpRequesterRequestBuilder;
 import org.mule.extension.http.internal.request.HttpRequesterConfig;
 import org.mule.extension.http.internal.request.client.HttpExtensionClient;
 import org.mule.extension.otel.mule4.observablity.agent.internal.context.propagation.OTelContextPropagator;
-import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.api.component.location.ComponentLocation;
 import org.mule.runtime.api.interception.InterceptionAction;
 import org.mule.runtime.api.interception.InterceptionEvent;
@@ -36,7 +36,7 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 		{
 			try
 			{
-				event.addVariable(ObservabilitySemantics.TRACE_CONTEXT_MAP_KEY, OTelContextPropagator.makeTraceContextMapFor(traceId));
+				event.addVariable(Constants.TRACE_CONTEXT_MAP_KEY, OTelContextPropagator.makeTraceContextMapFor(traceId));
 				logger.info("created TRACE_CONTEXT_MAP_KEY variable");
 			}
 			catch (Exception e)
@@ -52,12 +52,12 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 			//	list but they are not being honored in the outgoing HTTP Request.
 			// ----------------------------------------------------------------------------------------
 			Map<String, String> traceContextMap = TypedValue.unwrap(event.getVariables()
-					                                                     .get(ObservabilitySemantics.TRACE_CONTEXT_MAP_KEY));
+					                                                     .get(Constants.TRACE_CONTEXT_MAP_KEY));
 			
 			MultiMap<String, String> headers = new MultiMap<>();
 			
-			headers.put(ObservabilitySemantics.TRACEPARENT, traceContextMap.get(ObservabilitySemantics.TRACEPARENT));
-			headers.put(ObservabilitySemantics.TRACESTATE, traceContextMap.get(ObservabilitySemantics.TRACESTATE));
+			headers.put(Constants.TRACEPARENT, traceContextMap.get(Constants.TRACEPARENT));
+			headers.put(Constants.TRACESTATE, traceContextMap.get(Constants.TRACESTATE));
 			
 			ProcessorParameterValue processorParameterValue = parameters.get("requestBuilder");
 			
@@ -103,21 +103,6 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 			logger.debug("around::Intercepted a logger processor");
 		}
 		
-		if (isDatabaseProcessor(location))
-		{
-			ProcessorParameterValue processorParameterValue = parameters.get("config-ref");
-			
-			try
-			{ 
-				Object object = processorParameterValue.resolveValue();
-			}
-			catch (Exception e)
-			{
-				// do nothing for now
-				logger.debug("around::Intercepted db processor resolved with error: " + e.getMessage());
-			}
-			logger.debug("around::Intercepted a database processor");
-		}
 		/*
 		if (isHttpRequestProcessor(location))
 		{			
@@ -160,17 +145,11 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 
 	private boolean isHttpRequestProcessor(ComponentLocation location)
 	{
-		return TracingProcessorInterceptorFactory.isProcessorType(location, ObservabilitySemantics.HTTP_REQUESTER);
+		return TracingProcessorInterceptorFactory.isProcessorType(location, Constants.HTTP_REQUESTER);
 	}
 	
 	private boolean isLoggerProcessor(ComponentLocation location)
 	{
-		return TracingProcessorInterceptorFactory.isProcessorType(location, ObservabilitySemantics.LOGGER);
-	}
-	
-	private boolean isDatabaseProcessor(ComponentLocation location)
-	{
-		return TracingProcessorInterceptorFactory.isProcessorType(location, ObservabilitySemantics.DB_SELECT);
-	}
-	
+		return TracingProcessorInterceptorFactory.isProcessorType(location, Constants.LOGGER);
+	}	
 }

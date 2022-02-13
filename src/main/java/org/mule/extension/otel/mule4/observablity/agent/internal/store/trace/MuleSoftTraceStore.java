@@ -8,7 +8,7 @@ import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.api.trace.Span;
 
-import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -115,7 +115,7 @@ public class MuleSoftTraceStore
 					messageProcessorSpan.setStatus(StatusCode.ERROR, e.getMessage());
 					messageProcessorSpan.recordException(e);
 				}
-				messageProcessorSpan.setAttribute(ObservabilitySemantics.END_DATETIME_ATTRIBUTE, endInstant.toString());
+				messageProcessorSpan.setAttribute(Constants.END_DATETIME_ATTRIBUTE, endInstant.toString());
 				messageProcessorSpan.end(endInstant);
 			}
 			
@@ -133,7 +133,7 @@ public class MuleSoftTraceStore
 					pipelineRootSpan.setStatus(StatusCode.ERROR, e.getMessage());
 					pipelineRootSpan.recordException(e);
 				}
-				pipelineRootSpan.setAttribute(ObservabilitySemantics.END_DATETIME_ATTRIBUTE, endInstant.toString());
+				pipelineRootSpan.setAttribute(Constants.END_DATETIME_ATTRIBUTE, endInstant.toString());
 				pipelineRootSpan.end(endInstant);
 			}
 		}

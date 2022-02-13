@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.OTelMuleNotificationHandler;
-import org.mule.extension.otel.mule4.observablity.agent.internal.util.ObservabilitySemantics;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
@@ -77,7 +77,7 @@ public class OTelContextPropagator
 		
 		Map<String, String> traceContextMap = new HashMap<>();
 		
-		traceContextMap.put(ObservabilitySemantics.TRACE_TRANSACTION_ID, traceId);
+		traceContextMap.put(Constants.TRACE_TRANSACTION_ID, traceId);
 		
 		try (Scope scope = traceContext.makeCurrent())
 		{

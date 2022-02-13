@@ -7,7 +7,7 @@ import javax.xml.namespace.QName;
 
 import org.mule.extension.http.api.HttpRequestAttributes;
 import org.mule.extension.http.api.HttpResponseAttributes;
-import org.mule.extension.otel.mule4.observablity.agent.internal.config.MuleConnectorConfigStore;
+import org.mule.extension.otel.mule4.observablity.agent.internal.store.config.MuleConnectorConfigStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.trace.MuleSoftTraceStore;
 import org.mule.runtime.api.component.ComponentIdentifier;
 import org.mule.runtime.api.event.Event;
@@ -227,6 +227,7 @@ public class MuleNotificationParser
 			spanBuilder.setAttribute("db.port", dbConfig.getPort());
 			spanBuilder.setAttribute("db.user", dbConfig.getUser());
 			spanBuilder.setAttribute("db.name", dbConfig.getDbName());
+			spanBuilder.setAttribute("db.connection.type", dbConfig.getConnectionType());
 		}
 		catch (Exception e)
 		{

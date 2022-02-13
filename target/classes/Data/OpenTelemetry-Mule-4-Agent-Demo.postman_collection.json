@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "bcaeb3a1-c61f-480a-a4db-4a92a08b347f",
+		"name": "OpenTelemetry-Mule-4-Agent-Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://mule-otel-extension-testapp.us-e1.cloudhub.io/test",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "traceparent",
+						"value": "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01",
+						"type": "text"
+					},
+					{
+						"key": "tracestate",
+						"value": "congo=t61rcWkgMzE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://mule-otel-extension-testapp.us-e1.cloudhub.io/test",
+					"protocol": "http",
+					"host": [
+						"mule-otel-extension-testapp",
+						"us-e1",
+						"cloudhub",
+						"io"
+					],
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://mule-otel-extension-testapp-v53.us-e1.cloudhub.io/test",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "traceparent",
+						"value": "00-0af7651916cd43dd8448eb211c80319e-b7ad6b7169203331-01",
+						"type": "text"
+					},
+					{
+						"key": "tracestate",
+						"value": "congo=t61rcWkgMzE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://mule-otel-extension-testapp-v53.us-e1.cloudhub.io/test",
+					"protocol": "http",
+					"host": [
+						"mule-otel-extension-testapp-v53",
+						"us-e1",
+						"cloudhub",
+						"io"
+					],
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/test",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "traceparent",
+						"value": "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01",
+						"type": "text"
+					},
+					{
+						"key": "tracestate",
+						"value": "congo=t61rcWkgMzE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/grafana",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "traceparent",
+						"value": "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01",
+						"type": "text"
+					},
+					{
+						"key": "tracestate",
+						"value": "congo=t61rcWkgMzE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/grafana",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"grafana"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/test/errors",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "traceparent",
+						"value": "00-0af7651916cd43dd8448eb211c803290-b7ad6b7169203331-01",
+						"type": "text"
+					},
+					{
+						"key": "tracestate",
+						"value": "congo=t61rcWkgMzE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/test/errors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"test",
+						"errors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://mule-otel-extension-testapp-witherrors.us-e1.cloudhub.io/test/errors",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "traceparent",
+						"value": "00-0af7651916cd43dd8448eb211c803290-b7ad6b7169203331-01",
+						"type": "text"
+					},
+					{
+						"key": "tracestate",
+						"value": "congo=t61rcWkgMzE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://mule-otel-extension-testapp-witherrors.us-e1.cloudhub.io/test/errors",
+					"protocol": "http",
+					"host": [
+						"mule-otel-extension-testapp-witherrors",
+						"us-e1",
+						"cloudhub",
+						"io"
+					],
+					"path": [
+						"test",
+						"errors"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
