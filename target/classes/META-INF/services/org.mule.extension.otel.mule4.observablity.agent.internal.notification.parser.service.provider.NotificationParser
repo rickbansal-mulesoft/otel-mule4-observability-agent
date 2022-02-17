@@ -1,0 +1,4 @@
+org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider.DatabaseConnectorParser
+org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider.HttpListenerParser
+org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider.HttpRequesterParser
+org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider.LoggerParser

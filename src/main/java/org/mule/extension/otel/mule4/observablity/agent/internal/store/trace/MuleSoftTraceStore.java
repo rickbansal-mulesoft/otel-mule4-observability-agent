@@ -12,19 +12,33 @@ import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//-------------------------------------------------------------------------------
-//	Class for storing all MuleSoft traces/flows associated with a MuleSoft app.
-//	The class is a collection of MuleSoftTraces where each MuleSoftTrace has an
-//	associated rootSpan (i.e., the flow) and some number of child spans (i.e.,
-// 	a message processor - Logger, Transformer, ...).  A new MuleSoftTrace is
-//	started whenever a flow is initiated by a Source (e.g., an HTTP Listener).
-//-------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+//	Class for storing all MuleSoft traces/flows associated with a MuleSoft app. The class is a 
+//	collection of MuleSoftTraces where each MuleSoftTrace has an associated rootSpan (i.e., the 
+//	flow) and some number of child spans (i.e., a message processor - Logger, Transformer, ...).  
+//	A new MuleSoftTrace is started whenever a flow is initiated by a Source (e.g., an HTTP Listener).
+//
+//  Causal relationship between segments of a MuleSoft trace:
+//
+//			             [Trace Root Span A] <-- (the uber root span)
+//                               |
+//			     +---------------+---------------+
+//               |                               |
+//      [Pipeline Span B]               [Pipeline Span C] <-- (Spans B, C are `children` of A)
+//               |                               |
+//  [Message Processor Span D]                   |
+//                               +---------------+----------------+
+//                               |                                |
+//                  [Message Processor Span E]     [Message Processor Span F]
+//
+//------------------------------------------------------------------------------------------------
+
 public class MuleSoftTraceStore
 {
 	private static Logger logger = LoggerFactory.getLogger(MuleSoftTraceStore.class);
 
 	//------------------------------------------------------------------------
-	//	Collection of MuleSoftTraces persisted as simple hash map
+	//	Collection of MuleSoftTraces persisted as a simple hash map
 	//------------------------------------------------------------------------
 	private Map<String, MuleSoftTrace> muleSoftTraces = new ConcurrentHashMap<>();
 	
@@ -106,16 +120,9 @@ public class MuleSoftTraceStore
 				return this.messageProcessorSpans.get(spanID);			
 			}
 			
-			private void endSpan(String spanId, Instant endInstant, Exception e)
+			private void endSpan(String spanId, Instant endInstant)
 			{
 				Span messageProcessorSpan = messageProcessorSpans.get(spanId);
-				
-				if (e != null)
-				{
-					messageProcessorSpan.setStatus(StatusCode.ERROR, e.getMessage());
-					messageProcessorSpan.recordException(e);
-				}
-				messageProcessorSpan.setAttribute(Constants.END_DATETIME_ATTRIBUTE, endInstant.toString());
 				messageProcessorSpan.end(endInstant);
 			}
 			
@@ -250,10 +257,9 @@ public class MuleSoftTraceStore
 				             .getSpan(messageProcessorId);
 	}
 	
-	
 	public void endMessageProcessorSpan(String mulesoftTraceId, String pipelineId, 
-                                        String messageProcessorId, Instant endInstant, Exception e)
+                                        String messageProcessorId, Instant endInstant)
 	{
-		muleSoftTraces.get(mulesoftTraceId).getPipelineSpan(pipelineId).endSpan(messageProcessorId, endInstant, e);
+		muleSoftTraces.get(mulesoftTraceId).getPipelineSpan(pipelineId).endSpan(messageProcessorId, endInstant);
 	}
 }

@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonParser;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -149,7 +148,7 @@ public final class OtelSdkConnection
 	
 	//------------------------------------------------------------------------------------------------
 	//	Helper method to retrieve the current version of the extension by parsing through the 
-	// 	classloader-model.json file.
+	// 	classloader-model.json file. There might be an easier way to do this but I could not find it...
 	//------------------------------------------------------------------------------------------------
 	private static String getAgentVersion(OTelSdkConfig otelSdkConfig)
 	{
@@ -160,7 +159,8 @@ public final class OtelSdkConnection
 		    DefaultMuleConfiguration defaultMuleConfiguration = (DefaultMuleConfiguration) otelSdkConfig.getMuleConfiguration();
 		    
 			String filePath = defaultMuleConfiguration.getMuleHomeDirectory() + "/apps/" + 
-                              defaultMuleConfiguration.getDataFolderName() + "/META-INF/mule-artifact/classloader-model.json";
+                              defaultMuleConfiguration.getDataFolderName() + 
+                              "/META-INF/mule-artifact/classloader-model.json";
 			
 			JsonElement jsonElement = JsonParser.parseReader(new FileReader(filePath));
 			

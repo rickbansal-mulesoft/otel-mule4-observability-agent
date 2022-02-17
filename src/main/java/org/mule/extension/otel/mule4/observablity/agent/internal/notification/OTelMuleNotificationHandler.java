@@ -1,18 +1,16 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.notification;
 
 import io.opentelemetry.api.trace.SpanBuilder;
-import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Context;
 
 import org.mule.runtime.api.notification.MessageProcessorNotification;
 import org.mule.runtime.api.notification.PipelineMessageNotification;
 import org.mule.runtime.core.api.config.MuleConfiguration;
-import org.mule.runtime.api.component.ComponentIdentifier;
-import org.mule.extension.http.api.HttpRequestAttributes;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
-import org.mule.extension.otel.mule4.observablity.agent.internal.context.propagation.HttpRequestAttributesGetter;
-import org.mule.extension.otel.mule4.observablity.agent.internal.context.propagation.OTelContextPropagator;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.NotificationParserUtils;
+import org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.NotificationParserService;
+import org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider.BaseNotificationParser;
+import org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider.NotificationParser;
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.config.MuleConnectorConfigStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.trace.MuleSoftTraceStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
@@ -49,6 +47,9 @@ public class OTelMuleNotificationHandler
 		return traceStore;
 	}
 	
+	// --------------------------------------------------------------------------------------------
+	// Helper methods to retrieve various singletons.
+	// --------------------------------------------------------------------------------------------	
 	private Tracer getTracer()
 	{
 		if (otelSdkConnection == null)
@@ -76,8 +77,9 @@ public class OTelMuleNotificationHandler
 		
 		return muleConnectorConfigStore;
 	}
+	
 	// ============================================================================================
-	// FLOW RELATED NOTIFICATION EVENTS
+	//                      PIPELINE/FLOW RELATED NOTIFICATION EVENTS
 	// ============================================================================================
 
 	// --------------------------------------------------------------------------------------------
@@ -85,62 +87,50 @@ public class OTelMuleNotificationHandler
 	// --------------------------------------------------------------------------------------------	
 	public void handleFlowStartEvent(PipelineMessageNotification notification)
 	{
-		String sourceComponent;
-
 		logger.debug("Handling flow start event");
 
-		Instant startInstant = MuleNotificationParser.getInstantFrom(notification);
+		Instant startInstant = NotificationParserUtils.getInstantFrom(notification);
 		
-		SpanBuilder spanBuilder = getTracer().spanBuilder(MuleNotificationParser.getSpanName(notification)).setStartTimestamp(startInstant);
+		SpanBuilder spanBuilder = getTracer().spanBuilder(NotificationParserUtils.getSpanName(notification))
+				                                                                 .setStartTimestamp(startInstant);
 		
 		spanBuilder.setAttribute(Constants.START_DATETIME_ATTRIBUTE, startInstant.toString());
+				
+		NotificationParser notificationParser = NotificationParserService.getInstance().getParserFor(notification)
+				                                                                       .orElse(new BaseNotificationParser());
 		
-		ComponentIdentifier sourceIdentifier = MuleNotificationParser.getSourceIdentifier(notification);
 		
-		if (!traceStore.isTracePresent(MuleNotificationParser.getMuleSoftTraceId(notification)))
+		if (!traceStore.isTracePresent(NotificationParserUtils.getMuleSoftTraceId(notification)))
 		{
 			try
 			{
-				spanBuilder.setAttribute(Constants.FLOW_NAME_ATTRIBUTE, MuleNotificationParser.getDocName(notification));
-				spanBuilder.setAttribute(Constants.SERVER_ID_ATTRIBUTE, MuleNotificationParser.getServerId(notification));
-
-				sourceComponent = sourceIdentifier.getNamespace() + ":" + sourceIdentifier.getName();
-
-				if (sourceComponent.equalsIgnoreCase(Constants.HTTP_LISTENER))
-				{
-					spanBuilder.setSpanKind(SpanKind.SERVER);
-					MuleNotificationParser.addHttpListenerAttributesToSpan(notification, spanBuilder);
-					
-					HttpRequestAttributes httpRequestAttributes = MuleNotificationParser.getMessageAttributes(notification);
-
-					Context context = OTelContextPropagator.extract(httpRequestAttributes, new HttpRequestAttributesGetter());
-					spanBuilder.setParent(context);
-				}
-			} catch (Exception e)
+				spanBuilder.setAttribute(Constants.FLOW_NAME_ATTRIBUTE, NotificationParserUtils.getDocName(notification));
+				spanBuilder.setAttribute(Constants.SERVER_ID_ATTRIBUTE, NotificationParserUtils.getServerId(notification));
+				
+				notificationParser.startPipelineNotification(notification, getMuleConnectorConfigStore(), spanBuilder);
+			} 
+			catch (Exception e)
 			{
-				// Suppress
+				logger.debug(e.getMessage());
 			}
-			traceStore.startTrace(MuleNotificationParser.getMuleSoftTraceId(notification), 
-					              MuleNotificationParser.getFlowId(notification), 
+			
+			traceStore.startTrace(NotificationParserUtils.getMuleSoftTraceId(notification), 
+					              NotificationParserUtils.getFlowId(notification), 
 					              spanBuilder.startSpan());
 		} 
 		else
 		{
-			String docName = null;
 			try
 			{
-				docName = MuleNotificationParser.getDocName(notification);
+				spanBuilder.setAttribute(Constants.DOC_NAME_ATTRIBUTE, NotificationParserUtils.getDocName(notification));
 			} 
 			catch (Exception e)
 			{
-				// Suppress
+				logger.debug(e.getMessage());
 			}
-
-			if (docName != null)
-				spanBuilder.setAttribute(Constants.DOC_NAME_ATTRIBUTE, docName);
 			
-			traceStore.addPipelineSpan(MuleNotificationParser.getMuleSoftTraceId(notification), 
-					                   MuleNotificationParser.getFlowId(notification), 
+			traceStore.addPipelineSpan(NotificationParserUtils.getMuleSoftTraceId(notification), 
+					                   NotificationParserUtils.getFlowId(notification), 
 					                   spanBuilder);
 		}
 	}
@@ -152,11 +142,11 @@ public class OTelMuleNotificationHandler
 	{
 		logger.debug("Handling flow end event");
 		
-		String mulesoftTraceId = MuleNotificationParser.getMuleSoftTraceId(notification);
+		String mulesoftTraceId = NotificationParserUtils.getMuleSoftTraceId(notification);
 	
 		traceStore.endPipelineSpan(mulesoftTraceId, 
-				                   MuleNotificationParser.getFlowId(notification),
-				                   MuleNotificationParser.getInstantFrom(notification),
+				                   NotificationParserUtils.getFlowId(notification),
+				                   NotificationParserUtils.getInstantFrom(notification),
 				                   notification.getException());
 		
 		if (traceStore.isPipelineSpansEmpty(mulesoftTraceId))
@@ -166,7 +156,7 @@ public class OTelMuleNotificationHandler
 	}
 
 	// ============================================================================================
-	// PROCESSOR RELATED NOTIFICATION EVENTS
+	//                     MESSAGE PROCESSOR RELATED NOTIFICATION EVENTS
 	// ============================================================================================
 
 	// --------------------------------------------------------------------------------------------
@@ -175,48 +165,18 @@ public class OTelMuleNotificationHandler
 	public void handleProcessorStartEvent(MessageProcessorNotification notification)
 	{
 		logger.debug("Handling processor start event");
-
-		String docName = null;
-
-		Instant startInstant = MuleNotificationParser.getInstantFrom(notification);
 		
-		SpanBuilder spanBuilder = getTracer().spanBuilder(MuleNotificationParser.getSpanName(notification)).setStartTimestamp(startInstant);
+		NotificationParser notificationParser = NotificationParserService.getInstance()
+				                                                         .getParserFor(notification)
+                                                                         .orElse(new BaseNotificationParser());
+
+		SpanBuilder spanBuilder = getTracer().spanBuilder(NotificationParserUtils.getSpanName(notification));
 		
-		spanBuilder.setAttribute(Constants.START_DATETIME_ATTRIBUTE, startInstant.toString());
-
-		try
-		{
-			docName = MuleNotificationParser.getDocName(notification);
-		} 
-		catch (Exception e)
-		{
-			// Suppress
-		}
-
-		if (docName != null)
-		{
-			spanBuilder.setAttribute(Constants.DOC_NAME_ATTRIBUTE, docName);
-		}
-
-		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(Constants.HTTP_REQUESTER))
-		{
-			spanBuilder.setSpanKind(SpanKind.CLIENT);
-			MuleNotificationParser.addHttpRequesterAttributesToSpan(notification, getMuleConnectorConfigStore(), spanBuilder);
-		}
-
-		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(Constants.HTTP_LISTENER))
-		{
-			MuleNotificationParser.addHttpListenerAttributesToSpan(notification, spanBuilder);
-		}
+		notificationParser.startProcessorNotification(notification, getMuleConnectorConfigStore(), spanBuilder);
 		
-		if (MuleNotificationParser.getComponentId(notification).matches(Constants.DB_MATCHER))
-		{			
-			MuleNotificationParser.addDatabaseAttributesToSpan(notification, getMuleConnectorConfigStore(), spanBuilder);
-		}
-		
-		traceStore.addMessageProcessorSpan(MuleNotificationParser.getMuleSoftTraceId(notification), 
-		                                   MuleNotificationParser.getFlowId(notification), 
-		                                   MuleNotificationParser.getSpanId(notification), 
+		traceStore.addMessageProcessorSpan(NotificationParserUtils.getMuleSoftTraceId(notification), 
+		                                   NotificationParserUtils.getFlowId(notification), 
+		                                   NotificationParserUtils.getSpanId(notification), 
 				                           spanBuilder);
 	}
 
@@ -227,19 +187,15 @@ public class OTelMuleNotificationHandler
 	{
 		logger.debug("Handling end event");
 		
-		if (MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(Constants.HTTP_REQUESTER))
-		{			
-			MuleNotificationParser.addHttpResponseAttributesToSpan(notification, traceStore);
-		}
-		else if(MuleNotificationParser.getComponentId(notification).equalsIgnoreCase(Constants.LOGGER))
-		{
-			MuleNotificationParser.addLoggerEventsToSpan(notification, traceStore);
-		}
+		NotificationParser notificationParser = NotificationParserService.getInstance()
+				                                                         .getParserFor(notification)
+                                                                         .orElse(new BaseNotificationParser());
+
+		notificationParser.endProcessorNotification(notification, getMuleSoftTraceStore());
 		
-		traceStore.endMessageProcessorSpan(MuleNotificationParser.getMuleSoftTraceId(notification), 
-                                           MuleNotificationParser.getFlowId(notification), 
-                                           MuleNotificationParser.getSpanId(notification),
-                                           MuleNotificationParser.getInstantFrom(notification),
-                                           notification.getException());		
+		traceStore.endMessageProcessorSpan(NotificationParserUtils.getMuleSoftTraceId(notification), 
+                                           NotificationParserUtils.getFlowId(notification), 
+                                           NotificationParserUtils.getSpanId(notification),
+                                           NotificationParserUtils.getInstantFrom(notification));
 	}
 }

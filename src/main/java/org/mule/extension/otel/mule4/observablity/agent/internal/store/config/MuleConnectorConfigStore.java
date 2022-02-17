@@ -102,11 +102,14 @@ public class MuleConnectorConfigStore
 							Element e2 = (Element)e.getElementsByTagNameNS(httpNS, "request-connection").item(0);
 							String host = e2.getAttribute("host");
 							String port = e2.getAttribute("port");
+							String protocol = e2.getAttribute("protocol");
 							
 					    	//--------------------------------------------------------------------
 							// 	Create and store a HttpRequesterConfig into the configuration store
 					    	//--------------------------------------------------------------------							
-							configurations.put(configName, new HttpRequesterConfig(host, (port == "" ? "80": port)));
+							configurations.put(configName, new HttpRequesterConfig(host,
+									                                               port == "" ? "80": port,
+									                                               protocol == "" ? "HTTP": protocol));
 						}
 					}
 	
@@ -177,11 +180,11 @@ public class MuleConnectorConfigStore
 	 * 
 	 * @return {@code DbConfig} or {@code HttpRequesterConfig }
 	 */
-	public Object getConfig(String key)
+	public <T> T getConfig(String key)
 	{
-		return configurations.get(key);
+		return (T) configurations.get(key);
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
 	//	Nested class for storing some configuration details on the HTTP Requester.
 	//------------------------------------------------------------------------------------------------
@@ -189,11 +192,13 @@ public class MuleConnectorConfigStore
 	{
 		private String host;
 		private String port;
+		private String protocol;
 		
-		public HttpRequesterConfig(String host, String port)
+		public HttpRequesterConfig(String host, String port, String protocol)
 		{
 			this.host = host;
 			this.port = port;
+			this.protocol = protocol;
 		}
 		
 		public String getHost()
@@ -204,6 +209,11 @@ public class MuleConnectorConfigStore
 		public String getPort()
 		{
 			return port;
+		}
+		
+		public String getProtocol()
+		{
+			return protocol;
 		}
 	}
 	
