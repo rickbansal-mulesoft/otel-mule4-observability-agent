@@ -20,6 +20,16 @@ Rick Bansal <rick.bansal@mulesoft.com>
   }
 </style>
 ++++
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:aQZ`
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+
 
 // Document body
 == Introduction
