@@ -23,8 +23,8 @@ Rick Bansal <rick.bansal@mulesoft.com>
 ifndef::env-github[:icons: font]
 ifdef::env-github[]
 :caution-caption: :fire:
-:important-caption: :exclamation:
-:note-caption: :paperclip:aQZ`
+:important-caption: :heavy_exclamation_mark:
+:note-caption: :information_source:
 :tip-caption: :bulb:
 :warning-caption: :warning:
 endif::[]
