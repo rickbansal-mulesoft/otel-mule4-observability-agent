@@ -7,7 +7,7 @@ Rick Bansal <rick.bansal@mulesoft.com>
 :doctype: book
 :icons: font
 :toc: left
-:imagesdir: ./images
+:imagesdir: ./Images
 :keywords: Mule, MuleSoft, Observability, OpenTelemetry, OTel, Tracing, Instrumentation
 //[.center.text-center]
 
