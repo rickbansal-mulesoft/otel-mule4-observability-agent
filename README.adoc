@@ -1,0 +1,125 @@
+= Mule 4 OpenTelemetry (OTel) Agent Extension
+// Document header
+Rick Bansal <rick.bansal@mulesoft.com>
+:revnumber: 1.0.1-SNAPSHOT
+:revdate: Feb. 19, 2022
+:revremark: Initial Draft
+:doctype: book
+:icons: font
+:toc: left
+:imagesdir: ./images
+:keywords: Mule, MuleSoft, Observability, OpenTelemetry, OTel, Tracing, Instrumentation
+//[.center.text-center]
+
+// The following pass through will align the images and their titles
+++++
+<style>
+  .imageblock > .title {
+    text-align: inherit;
+    margin-top: 10px;
+  }
+</style>
+++++
+
+// Document body
+== Introduction
+
+The Mule 4 OTel Agent is a custom MuleSoft *_extension_* that allows MuleSoft applications to be instrumented such 
+that the application provides tracing *_telemetry data_* to any OpenTelemetry compliant collector and be a
+participant in a larger *_distributed trace_*.
+
+== The Why on the OTel Mule 4 Agent
+
+The motivation behind developing this extension is predicated on *two primary concerns* as it 
+relates to enterprise software:
+
+* Composability
+* Observability
+
+=== Composability
+
+What exactly is composability and why does it matter?  Well, as you might imagine, there are plenty of 
+complicated and technical answers to this question - just Google it and you will see.
+
+In really simple terms, *_composibility_* is the concept of building stand alone software _composed_ of 
+other stand alone software and it matters because enterprises who adopt composability as a core IT practice 
+can achieve much greater _agility_ on delivering new solutions for the Business in the face of rapid and ever
+changing market conditions - does COVID ring a bell?  
+
+NOTE: Gartner defines a *Composable Enterprise* as an organization that can innovate and adapt to changing
+business needs through the assembly and combination of packaged business capabilities. 
+
+Legos are often used has a metaphor for explaining the concept.  Think of building each application in 
+your enterprise as a discrete lego.  Using these discrete legos From these discrete 
+
+
+
+image::Lego-blocks.png[600, 600, title="Application Legos", align="center"]
+
+image::Composable-enterprise-app-1.png[600, 600, title="Example of a Composite Application", align="center"]
+
+
+
+
+=== Observability
+
+[quote]
+Wikipedia defines *_observability_* as a measure of how well internal states of a system can 
+be inferred from knowledge of its external outputs.  As it relates specifically to software, observability 
+is the _ability to collect data about program execution, internal states of modules, and communication 
+between components_.  This corpus of collected data is also referred to as *_telemetry_*.
+
+
+image::TheInevitable-1.png[]
+
+
+image::API-Led-1.png[]
+
+
+////
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:aQZ`
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+////
+//:toc: macro
+
+//toc::[]
+
+== The What on the OTel Mule 4 Agent
+
+=== OpenTelemetry
+
+//From https://opentelemetry.io[OpenTelemetry.io]
+
+
+[quote, OpenTelemetry, 'https://opentelemetry.io']
+OpenTelemetry *is a* set of APIs, SDKs, tooling and integrations that are designed for the creation and management 
+of telemetry data such as traces, metrics, and logs. The project provides a *vendor-agnostic* implementation that 
+can be configured to send *telemetry data* to the backend(s) of your choice.
+
+IMPORTANT: OpenTelemetry *is not* an observability back-end.
+
+OpenTelemetry is a collection of tools , APIs, and SDKs. Use it to instrument, generate, collect, and export telemetry data (metrics, logs, and traces) 
+to help you analyze your software's performance and behavior. OpenTelemetry is not an observability back-end like Jaeger or Prometheus.
+
+
+image::Otel-Ref-Arch-2-shadowing.png[800, 800, title="OpenTelemetry Reference Architecture", align="center"]
+
+
+
+This *purpose* of this mule extension is to allow Mule Applications participate in OpenTelemetry-based distributed traces.
+
+== The How on the OTel Mule 4 Agent
+
+=== Installation Guideline
+
+=== Configuration of the Agent
+
+=== Example Scenario
+
+=== Example Output - Dynatrace Backend
