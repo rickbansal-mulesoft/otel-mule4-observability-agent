@@ -11,6 +11,7 @@ Rick Bansal <rick.bansal@mulesoft.com>
 :keywords: Mule, MuleSoft, Observability, OpenTelemetry, OTel, Tracing, Instrumentation, Distributed
 
 // The following pass through will align the images and their titles
+ifndef::env-github[]
 ++++
 <style>
   .imageblock > .title {
@@ -19,6 +20,8 @@ Rick Bansal <rick.bansal@mulesoft.com>
   }
 </style>
 ++++
+endif::[]
+
 ifdef::env-github[]
 :caution-caption: :fire:
 :important-caption: :heavy_exclamation_mark:
