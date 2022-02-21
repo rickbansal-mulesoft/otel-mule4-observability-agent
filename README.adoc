@@ -1,15 +1,14 @@
 = Mule 4 OpenTelemetry (OTel) Agent Extension
 // Document header
 Rick Bansal <rick.bansal@mulesoft.com>
-:revnumber: 1.0.1-SNAPSHOT
+:revnumber: 1.0.92-SNAPSHOT
 :revdate: Feb. 19, 2022
 :revremark: Initial Draft
 :doctype: book
 :icons: font
 :toc: left
 :imagesdir: ./Images
-:keywords: Mule, MuleSoft, Observability, OpenTelemetry, OTel, Tracing, Instrumentation
-//[.center.text-center]
+:keywords: Mule, MuleSoft, Observability, OpenTelemetry, OTel, Tracing, Instrumentation, Distributed
 
 // The following pass through will align the images and their titles
 ++++
@@ -20,7 +19,6 @@ Rick Bansal <rick.bansal@mulesoft.com>
   }
 </style>
 ++++
-ifndef::env-github[:icons: font]
 ifdef::env-github[]
 :caution-caption: :fire:
 :important-caption: :heavy_exclamation_mark:
@@ -34,9 +32,9 @@ endif::[]
 // Document body
 == Introduction
 
-The Mule 4 OTel Agent is a custom MuleSoft *_extension_* that allows MuleSoft applications to be instrumented such 
-that the application provides tracing *_telemetry data_* to any OpenTelemetry compliant collector and be a
-participant in a larger *_distributed trace_*.
+The Mule 4 OTel Agent is a custom MuleSoft *extension* for instrumenting MuleSoft applications to export tracing 
+specific *telemetry* data to any OpenTelemetry compliant collector and be an insightful participant in the overall 
+*distributed trace*.
 
 == The Why on the OTel Mule 4 Agent
 
@@ -49,18 +47,19 @@ relates to enterprise software:
 === Composability
 
 What exactly is composability and why does it matter?  Well, as you might imagine, there are plenty of 
-complicated and technical answers to this question - just Google it and you will see.
+complicated and technical answers to this question - just Google it to get a list of the numerous publications
+on the topic.
 
-In really simple terms, *_composibility_* is the concept of building stand alone software _composed_ of 
+However, in really simple terms, *_composibility_* is the concept of building stand alone software *composed* of 
 other stand alone software and it matters because enterprises who adopt composability as a core IT practice 
-can achieve much greater _agility_ on delivering new solutions for the Business in the face of rapid and ever
+can achieve much greater *agility* on delivering new solutions for the Business in the face of rapid and ever
 changing market conditions - does COVID ring a bell?  
 
-NOTE: Gartner defines a *Composable Enterprise* as an organization that can innovate and adapt to changing
+NOTE: Gartner defines a *_Composable Enterprise_* as an organization that can innovate and adapt to changing
 business needs through the assembly and combination of packaged business capabilities. 
 
 Legos are often used has a metaphor for explaining the concept.  Think of building each application in 
-your enterprise as a discrete lego.  Using these discrete legos From these discrete 
+your enterprise as a discrete lego.  Using these discrete legos From these discrete blocks
 
 
 
@@ -68,7 +67,9 @@ image::Lego-blocks.png[600, 600, title="Application Legos", align="center"]
 
 image::Composable-enterprise-app-1.png[600, 600, title="Example of a Composite Application", align="center"]
 
+//image::MuleSoft-Solution-Composability.png[title="API Led for Composability", align="center"]
 
+image::API-Led-1.png[title="API Led to Help Solve for Composability", align="center"]
 
 
 === Observability
@@ -79,11 +80,14 @@ be inferred from knowledge of its external outputs.  As it relates specifically 
 is the _ability to collect data about program execution, internal states of modules, and communication 
 between components_.  This corpus of collected data is also referred to as *_telemetry_*.
 
+image::Pillars-of-Observability.png[600, 600, title="The Pillars of Observability", align="center"]
 
-image::TheInevitable-1.png[]
+
+image::Solving-for-observability.png[500, 500, title="The Pillars of Observability", align="center"]
+
+//image::TheInevitable-1.png[]
 
 
-image::API-Led-1.png[]
 
 
 ////
@@ -121,10 +125,14 @@ to help you analyze your software's performance and behavior. OpenTelemetry is n
 image::Otel-Ref-Arch-2-shadowing.png[800, 800, title="OpenTelemetry Reference Architecture", align="center"]
 
 
+image::Agent-Arch.png[600, 600, title="Mule Agent Architecture", align="center"]
+
 
 This *purpose* of this mule extension is to allow Mule Applications participate in OpenTelemetry-based distributed traces.
 
 == The How on the OTel Mule 4 Agent
+
+
 
 === Installation Guideline
 
