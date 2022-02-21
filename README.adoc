@@ -36,8 +36,8 @@ endif::[]
 == Introduction
 
 The Mule 4 OTel Agent is a custom MuleSoft *extension* for instrumenting MuleSoft applications to export tracing 
-specific *telemetry* data to any OpenTelemetry compliant collector and be an insightful participant in the overall 
-*distributed trace*.
+specific *telemetry* data to any OpenTelemetry compliant collector.  Using the agent now allows Mule applications 
+to be insightful participants in the overall *distributed trace*.
 
 == The Why on the OTel Mule 4 Agent
 
@@ -49,45 +49,99 @@ relates to enterprise software:
 
 === Composability
 
-What exactly is composability and why does it matter?  Well, as you might imagine, there are plenty of 
+.What exactly is composability and why does it matter?  
+Well, as you might imagine, there are plenty of 
 theoretical, complex and technical answers to this question - just Google it to get a list of the numerous publications
-on the topic. Since this is not a technical article on the subject, we'll take a much more modest view of it.
+on the topic. Since this is not a technical article on the subject of composability, we'll take a much more modest view of it.
 
 So, in really simple terms, *_composibility_* is the concept of building stand alone software *composed* of 
-other stand alone software and it matters because enterprises who adopt composability as a core IT practice 
-can achieve much greater *agility* on delivering new and/or enhanced solutions for the Business in the face of 
-rapid and ever changing market conditions - does COVID ring a bell?  Basically, it's a great way for an enterprise to
-protect and *grow* their *revenue*.
+other stand alone software, in a plug-and-play manner (see figure <<Composable-enterprise-app-1>> below) and it matters because 
+enterprises who adopt composability as a core IT practice can achieve much greater *agility* on delivering new and/or enhanced 
+solutions for business in the face of rapid and ever changing market conditions - does COVID ring a bell?  
 
-NOTE: Gartner defines a *_Composable Enterprise_* as an organization that can innovate and adapt to changing
-business needs through the assembly and combination of packaged business capabilities. 
+[#Composable-enterprise-app-1]
+image::Composable-enterprise-app-1.png[600, 600, title="Example of a Composite Application", align="center"]
 
-Legos are often used has a metaphor for explaining the concept.  Think of building each application in 
-your enterprise as a discrete lego.  Using these discrete legos From these discrete blocks
+Basically, the practice of composability is a great way for an enterprise to *protect* and *grow* overall *revenue* in 
+the face of both expected and unexpected change. 
 
+==== Composable Enterprise
+
+https://www.gartner.com/smarterwithgartner/gartner-keynote-the-future-of-business-is-composable[Gartner] 
+defines a *_Composable Enterprise_* as an organization that can innovate and adapt to changing
+business needs through the assembly and combination of packaged business capabilities.
+
+[NOTE] 
+====
+Gartner's definition of composable business operates on four basic principles: 
+
+* More speed through *discovery*.
+* Greater agility through *modularity*.
+* Better leadership through *orchestration*.
+* Resilience through *autonomy*.
+====
+
+Composability must be important because it has its own Gartner definition, right?
+
+.So how long before we have true composable enterprises?  
+From a purist standpoint (i.e., based on the Gartner definition), 
+who knows - maybe never.  However, from a practical perspective the "messy" *composable enterprise is already here*, has been 
+for a while and it's quickly getting more "pure" over time.
+
+For example,
+
+* A typical enterprise supports over *900 applications* and the number is *growing*, not shrinking.
+** Growth is happening because of:
+*** Accelerated implementation of digital transformation strategies with a cloud-first approach.
+*** Rapid adoption of a microservices architecture paradigm.
+
+* Typically, no single enterprise application handles a business transaction.
+** A typical *business transaction traverses over 35 different systems/applications* from start to finish.
+*** These systems/applications are often on a variety of disparate and independent technologies stacks - both legacy and modern.
+*** These systems are often a combination of either on-prem or hosted packaged applications (e..g, SAP ERP, Oracle HCM, ...)
+and SaaS applications (Salesforce, NetSuite, ...)
+
+So as you can see, the composable enterprise already exists and will, rapidly, become more composable over time with the support of
+companies like MuleSoft, products like the Anypoint Platform and methodologies like API-Led Connectivity.
+
+image::API-Led-1.png[title="API Led to Help Solve for Composability", align="center"]
+
+////
+Legos are often used has a metaphor for explaining the concept of composability.  Think of developing/constructing each 
+application in your enterprise as a discrete lego with .  Then, using these discrete legos you can easily build more complex new
+applications or rebuild more complex applicationsFrom these discrete blocks
 
 
 image::Lego-blocks.png[600, 600, title="Application Legos", align="center"]
+////
 
-image::Composable-enterprise-app-1.png[600, 600, title="Example of a Composite Application", align="center"]
 
 //image::MuleSoft-Solution-Composability.png[title="API Led for Composability", align="center"]
 
-image::API-Led-1.png[title="API Led to Help Solve for Composability", align="center"]
+
 
 
 === Observability
 
 [quote]
-Wikipedia defines *_observability_* as a measure of how well internal states of a system can 
-be inferred from knowledge of its external outputs.  As it relates specifically to software, observability 
-is the _ability to collect data about program execution, internal states of modules, and communication 
-between components_.  This corpus of collected data is also referred to as *_telemetry_*.
+Wikipedia defines *_observability_* as a measure of how well internal states of a system can be inferred from knowledge of 
+its external outputs.  As it relates specifically to software, observability is the _ability to collect data about program 
+execution, internal states of modules, and communication between components.  This corpus of collected data is also referred 
+to as *_telemetry_*.
+
+
+.Why is observability important?  
+
+So what does composability and observability have to do with each other?  Well, as enterprise applications become more and more 
+composable, that is, as enterprises move towards composability, the need for observability becomes greater; however, the capacity 
+for it becomes harder.
 
 image::Pillars-of-Observability.png[600, 600, title="The 3 Pillars of Observability", align="center"]
 
 
 image::Solving-for-observability.png[800, 800, title="Observability = Anypoint Monitoring + Otel Mule 4 Agent", align="center"]
+
+
 
 //image::TheInevitable-1.png[]
 
@@ -121,6 +175,12 @@ of telemetry data such as traces, metrics, and logs. The project provides a *ven
 can be configured to send *telemetry data* to the backend(s) of your choice.
 
 IMPORTANT: OpenTelemetry *is not* an observability back-end.
+
+The OpenTelemetry open-source project is spearheaded by the Cloud
+Native Computing Foundation (CNCF), with the aim of making software
+more observable and to establish telemetry as a built-in feature of cloudnative software. OpenTelemetry focuses on improving the collection of
+observability data, specifically metrics and distributed traces for some of
+the emerging and increasingly adopted cloud frameworks.
 
 OpenTelemetry is a collection of tools , APIs, and SDKs. Use it to instrument, generate, collect, and export telemetry data (metrics, logs, and traces) 
 to help you analyze your software's performance and behavior. OpenTelemetry is not an observability back-end like Jaeger or Prometheus.
