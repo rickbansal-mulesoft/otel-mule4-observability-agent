@@ -47,13 +47,14 @@ relates to enterprise software:
 === Composability
 
 What exactly is composability and why does it matter?  Well, as you might imagine, there are plenty of 
-complicated and technical answers to this question - just Google it to get a list of the numerous publications
-on the topic.
+theoretical, complex and technical answers to this question - just Google it to get a list of the numerous publications
+on the topic. Since this is not a technical article on the subject, we'll take a much more modest view of it.
 
-However, in really simple terms, *_composibility_* is the concept of building stand alone software *composed* of 
+So, in really simple terms, *_composibility_* is the concept of building stand alone software *composed* of 
 other stand alone software and it matters because enterprises who adopt composability as a core IT practice 
-can achieve much greater *agility* on delivering new solutions for the Business in the face of rapid and ever
-changing market conditions - does COVID ring a bell?  
+can achieve much greater *agility* on delivering new and/or enhanced solutions for the Business in the face of 
+rapid and ever changing market conditions - does COVID ring a bell?  Basically, it's a great way for an enterprise to
+protect and *grow* their *revenue*.
 
 NOTE: Gartner defines a *_Composable Enterprise_* as an organization that can innovate and adapt to changing
 business needs through the assembly and combination of packaged business capabilities. 
@@ -80,13 +81,12 @@ be inferred from knowledge of its external outputs.  As it relates specifically 
 is the _ability to collect data about program execution, internal states of modules, and communication 
 between components_.  This corpus of collected data is also referred to as *_telemetry_*.
 
-image::Pillars-of-Observability.png[600, 600, title="The Pillars of Observability", align="center"]
+image::Pillars-of-Observability.png[600, 600, title="The 3 Pillars of Observability", align="center"]
 
 
-image::Solving-for-observability.png[500, 500, title="The Pillars of Observability", align="center"]
+image::Solving-for-observability.png[800, 800, title="Observability = Anypoint Monitoring + Otel Mule 4 Agent", align="center"]
 
 //image::TheInevitable-1.png[]
-
 
 
 
@@ -109,6 +109,7 @@ endif::[]
 === OpenTelemetry
 
 //From https://opentelemetry.io[OpenTelemetry.io]
+
 
 
 [quote, OpenTelemetry, 'https://opentelemetry.io']
