@@ -49,7 +49,8 @@ relates to enterprise software:
 
 === Composability
 
-.What exactly is composability and why does it matter?  
+.What exactly is composability and why does it matter?
+
 Well, as you might imagine, there are plenty of 
 theoretical, complex and technical answers to this question - just Google it to get a list of the numerous publications
 on the topic. Since this is not a technical article on the subject of composability, we'll take a much more modest view of it.
@@ -63,7 +64,7 @@ solutions for business in the face of rapid and ever changing market conditions 
 image::Composable-enterprise-app-1.png[600, 600, title="Example of a Composite Application", align="center"]
 
 Basically, the practice of composability is a great way for an enterprise to *protect* and *grow* overall *revenue* in 
-the face of both expected and unexpected change. 
+the face of both expected and unexpected change. Do you know know when or what the next crisis will be?  Exactly...
 
 ==== Composable Enterprise
 
@@ -83,26 +84,27 @@ Gartner's definition of composable business operates on four basic principles:
 
 Composability must be important because it has its own Gartner definition, right?
 
-.So how long before we have true composable enterprises?  
+===== So how long before we have true composable enterprises? 
+ 
 From a purist standpoint (i.e., based on the Gartner definition), 
-who knows - maybe never.  However, from a practical perspective the "messy" *composable enterprise is already here*, has been 
+who knows - maybe never.  However, from a practical perspective the "messy" composable enterprise is *already here*, has been 
 for a while and it's quickly getting more "pure" over time.
 
 For example,
 
 * A typical enterprise supports over *900 applications* and the number is *growing*, not shrinking.
 ** Growth is happening because of:
-*** Accelerated implementation of digital transformation strategies with a cloud-first approach.
-*** Rapid adoption of a microservices architecture paradigm.
+*** Accelerated implementation of *digital transformation strategies* with a cloud-first approach.
+*** Rapid adoption of a *microservices* architecture paradigm.
 
 * Typically, no single enterprise application handles a business transaction.
 ** A typical *business transaction traverses over 35 different systems/applications* from start to finish.
-*** These systems/applications are often on a variety of disparate and independent technologies stacks - both legacy and modern.
-*** These systems are often a combination of either on-prem or hosted packaged applications (e..g, SAP ERP, Oracle HCM, ...)
-and SaaS applications (Salesforce, NetSuite, ...)
+*** These systems/applications are often on a variety of *disparate* and independent *technologies* stacks - both legacy and modern.
+*** These systems are often a combination of on-prem or hosted *packaged* applications (e.g., SAP ERP, Oracle HCM, Manhattan SCM, 
+etc.), *custom* coded applications and *SaaS* applications (e.g., Salesforce, NetSuite, Workday, etc.)
 
-So as you can see, the composable enterprise already exists and will, rapidly, become more composable over time with the support of
-companies like MuleSoft, products like the Anypoint Platform and methodologies like API-Led Connectivity.
+So as you can see, the composable enterprise already exists and will, rapidly, become more composable over time, especially,
+with the support of companies like MuleSoft, products like the Anypoint Platform and methodologies like API-Led Connectivity.
 
 image::API-Led-1.png[title="API Led to Help Solve for Composability", align="center"]
 
@@ -124,19 +126,57 @@ image::Lego-blocks.png[600, 600, title="Application Legos", align="center"]
 === Observability
 
 [quote]
-Wikipedia defines *_observability_* as a measure of how well internal states of a system can be inferred from knowledge of 
-its external outputs.  As it relates specifically to software, observability is the _ability to collect data about program 
+Wikipedia defines *observability* as a measure of how well internal states of a system can be inferred from knowledge of 
+its external outputs.  As it relates specifically to software, observability is the ability to collect data about program 
 execution, internal states of modules, and communication between components.  This corpus of collected data is also referred 
-to as *_telemetry_*.
+to as *telemetry*.
+
+Another way of looking at observability is having the capacity to introspect, in real-time, complex multi-tiered architectures to 
+better understand:
 
 
-.Why is observability important?  
+* Where is it broken
+* Why did it break
+* Where is it slow
 
-So what does composability and observability have to do with each other?  Well, as enterprise applications become more and more 
+
+How to fix what's broken and speedup what's slow
+
+==== Observability Trinity
+
+There are 3 core pillars of observability.
+
+image::Pillars-of-Observability.png[600, 600, title="The 3 Pillars of Observability", align="center"]
+
+===== Metrics
+
+===== Logs
+
+===== Traces/Distributed Traces
+
+
+==== Why is observability important?  
+
+The notion of observability is very important to IT organizations because when a business transaction fails or performs 
+poorly within their application network, they need the ability to quickly triage and remediate the issue before there is any
+significant impact on revenue.  
+
+Many IT organizations have and continue to rely upon commercial Application Performance Monitoring (APM) tools (e.g., AppDynamics, 
+Dynatrace, New Relic, CA APM, ...) to help them in this regard.  While useful, these commercial tools have l
+
+ when struggle to get meaningful and actionable insight on a 
+business transaction which fails or performs poorly within their application network.
+Some organizations use commercial APM tools to help with this effort; however, APM tools are vendor specific and often leave 
+'holes' in the overall observability of the transaction
+They are basically trying to find a needle in a stack of needles.
+
+
+==== So what does composability and observability have to do with each other?  
+
+Well, as enterprise applications become more and more 
 composable, that is, as enterprises move towards composability, the need for observability becomes greater; however, the capacity 
 for it becomes harder.
 
-image::Pillars-of-Observability.png[600, 600, title="The 3 Pillars of Observability", align="center"]
 
 
 image::Solving-for-observability.png[800, 800, title="Observability = Anypoint Monitoring + Otel Mule 4 Agent", align="center"]
