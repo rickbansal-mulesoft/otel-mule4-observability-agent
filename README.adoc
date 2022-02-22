@@ -171,7 +171,16 @@ such as the following:
 image::Macro-Micro-Metrics.png[title="Micro-level and Macro-level Metrics", align="center"]
 
 ===== Logs
-A *log* is a time-stamped text record, either structured (recommended) or unstructured, with metadata. 
+A *log* is an immutable, time-stamped text or binary record, either structured (recommended) or unstructured, potentially including 
+metadata. The log record is generated application code in response to an event (e.g., an error condition) which has occurred
+during execution.
+
+.Example of a structured log record
+ [/opt/mule/mule-CURRENT/logs/mule-nto-order-api-v1.log]: [02-22 08:02:50.412] ERROR OnErrorContinueHandler [ [MuleRuntime].uber.18543: [client-id-enforcement-439118-order-api-spec-main].439118-client-id-enforcement.CPU_LITE @5b1b413e] [event: d46fe7b0-93b5-11ec-b9b6-02d407c48f42]: 
+
+
+.Example of a unstructured log record
+ 'hello world'
 
 ===== Traces
 A *single trace* shows the activity for an individual transaction or request as it flows through an application. Traces are a 
@@ -203,7 +212,7 @@ Well, as enterprise applications become more and more
 composable, that is, as enterprises move towards composability, the need for observability becomes greater; however, the capacity 
 for it becomes harder.
 
-
+=== Solving for Observability
 
 image::Solving-for-observability.png[800, 800, title="Observability = Anypoint Monitoring + Otel Mule 4 Agent", align="center"]
 
@@ -226,6 +235,7 @@ endif::[]
 //:toc: macro
 
 //toc::[]
+
 
 == The What on the OTel Mule 4 Agent
 
