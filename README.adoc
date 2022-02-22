@@ -55,7 +55,7 @@ Well, as you might imagine, there are plenty of
 theoretical, complex and technical answers to this question - just Google it to get a list of the numerous publications
 on the topic. Since this is not a technical article on the subject of composability, we'll take a much more modest view of it.
 
-So, in really simple terms, *_composibility_* is the concept of building stand alone software *composed* of 
+So, in really simple terms, *_composability_* is the concept of building stand alone software *composed* of 
 other stand alone software, in a plug-and-play manner (see figure <<Composable-enterprise-app-1>> below) and it matters because 
 enterprises who adopt composability as a core IT practice can achieve much greater *agility* on delivering new and/or enhanced 
 solutions for business in the face of rapid and ever changing market conditions - does COVID ring a bell?  
@@ -114,12 +114,12 @@ application in your enterprise as a discrete lego with .  Then, using these disc
 applications or rebuild more complex applicationsFrom these discrete blocks
 
 
+
 image::Lego-blocks.png[600, 600, title="Application Legos", align="center"]
 ////
 
 
 //image::MuleSoft-Solution-Composability.png[title="API Led for Composability", align="center"]
-
 
 
 
@@ -132,13 +132,20 @@ execution, internal states of modules, and communication between components.  Th
 to as *telemetry*.
 
 Another way of looking at observability is having the capacity to introspect, in real-time, complex multi-tiered architectures to 
-better answer the following:
+better answer the following when things so sideways:
 
 * Where is it broken?
 * Why did it break?
 * Where is it slow?
 
 Then, using those insights to fix what's broken and speedup what's slow.
+
+[NOTE]
+====
+However, I think a *more important* consideration for observability is an answer to following:
+
+* How can I *proactively* protect against failure and poor performance?
+====
 
 ==== Observability Trinity
 
@@ -157,30 +164,38 @@ such as the following:
 | *Micro-level metrics*           | *Macro-level metrics*
 | Memory utilization per service  | Average response time per service
 | CPU utilization per service     | Throughput rate per service
-| Garbage collection time         | Failure rate per service
+| Thread count                    | Failure rate per service
 | ...                             | ...
 |===
 
+image::Macro-Micro-Metrics.png[title="Micro-level and Macro-level Metrics", align="center"]
+
 ===== Logs
+A *log* is a time-stamped text record, either structured (recommended) or unstructured, with metadata. 
 
-===== Traces/Distributed Traces
+===== Traces
+A *single trace* shows the activity for an individual transaction or request as it flows through an application. Traces are a 
+critical part of observability, as they provide context for other telemetry. For example, traces can help define which metrics 
+would be most valuable in a given situation, or which logs are relevant to a particular issue.
 
+*Distributed tracing* is a method of observing requests as they propagate through distributed cloud environments. Distributed 
+tracing follows an interaction by tagging it with a unique identifier. This identifier stays with the transaction as it interacts 
+with microservices, containers, and infrastructure. The unique identifier offers real-time visibility into user experience, from 
+the top of the stack to the application layer and the infrastructure beneath.
+
+image::Distributed-Trace-Example.png[title="Example of a Distributed Trace", align="center"]
 
 ==== Why is observability important?  
 
 The notion of observability is very important to IT organizations because when a business transaction fails or performs 
-poorly within their application network, they need the ability to quickly triage and remediate the issue before there is any
+poorly within their application network, they need the ability to quickly triage and remediate the root cause before there is any
 significant impact on revenue.  
 
 Many IT organizations have and continue to rely upon commercial Application Performance Monitoring (APM) tools (e.g., AppDynamics, 
-Dynatrace, New Relic, CA APM, ...) to help them in this regard.  While useful, these commercial tools have l
-
- when struggle to get meaningful and actionable insight on a 
-business transaction which fails or performs poorly within their application network.
-Some organizations use commercial APM tools to help with this effort; however, APM tools are vendor specific and often leave 
-'holes' in the overall observability of the transaction
-They are basically trying to find a needle in a stack of needles.
-
+Dynatrace, New Relic, CA APM, ...) to help them in this regard.  While useful, these commercial tools have struggled in the past
+to provide complete visibility into the overall distributed trace as they deploy vendor specific agents to collect their telemetry.
+I say "struggled in the past" because many of the APM vendors are now starting to embrace and support open source standards like 
+OpenTelemetry to help them fill in the "holes".
 
 ==== So what does composability and observability have to do with each other?  
 
@@ -216,29 +231,29 @@ endif::[]
 
 === OpenTelemetry
 
-//From https://opentelemetry.io[OpenTelemetry.io]
-
-
-
 [quote, OpenTelemetry, 'https://opentelemetry.io']
-OpenTelemetry *is a* set of APIs, SDKs, tooling and integrations that are designed for the creation and management 
-of telemetry data such as traces, metrics, and logs. The project provides a *vendor-agnostic* implementation that 
-can be configured to send *telemetry data* to the backend(s) of your choice.
+OpenTelemetry *is a set* of APIs, SDKs, tooling and integrations that are designed for the creation and management 
+of *telemetry data* such as traces, metrics, and logs. The project provides a *vendor-agnostic* implementation that 
+can be configured to send telemetry data to the backend(s) of your choice.
 
 IMPORTANT: OpenTelemetry *is not* an observability back-end.
 
-The OpenTelemetry open-source project is spearheaded by the Cloud
-Native Computing Foundation (CNCF), with the aim of making software
-more observable and to establish telemetry as a built-in feature of cloudnative software. OpenTelemetry focuses on improving the collection of
-observability data, specifically metrics and distributed traces for some of
-the emerging and increasingly adopted cloud frameworks.
+The OpenTelemetry open-source project was established in 2019 and is spearheaded by the CloudNative Computing Foundation (CNCF), 
+with the aim of making software more observable and to establish telemetry as a built-in feature of cloud-native software.
 
-OpenTelemetry is a collection of tools , APIs, and SDKs. Use it to instrument, generate, collect, and export telemetry data (metrics, logs, and traces) 
-to help you analyze your software's performance and behavior. OpenTelemetry is not an observability back-end like Jaeger or Prometheus.
+[NOTE]
+====
+In 2019, the https://opencensus.io/[OpenCensus] and https://opentracing.io/[OpenTracing] projects merged into OpenTelemetry. 
+Currently, OpenTelemetry is at the "*incubating*" https://github.com/cncf/toc/blob/main/process/graduation_criteria.adoc[maturity 
+level] (up from "sandbox" level a year back) and is one of the most popular projects across the CNCF landscape.
+====
 
+==== OpenTelemetry Reference Architecture
 
 image::Otel-Ref-Arch-2-shadowing.png[800, 800, title="OpenTelemetry Reference Architecture", align="center"]
 
+
+==== MuleSoft OpenTelemetry Agent Architecture
 
 image::Agent-Arch.png[600, 600, title="Mule Agent Architecture", align="center"]
 
@@ -262,6 +277,8 @@ This *purpose* of this mule extension is to allow Mule Applications participate 
 * https://www.w3.org/TR/trace-context/#dfn-distributed-traces[w3.org: "Distributed Traces"]
 * https://opentelemetry.io/[opentelemetry.io]
 * https://lightstep.com/observability/[Lightstep: "Observability: A complete overview for 2021"]
-* https://www.dynatrace.com/resources/ebooks/observability-and-beyond-for-the-enterprise-cloud/[Dynatrace e-book: "Advanced Observability"]
+* https://www.dynatrace.com/resources/ebooks/observability-and-beyond-for-the-enterprise-cloud/[Dynatrace e-book:
+"Observability and Beyond for the Enterprise Cloud"]
 * https://www.splunk.com/en_us/form/beginners-guide-to-observability.html[Splunk e-book: "A Beginner's Guide to Observability"]
+* https://docs.mulesoft.com/monitoring/[MuleSoft: "Anypoint Monitoring Overview"]
 
