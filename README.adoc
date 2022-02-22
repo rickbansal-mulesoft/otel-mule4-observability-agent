@@ -66,7 +66,7 @@ image::Composable-enterprise-app-1.png[600, 600, title="Example of a Composite A
 Basically, the practice of composability is a great way for an enterprise to *protect* and *grow* overall *revenue* in 
 the face of both expected and unexpected change. Do you know know when or what the next crisis will be?  Exactly...
 
-==== Composable Enterprise
+=== Composable Enterprise
 
 https://www.gartner.com/smarterwithgartner/gartner-keynote-the-future-of-business-is-composable[Gartner] 
 defines a *_Composable Enterprise_* as an organization that can innovate and adapt to changing
@@ -84,7 +84,7 @@ Gartner's definition of composable business operates on four basic principles:
 
 Composability must be important because it has its own Gartner definition, right?
 
-===== So how long before we have true composable enterprises? 
+==== So how long before we have true composable enterprises? 
  
 From a purist standpoint (i.e., based on the Gartner definition), 
 who knows - maybe never.  However, from a practical perspective the "messy" composable enterprise is *already here*, has been 
@@ -132,23 +132,34 @@ execution, internal states of modules, and communication between components.  Th
 to as *telemetry*.
 
 Another way of looking at observability is having the capacity to introspect, in real-time, complex multi-tiered architectures to 
-better understand:
+better answer the following:
 
+* Where is it broken?
+* Why did it break?
+* Where is it slow?
 
-* Where is it broken
-* Why did it break
-* Where is it slow
-
-
-How to fix what's broken and speedup what's slow
+Then, using those insights to fix what's broken and speedup what's slow.
 
 ==== Observability Trinity
 
-There are 3 core pillars of observability.
+The obtainment of true observability relies upon 3 core pillars.
 
 image::Pillars-of-Observability.png[600, 600, title="The 3 Pillars of Observability", align="center"]
 
 ===== Metrics
+A *_metric_* is a value that expresses some information about a system. Metrics are 
+usually represented as counts or measures, and are often aggregated or calculated over a period of time. Additionally, metrics 
+are often structured as _<name, value>_ pairs that provide useful behavioral details at both the micro-level and the macro-level 
+such as the following:
+
+.Example Metrics
+|===
+| *Micro-level metrics*           | *Macro-level metrics*
+| Memory utilization per service  | Average response time per service
+| CPU utilization per service     | Throughput rate per service
+| Garbage collection time         | Failure rate per service
+| ...                             | ...
+|===
 
 ===== Logs
 
@@ -245,3 +256,12 @@ This *purpose* of this mule extension is to allow Mule Applications participate 
 === Example Scenario
 
 === Example Output - Dynatrace Backend
+
+[bibliography]
+== References
+* https://www.w3.org/TR/trace-context/#dfn-distributed-traces[w3.org: "Distributed Traces"]
+* https://opentelemetry.io/[opentelemetry.io]
+* https://lightstep.com/observability/[Lightstep: "Observability: A complete overview for 2021"]
+* https://www.dynatrace.com/resources/ebooks/observability-and-beyond-for-the-enterprise-cloud/[Dynatrace e-book: "Advanced Observability"]
+* https://www.splunk.com/en_us/form/beginners-guide-to-observability.html[Splunk e-book: "A Beginner's Guide to Observability"]
+
