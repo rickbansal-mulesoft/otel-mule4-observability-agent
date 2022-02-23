@@ -344,7 +344,7 @@ The header has *4 constituent parts*, where each part is separated by a `-`:
 
 image::traceparent-header.png[700, 700, title="`traceparent` HTTP Header ", align="center"]
 
-=== MuleSoft OpenTelemetry Agent Architecture
+=== MuleSoft OpenTelemetry (OTel) Agent
 
 As mentioned earlier, the primary purpose of the Mule 4 OTel Agent extension is to facilitate the participation of Mule applications in 
 distributed tracing activities. To accomplish its goal, the extension relies upon three primary frameworks:
@@ -353,9 +353,8 @@ distributed tracing activities. To accomplish its goal, the extension relies upo
 . MuleSoft Server Notifications
 . OpenTelemetry
 
-image::Agent-Arch.png[700, 700, title="Mule Agent Architecture", align="center"]
-
 ==== MuleSoft Java SDK
+
 In Mule 4, extending the product is done by developing custom extensions via a MuleSoft furnished Java SDK. The comprehensive framework
 allows external developers to build add-on functionality in the same manner as Mule engineers build Mule supplied components and connectors.
 While we won't get into the details of the framework or how to develop a custom extension, the graphic below depicts the basic structure of
@@ -364,6 +363,7 @@ an extension based on the https://docs.mulesoft.com/mule-sdk/1.1/module-structur
 image::mule-extension-model.png[800, 800, title="The Extension Module Model Structure", align="center"] 
 
 ==== MuleSoft Server Notifications
+
 Mule provides an internal https://docs.mulesoft.com/mule-runtime/4.4/mule-server-notifications[notification mechanism] 
 that can be used to access changes which occur on the Mule Server, such as adding a flow component, the start or end of a message processor, a
 failing authorization request and many other https://docs.mulesoft.com/mule-runtime/4.4/mule-server-notifications#notification-interfaces[changes].
@@ -398,7 +398,18 @@ The agent takes advantage of the notification framework and in particular relies
 ** Start and End of a message processor
 
 ==== OpenTelemetry
-The only component Mule uses from the OpenTelemetry framework is the OTel 
+
+The Mule 4 OTel Agent leverages the https://opentelemetry.io/docs/instrumentation/java/[OpenTelemetry Java] implementation to generate, batch
+and export trace data to any OpenTelemetry compliant Collector.  
+Specifically, the agent builds on top of the https://github.com/open-telemetry/opentelemetry-java[`opentelemetry-java`] package for 
+https://opentelemetry.io/docs/instrumentation/java/manual/[manual instrumentation] of Mule applications.  By taking full advantage of the OTel
+Java implementation, the Mule extension becomes completely stand-alone and does not require any additional OpenTelemetry components to be a
+participant in a distributed trace.
+
+
+==== MuleSoft OpenTelemetry Agent Architecture
+
+image::Agent-Arch.png[700, 700, title="Mule Agent Architecture", align="center"]
 
 == The How on the Mule 4 OTel Agent
 
