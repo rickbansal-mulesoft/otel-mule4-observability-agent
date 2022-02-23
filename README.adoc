@@ -236,7 +236,8 @@ image::Solving-for-observability.png[800, 800, title="Observability = Anypoint M
 
 Now that we done a comprehensive walkthrough on the motivation for developing the Mule 4 OTel Agent custom extension, let's dig 
 a bit deeper into some of the internals of extension.  We'll start off by diving into the core technology the extension relies 
-upon to accomplish its tasks - _OpenTelemetry_.
+upon to accomplish its tasks - _OpenTelemetry_ then discuss the WC3 Trace Context specification and finish off with details on the
+extension's architecture.
 
 === OpenTelemetry (OTel)
 
@@ -297,8 +298,53 @@ and sending data to one or more back-ends. It also supports processing and filte
 You can find more details on the API and SDK https://opentelemetry.io/docs/reference/specification/#table-of-contents[here] 
 and on the Collector https://opentelemetry.io/docs/collector/[here].
 
+=== WC3 Trace Context
 
-==== MuleSoft OpenTelemetry Agent Architecture
+==== Trace Context
+The WC3 Trace Context https://w3c.github.io/trace-context/[specification] defines a universally agreed-upon format for the exchange of 
+trace context propagation data - referred to as *_trace context_*. Trace context solves the problems typically associated with distributed
+tracing by:
+
+* Providing a unique identifier for individual traces and requests, allowing trace data of multiple providers to be linked together.
+
+* Providing an agreed-upon mechanism to forward vendor-specific trace data and avoid broken traces when multiple tracing tools participate 
+in a single transaction.
+
+* Providing an industry standard that intermediaries, platforms, and hardware providers can support.
+
+==== Trace Context Headers
+Trace context is split into two individual propagation fields supporting interoperability and vendor-specific extensibility:
+
+.`traceparent`
+Describes the position of the incoming request in its trace graph in a portable, fixed-length format. Every tracing tool *MUST* properly 
+set traceparent even when it only relies on vendor-specific information in `tracestate`
+
+.`tracestate`
+Extends `traceparent` with vendor-specific data represented by a set of name/value pairs. Storing information in `tracestate` is *optional*.
+
+*Tracing tools* can provide two levels of compliant behavior interacting with trace context:
+
+* At a minimum they *MUST* propagate the `traceparent` and `tracestate` headers and guarantee traces are not broken. This behavior is also 
+referred to as _forwarding a trace_.
+
+* In addition they *_MAY_* also choose to participate in a trace by modifying the `traceparent` header and relevant parts of the `tracestate` 
+header containing their proprietary information. This is also referred to as _participating in a trace_.
+
+==== `traceparent` HTTP Header Details
+
+The `traceparent` header represents the incoming request in a tracing system in a common format, understood by all vendors. 
+
+The header has *4 constituent parts*, where each part is separated by a `-`:
+
+* `version` - header version; currently the version number is `00`
+* `trace-id` - is the *unique 16-byte ID* of a distributed trace through a system. 
+* `parent-id` - is the 8-byte ID of this request as known by the caller (sometimes known as the `span-id`, where a span is the execution 
+                of a client request).
+* `trace-flags` - tracing control flags; current version (`00`) only supports the `sampled` flag (`01`)
+
+image::traceparent-header.png[700, 700, title="`traceparent` HTTP Header ", align="center"]
+
+=== MuleSoft OpenTelemetry Agent Architecture
 
 As mentioned earlier, the primary purpose of the Mule 4 OTel Agent extension is to facilitate the participation of Mule applications in 
 distributed tracing activities. To accomplish its goal, the extension relies upon three primary frameworks:
@@ -309,7 +355,7 @@ distributed tracing activities. To accomplish its goal, the extension relies upo
 
 image::Agent-Arch.png[700, 700, title="Mule Agent Architecture", align="center"]
 
-===== MuleSoft Java SDK
+==== MuleSoft Java SDK
 In Mule 4, extending the product is done by developing custom extensions via a MuleSoft furnished Java SDK. The comprehensive framework
 allows external developers to build add-on functionality in the same manner as Mule engineers build Mule supplied components and connectors.
 While we won't get into the details of the framework or how to develop a custom extension, the graphic below depicts the basic structure of
@@ -317,7 +363,7 @@ an extension based on the https://docs.mulesoft.com/mule-sdk/1.1/module-structur
 
 image::mule-extension-model.png[800, 800, title="The Extension Module Model Structure", align="center"] 
 
-===== MuleSoft Server Notifications
+==== MuleSoft Server Notifications
 Mule provides an internal https://docs.mulesoft.com/mule-runtime/4.4/mule-server-notifications[notification mechanism] 
 that can be used to access changes which occur on the Mule Server, such as adding a flow component, the start or end of a message processor, a
 failing authorization request and many other https://docs.mulesoft.com/mule-runtime/4.4/mule-server-notifications#notification-interfaces[changes].
@@ -343,15 +389,16 @@ notificationListenerRegistry.registerListener(new MulePipelineNotificationListen
 </notifications>
 ----
 
-
-		
-Subscriptions can beYou can set up your agents or flow components to react to these 
-notifications.
-
 The agent takes advantage of the notification framework and in particular relies upon these two notification interfaces:
 
-===== OpenTelemetry
+* `PipelineMessageNotificationListener`
+** Start and End of a flow 
 
+* `MessageProcessorNotificationListener`
+** Start and End of a message processor
+
+==== OpenTelemetry
+The only component Mule uses from the OpenTelemetry framework is the OTel 
 
 == The How on the Mule 4 OTel Agent
 
