@@ -39,7 +39,7 @@ The Mule 4 OTel Agent is a custom MuleSoft *extension* for instrumenting MuleSof
 specific *telemetry* data to any OpenTelemetry compliant collector.  Using the agent now allows Mule applications 
 to be insightful participants in the overall *distributed trace*.
 
-== The Why on the OTel Mule 4 Agent
+== The Why on the Mule 4 OTel Agent
 
 The motivation behind developing this extension is predicated on *two primary concerns* as it 
 relates to enterprise software:
@@ -127,18 +127,17 @@ image::Lego-blocks.png[600, 600, title="Application Legos", align="center"]
 
 [quote]
 Wikipedia defines *observability* as a measure of how well internal states of a system can be inferred from knowledge of 
-its external outputs.  As it relates specifically to software, observability is the ability to collect data about program 
-execution, internal states of modules, and communication between components.  This corpus of collected data is also referred 
+its external outputs.  As it relates specifically to software, observability is the ability to collect *data about program 
+execution, internal states of modules, and communication between components*.  This corpus of collected data is also referred 
 to as *telemetry*.
 
 Another way of looking at observability is having the capacity to introspect, in real-time, complex multi-tiered architectures to 
 better answer the following when things so sideways:
 
-* Where is it broken?
-* Why did it break?
-* Where is it slow?
+* Where and why is it broken?
+* Where and why is it slow?
 
-Then, using those insights to fix what's broken and speedup what's slow.
+Then, using the gathered observability insights to quickly fix what's broken and speedup what's slow.
 
 [NOTE]
 ====
@@ -208,48 +207,39 @@ image::Distributed-Trace-Example.png[title="Example of a Distributed Trace", ali
 ==== Why is observability important?  
 
 The notion of observability is very important to IT organizations because when a business transaction fails or performs 
-poorly within their application network, they need the ability to quickly triage and remediate the root cause before there is any
-significant impact on revenue.  
+poorly within their application network, the team needs the ability to quickly *triage* and *remediate* the root cause 
+before there is any significant impact on revenue.  
 
 Many IT organizations have and continue to rely upon commercial Application Performance Monitoring (APM) tools (e.g., AppDynamics, 
 Dynatrace, New Relic, CA APM, ...) to help them in this regard.  While useful, these commercial tools have struggled in the past
-to provide complete visibility into the overall distributed trace as they deploy vendor specific agents to collect their telemetry.
-I say "struggled in the past" because many of the APM vendors are now starting to embrace and support open source projects like 
-https://opentelemetry.io/docs/reference/specification/overview/[OpenTelemetry] and standards such as 
-https://www.w3.org/TR/trace-context/[W3C Trace Context] to help them fill in the "holes".
+to provide complete visibility into the overall distributed trace as they deploy vendor specific agents to collect and forward 
+their telemetry.
 
-==== So what does composability and observability have to do with each other?  
+I state "_struggled in the past_" because many APM vendors are now starting to embrace and support open source projects like 
+https://opentelemetry.io/docs/reference/specification/overview/[OpenTelemetry] for vendor-agnostic instrumentation agent 
+implementations and standards such as https://www.w3.org/TR/trace-context/[W3C Trace Context] for context propagation 
+to help them fill in the "holes".
 
-Well, as enterprise applications become more and more 
-composable, that is, as enterprises move towards composability, the need for observability becomes greater; however, the capacity 
-for it becomes harder.
+==== So what do composability and observability have to do with each other?  
+
+Hopefully, the answer is obvious but as enterprise applications become more and more composable, that is, as enterprises move 
+towards embracing composability as an architectural pattern, the need for observability becomes greater; however, the capacity 
+for implementing observability becomes harder unless there is comprehensive observability strategy and solution in place.
 
 === Solving for Observability
+
+MuleSoft has traditionally been a very strong player in two aspects of the Observability Trinity - Metrics and Logs.  Anypoint 
+Monitoring provides considerable support and functionality for these two observability data sources.  However, there has been a gap
+in the support for tracing (single traces and distributed traces).  This limitation within the current offering is the inspiration
+behind the development of the custom extension. 
+
+Together, *Anypoint Monitoring and Mule 4 Otel Agent* offer a more comprehensive and robust observability solution and should be 
+part of an enterprise's overall observability solution.
 
 image::Solving-for-observability.png[800, 800, title="Observability = Anypoint Monitoring + Otel Mule 4 Agent", align="center"]
 
 
-
-//image::TheInevitable-1.png[]
-
-
-
-////
-ifndef::env-github[:icons: font]
-ifdef::env-github[]
-:caution-caption: :fire:
-:important-caption: :exclamation:
-:note-caption: :paperclip:aQZ`
-:tip-caption: :bulb:
-:warning-caption: :warning:
-endif::[]
-////
-//:toc: macro
-
-//toc::[]
-
-
-== The What on the OTel Mule 4 Agent
+== The What on the Mule 4 OTel Agent
 
 === OpenTelemetry
 
@@ -260,8 +250,9 @@ can be configured to send telemetry data to the backend(s) of your choice.
 
 IMPORTANT: OpenTelemetry *is not* an observability back-end.
 
-The OpenTelemetry open-source project was established in 2019 and is spearheaded by the CloudNative Computing Foundation (CNCF), 
-with the aim of making software more observable and to establish telemetry as a built-in feature of cloud-native software.
+As noted above, OpenTelemetry is a *framework* which provides a single, vendor-agnostic solution with the purpose 
+of standardizing the generation, emittance, collection, processing and exporting of telemetry data in support of observability.
+OpenTelemetry was established in 2019 as an open source project and is spearheaded by the CloudNative Computing Foundation (CNCF).
 
 [NOTE]
 ====
@@ -272,17 +263,21 @@ level] (up from "sandbox" level a year back) and is one of the most popular proj
 
 ==== OpenTelemetry Reference Architecture
 
+Being a CNCF supported project, it's no surprise the architecture of OpenTelemetry is cloud friendly - which also implies that 
+it is friendly to all distributed environments. While there are various aspects to the overall OpenTelemetry framework within the architecture, each component is 
+implemented as a discrete capability
+
 image::Otel-Ref-Arch-2-shadowing.png[800, 800, title="OpenTelemetry Reference Architecture", align="center"]
 
 
 ==== MuleSoft OpenTelemetry Agent Architecture
 
-image::Agent-Arch.png[600, 600, title="Mule Agent Architecture", align="center"]
+image::Agent-Arch.png[700, 700, title="Mule Agent Architecture", align="center"]
 
 
 This *purpose* of this mule extension is to allow Mule Applications participate in OpenTelemetry-based distributed traces.
 
-== The How on the OTel Mule 4 Agent
+== The How on the Mule 4 OTel Agent
 
 
 
