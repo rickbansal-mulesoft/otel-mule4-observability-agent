@@ -264,10 +264,25 @@ level] (up from "sandbox" level a year back) and is one of the most popular proj
 ==== OpenTelemetry Reference Architecture
 
 Being a CNCF supported project, it's no surprise the architecture of OpenTelemetry is cloud friendly - which also implies that 
-it is friendly to all distributed environments. While there are various aspects to the overall OpenTelemetry framework within the architecture, each component is 
-implemented as a discrete capability
+it is friendly to all distributed environments. While there are various aspects to the overall OpenTelemetry framework (e.g.,
+API, SDK, Signals, Packages, Propagators, Exporters, etc.), the functional architecture is relatively simple with regard to 
+client-side implementation as seen in the diagram below.
 
 image::Otel-Ref-Arch-2-shadowing.png[800, 800, title="OpenTelemetry Reference Architecture", align="center"]
+
+On the client side (e.g., the Mule application), there are really only two OpenTelemetry components which are used and one is optional:
+
+
+OpenTelemetry Library::
+* OpenTelemtry API
+* OpenTelemtry SDK
+
+OpenTelemetry Collector::
+* [Optional>
+
+
+There awithin the architecture, each component is 
+implemented as a discrete capability
 
 
 ==== MuleSoft OpenTelemetry Agent Architecture
