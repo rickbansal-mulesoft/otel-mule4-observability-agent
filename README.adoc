@@ -32,6 +32,9 @@ endif::[]
 
 
 
+// Custom attributes
+:wc3-trace-context-url: https://w3c.github.io/trace-context/
+
 // Document body
 == Introduction
 
@@ -107,16 +110,6 @@ So as you can see, the composable enterprise already exists and will, rapidly, b
 with the support of companies like MuleSoft, products like the Anypoint Platform and methodologies like API-Led Connectivity.
 
 image::API-Led-1.png[title="API Led to Help Solve for Composability", align="center"]
-
-////
-Legos are often used has a metaphor for explaining the concept of composability.  Think of developing/constructing each 
-application in your enterprise as a discrete lego with .  Then, using these discrete legos you can easily build more complex new
-applications or rebuild more complex applicationsFrom these discrete blocks
-
-
-
-image::Lego-blocks.png[600, 600, title="Application Legos", align="center"]
-////
 
 
 //image::MuleSoft-Solution-Composability.png[title="API Led for Composability", align="center"]
@@ -217,7 +210,7 @@ their telemetry.
 
 I state "_struggled in the past_" because many APM vendors are now starting to embrace and support open source projects like 
 https://opentelemetry.io/docs/reference/specification/overview/[OpenTelemetry] for vendor-agnostic instrumentation agent 
-implementations and standards such as https://www.w3.org/TR/trace-context/[W3C Trace Context] for context propagation 
+implementations and standards such as {wc3-trace-context-url}/[W3C Trace Context] for context propagation 
 to help them fill in the "holes".
 
 ==== So what do composability and observability have to do with each other?  
@@ -241,14 +234,19 @@ image::Solving-for-observability.png[800, 800, title="Observability = Anypoint M
 
 == The What on the Mule 4 OTel Agent
 
-=== OpenTelemetry
+Now that we done a comprehensive walkthrough on the motivation for developing the Mule 4 OTel Agent custom extension, let's dig 
+a bit deeper into some of the internals of extension.  We'll start off by diving into the core technology the extension relies 
+upon to accomplish its tasks - _OpenTelemetry_.
+
+=== OpenTelemetry (OTel)
 
 [quote, OpenTelemetry, 'https://opentelemetry.io']
 OpenTelemetry *is a set* of APIs, SDKs, tooling and integrations that are designed for the creation and management 
 of *telemetry data* such as traces, metrics, and logs. The project provides a *vendor-agnostic* implementation that 
 can be configured to send telemetry data to the backend(s) of your choice.
 
-IMPORTANT: OpenTelemetry *is not* an observability back-end.
+IMPORTANT: OpenTelemetry *is not* an observability back-end.  Instead, it supports exporting data to a variety of open-source 
+(e.g., Jaeger, Prometheus, etc.) and commercial back-ends (e.g., Dynatrace, New Relic, Grafana, etc.). 
 
 As noted above, OpenTelemetry is a *framework* which provides a single, vendor-agnostic solution with the purpose 
 of standardizing the generation, emittance, collection, processing and exporting of telemetry data in support of observability.
@@ -266,31 +264,94 @@ level] (up from "sandbox" level a year back) and is one of the most popular proj
 Being a CNCF supported project, it's no surprise the architecture of OpenTelemetry is cloud friendly - which also implies that 
 it is friendly to all distributed environments. While there are various aspects to the overall OpenTelemetry framework (e.g.,
 API, SDK, Signals, Packages, Propagators, Exporters, etc.), the functional architecture is relatively simple with regard to 
-client-side implementation as seen in the diagram below.
+client-side implementations as seen in the diagram below.
 
 image::Otel-Ref-Arch-2-shadowing.png[800, 800, title="OpenTelemetry Reference Architecture", align="center"]
 
-On the client side (e.g., the Mule application), there are really only two OpenTelemetry components which are used and one is optional:
-
+On the client side (e.g., the Mule application), there are really only two OpenTelemetry components which are used and one is 
+optional:
 
 OpenTelemetry Library::
 * OpenTelemtry API
 * OpenTelemtry SDK
 
 OpenTelemetry Collector::
-* [Optional>
+* _[Optional]_
 
+Below is a brief description of these client-side components.  
 
-There awithin the architecture, each component is 
-implemented as a discrete capability
+===== OpenTelemetry API
+The OpenTelemetry API is an *abstracted implementation* of data types and  non-operational methods for generating and 
+correlating tracing, metrics, and logging data.  Functional implementations of the API are language specific.
+
+===== OpenTelemetry SDK
+The OpenTelemetry SDK is a *language specific implementation* (e.g., Java, Ruby, C++, ...) of the abstracted OpenTelemetry API. 
+Here is a https://opentelemetry.io/docs/instrumentation/[list] of the currently supported languages.
+
+===== OpenTelemetry Collector
+The OpenTelemetry Collector is a *vendor-agnostic proxy* that can receive, process, and export telemetry data. It supports 
+receiving telemetry data in multiple formats (e.g., OTLP, Jaeger, Prometheus, as well as many commercial/proprietary tools) 
+and sending data to one or more back-ends. It also supports processing and filtering telemetry data before it gets exported. 
+
+[NOTE]
+You can find more details on the API and SDK https://opentelemetry.io/docs/reference/specification/#table-of-contents[here] 
+and on the Collector https://opentelemetry.io/docs/collector/[here].
 
 
 ==== MuleSoft OpenTelemetry Agent Architecture
 
+As mentioned earlier, the primary purpose of the Mule 4 OTel Agent extension is to facilitate the participation of Mule applications in 
+distributed tracing activities. To accomplish its goal, the extension relies upon three primary frameworks:
+
+. MuleSoft Java SDK
+. MuleSoft Server Notifications
+. OpenTelemetry
+
 image::Agent-Arch.png[700, 700, title="Mule Agent Architecture", align="center"]
 
+===== MuleSoft Java SDK
+In Mule 4, extending the product is done by developing custom extensions via a MuleSoft furnished Java SDK. The comprehensive framework
+allows external developers to build add-on functionality in the same manner as Mule engineers build Mule supplied components and connectors.
+While we won't get into the details of the framework or how to develop a custom extension, the graphic below depicts the basic structure of
+an extension based on the https://docs.mulesoft.com/mule-sdk/1.1/module-structure[Module Model]. 
 
-This *purpose* of this mule extension is to allow Mule Applications participate in OpenTelemetry-based distributed traces.
+image::mule-extension-model.png[800, 800, title="The Extension Module Model Structure", align="center"] 
+
+===== MuleSoft Server Notifications
+Mule provides an internal https://docs.mulesoft.com/mule-runtime/4.4/mule-server-notifications[notification mechanism] 
+that can be used to access changes which occur on the Mule Server, such as adding a flow component, the start or end of a message processor, a
+failing authorization request and many other https://docs.mulesoft.com/mule-runtime/4.4/mule-server-notifications#notification-interfaces[changes].
+These notifications can be subscribed to by "listeners" either programmatically or by using the `<notifications>` element in a Mule
+configuration file.
+
+.Example of subscribing to notifications programmatically
+[source%nowrap, java]
+----
+notificationListenerRegistry.registerListener(new MuleMessageProcessorNotificationListener(otelMuleNotificationHandler));
+
+notificationListenerRegistry.registerListener(new MulePipelineNotificationListener(otelMuleNotificationHandler));
+----
+
+.Example of subscribing to notifications using the `<notification>` element
+[source, xml]
+----
+<notifications>
+	<notification event="PIPELINE-MESSAGE"/>
+	<notification event="MESSAGE-PROCESSOR"/>
+	<notification-listener ref="_muleMessageProcessorNotificationListener"/>
+	<notification-listener ref="_muleFlowNotificationListener"/>
+</notifications>
+----
+
+
+		
+Subscriptions can beYou can set up your agents or flow components to react to these 
+notifications.
+
+The agent takes advantage of the notification framework and in particular relies upon these two notification interfaces:
+
+===== OpenTelemetry
+
 
 == The How on the Mule 4 OTel Agent
 
@@ -306,11 +367,11 @@ This *purpose* of this mule extension is to allow Mule Applications participate 
 
 [bibliography]
 == References
-* https://www.w3.org/TR/trace-context/#dfn-distributed-traces[w3.org: "Distributed Traces"]
+* {wc3-trace-context-url}[wc3.org: "Trace Context Draft Recommendation"]
+* {wc3-trace-context-url}/#dfn-distributed-traces[wc3.org: "Distributed Traces"]
 * https://opentelemetry.io/[opentelemetry.io]
 * https://lightstep.com/observability/[Lightstep: "Observability: A complete overview for 2021"]
 * https://www.dynatrace.com/resources/ebooks/observability-and-beyond-for-the-enterprise-cloud/[Dynatrace e-book:
 "Observability and Beyond for the Enterprise Cloud"]
 * https://www.splunk.com/en_us/form/beginners-guide-to-observability.html[Splunk e-book: "A Beginner's Guide to Observability"]
 * https://docs.mulesoft.com/monitoring/[MuleSoft: "Anypoint Monitoring Overview"]
-
