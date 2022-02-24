@@ -453,14 +453,22 @@ Message Processor Span:: A Message Processor Span is an OTel Span which is assoc
 
 ====== Startup
 
+image::Mule-4-OTel-Agent-Flowchart-Startup.png[500, 500, title="Mule Agent Flowchart - Startup", align="center"]
+
+////
 * Instantiates and configures the OTel Java SDK
 * Registers the following Mule Server notification listeners:
 ** `PipelineMessageNotificationListener`
 ** `MessageProcessorNotificationListener`
 * Listens for the subscribed notifications
+////
 
-====== PipelineMessageNotification.PROCESS_START
 
+====== Notification Processing
+
+image::Mule-4-OTel-Agent-Flowchart.png[850, 850, title="Mule Agent Flowchart - Notification Processing", align="center"]
+
+////
 * If associated with the *initial flow*:
 ** Start a Mule trace
 ** Start a Trace Root Span 
@@ -492,6 +500,7 @@ Message Processor Span:: A Message Processor Span is an OTel Span which is assoc
 * If *subflow* or *flow reference*:
 ** End Pipeline Span
 *** End all Message Processor Spans in the Pipeline Span
+////
 
 == The How on the Mule 4 OTel Agent
 
