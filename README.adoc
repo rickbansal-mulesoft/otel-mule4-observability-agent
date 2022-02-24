@@ -439,17 +439,18 @@ Mule Trace:
 
 ....
 
-Mule Trace:: A Mule trace is simply a collection of OTel Spans structured hierarchically .  A trace has just one trace root 
+Mule Trace:: A Mule Trace is simply a collection of OTel Spans structured hierarchically .  A trace has just one trace root 
 span and one or more child spans - Pipeline Spans and/or Message Processor Spans.
 
-Trace Root Span:: A Mule root span is an OTel Span which serves as the root node in a Mule trace.  It is associated
+Trace Root Span:: A Root Span is an OTel Span which serves as the root node in a Mule trace.  It is associated
 with the initial Mule Flow. In reality it is also a pipeline span.
 
-Pipeline Span:: A Mule pipeline span is an OTel Span which is associated with subflows and/or flow references.
+Pipeline Span:: A Pipeline Span is an OTel Span which is associated with Mule subflows and/or flow references. 
 
-Message Processor Span:: A Mule
+Message Processor Span:: A Message Processor Span is an OTel Span which is associated with Mule message processors.
 
 ===== High-Level Agent Functionality
+
 ====== Startup
 
 * Instantiates and configures the OTel Java SDK
@@ -460,34 +461,58 @@ Message Processor Span:: A Mule
 
 ====== PipelineMessageNotification.PROCESS_START
 
-* *Start* an OTel Span - known as the *root parent span*
-* Add flow input metadata to the root parent span
+* If associated with the *initial flow*:
+** Start a Mule trace
+** Start a Trace Root Span 
+** Add Trace Root Span to the Trace
+* If *subflow* or *flow reference*:
+** Start a Pipeline Span
+** Add Pipeline Span to the Trace
+* Add flow input metadata to started span
 
 ====== MessageProcessorNotification.MESSAGE_PROCESSOR_PRE_INVOKE
 
-* *Start* an OTel Span - known as a *child span*
-* Add message processor input metadata to the child span
-* Add the child span to the root parent span
+* Start a Message Processor Span
+* Add message processor input metadata to the span
+* Add the span to the current Pipeline span
 
 ====== MessageProcessorNotification.MESSAGE_PROCESSOR_POST_INVOKE
 
-* Add message processor output metadata to the child span
-* *End* the *child span*
+* Add message processor output metadata to the open Message Processor Span
+* End the open Message Processor Span
 
 ====== PipelineMessageNotification.PROCESS_END
 
-* Add flow output metadata to the root parent span
-* End all child spans
-* End the root parent span
-* Export the trace
-
-
+* If associated with the *initial flow*:
+** Add flow output metadata to the Trace Root Span 
+** End Trace
+*** End all Pipeline Spans
+**** End all Message Processor Spans
+** Export the trace
+* If *subflow* or *flow reference*:
+** End Pipeline Span
+*** End all Message Processor Spans in the Pipeline Span
 
 == The How on the Mule 4 OTel Agent
 
 === Installation Guideline
 
+* Download the latest version of the extension from here
+* 
+
+[source, xml]
+----
+<dependency>
+	<groupId>org.mulesoft.extensions.rickbansal.otel</groupId>
+	<artifactId>otel-mule4-observability-agent</artifactId>
+	<version>1.0.92-SNAPSHOT</version>
+	<classifier>mule-plugin</classifier>
+</dependency>
+----
+dfa
+
 === Configuration of the Agent
+
 
 === Example Scenario
 
