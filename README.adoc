@@ -109,7 +109,7 @@ etc.), *custom* coded applications and *SaaS* applications (e.g., Salesforce, Ne
 So as you can see, the composable enterprise already exists and will, rapidly, become more composable over time, especially,
 with the support of companies like MuleSoft, products like the Anypoint Platform and methodologies like API-Led Connectivity.
 
-image::API-Led-1.png[title="API Led to Help Solve for Composability", align="center"]
+image::API-Led-1.png[title="API Led to Help Solve for Composability",1000, 1000, align="center"]
 
 
 //image::MuleSoft-Solution-Composability.png[title="API Led for Composability", align="center"]
@@ -160,7 +160,7 @@ such as the following:
 | ...                             | ...
 |===
 
-image::Macro-Micro-Metrics.png[title="Micro-level and Macro-level Metrics", align="center"]
+image::Macro-Micro-Metrics.png[title="Micro-level and Macro-level Metrics", 1000, 1000, align="center"]
 
 ===== Logs
 A *log* is an immutable, time-stamped text or binary record, either structured (recommended) or unstructured, potentially including 
@@ -195,7 +195,7 @@ through the chain of systems involved in the transaction.  This process is also 
 Traces are a critical part of observability, as they provide context for other telemetry. For example, traces can help define 
 which metrics would be most valuable in a given situation, or which logs are relevant to a particular issue.
 
-image::Distributed-Trace-Example.png[title="Example of a Distributed Trace", align="center"]
+image::Distributed-Trace-Example.png[1000, 1000, title="Example of a Distributed Trace", align="center"]
 
 ==== Why is observability important?  
 
@@ -299,6 +299,7 @@ You can find more details on the API and SDK https://opentelemetry.io/docs/refer
 and on the Collector https://opentelemetry.io/docs/collector/[here].
 
 === WC3 Trace Context
+The Mule 4 OTel Agent currently only supports the WC3 Trace Context format as a mechanism for context propagation.
 
 ==== Trace Context
 The WC3 Trace Context https://w3c.github.io/trace-context/[specification] defines a universally agreed-upon format for the exchange of 
@@ -455,52 +456,9 @@ Message Processor Span:: A Message Processor Span is an OTel Span which is assoc
 
 image::Mule-4-OTel-Agent-Flowchart-Startup.png[500, 500, title="Mule Agent Flowchart - Startup", align="center"]
 
-////
-* Instantiates and configures the OTel Java SDK
-* Registers the following Mule Server notification listeners:
-** `PipelineMessageNotificationListener`
-** `MessageProcessorNotificationListener`
-* Listens for the subscribed notifications
-////
-
-
 ====== Notification Processing
 
 image::Mule-4-OTel-Agent-Flowchart.png[850, 850, title="Mule Agent Flowchart - Notification Processing", align="center"]
-
-////
-* If associated with the *initial flow*:
-** Start a Mule trace
-** Start a Trace Root Span 
-** Add Trace Root Span to the Trace
-* If *subflow* or *flow reference*:
-** Start a Pipeline Span
-** Add Pipeline Span to the Trace
-* Add flow input metadata to started span
-
-====== MessageProcessorNotification.MESSAGE_PROCESSOR_PRE_INVOKE
-
-* Start a Message Processor Span
-* Add message processor input metadata to the span
-* Add the span to the current Pipeline span
-
-====== MessageProcessorNotification.MESSAGE_PROCESSOR_POST_INVOKE
-
-* Add message processor output metadata to the open Message Processor Span
-* End the open Message Processor Span
-
-====== PipelineMessageNotification.PROCESS_END
-
-* If associated with the *initial flow*:
-** Add flow output metadata to the Trace Root Span 
-** End Trace
-*** End all Pipeline Spans
-**** End all Message Processor Spans
-** Export the trace
-* If *subflow* or *flow reference*:
-** End Pipeline Span
-*** End all Message Processor Spans in the Pipeline Span
-////
 
 == The How on the Mule 4 OTel Agent
 
@@ -522,17 +480,62 @@ dfa
 
 === Agent Configuration
 
+Minimally, follow the steps below to add and configure the agent into your Mule application.
+
+IMPORTANT: Only Mule applications which add the agent to their configuration will generate and export trace data.
+
 image::agent-connector-config.png[700, 700, title="Mule Agent Configuration", align="center"]
 
-<1> Add a OpenTelemetry Mule 4 Observability Configuration to the Mule project
+<1> Add an OpenTelemetry Mule 4 Observability Configuration to the Mule project
+<2> Configure Collector Endpoint for trace data - must be the entire URL, including the scheme (HTTP/S) and port
+<3> Configure OTLP Transport Protocol  - the following transports are supported:  `GRPC`, `HTTP_JSON` and `HTTP_PROTOBUF`
+<4> Add any necessary vendor-specific headers
+<5> Provide a service name - usually the application name
 
 === Trace Context Propagation
 
+Currently, trace context propagation is only supported via WC3 Trace Context headers:  `traceparent` and `tracestate`.
+
+The agent will automatically extract the trace headers from the incoming HTTP request and inject the headers into the application via
+an event variable named: `OTEL_TRACE_CONTEXT` of type:  `Map<String, String>`, where `Map<String, String>` contains the 
+following:
+
+.`OTEL_TRACE_CONTEXT` Map
+|===
+| *Key*          | *Value*
+| `traceparent`  | `[traceparent value]`
+| `tracestate`   | `[tracestate value]`
+|===
+
+In order to propagate the trace header information to other web applications, the Mule HTTP Requester Configuration must
+have default headers configured in the following way:
+
+<1> *key*: `traceparent`  *value*:  `#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]`
+<2> *key*: `tracestate`   *value*:  `#[vars.OTEL_TRACE_CONTEXT.tracestate  default '' as String]`
+
 image::http-requester-config.png[500, 500, title="Mule HTTP Requester Configuration", align="center"]
 
-<1> Add a OpenTelemetry Mule 4 Observability Configuration to the Mule project
+////
+
+[cols="30%, 70%"]
+|===
+| *Key*          | *Value*
+| `traceparent`  | `#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]`
+| `tracestate`   | `#[vars.OTEL_TRACE_CONTEXT.tracestate default ''  as String]`
+|===
+
+////
 
 === Example Scenario
+
+==== Demo Architecture
+
+image::Demo-Distributed-App-Arch.png[1200, 1200, title="Demo Architecture", align="center"]
+
+==== Demo Distributed Mule Applications Diagram
+
+image::Distributed-Mule-App-Diagram.png[1400, 1400, title="Demo Mule Application Diagram", align="center"]
+
 
 === Example Output - Dynatrace Backend
 
