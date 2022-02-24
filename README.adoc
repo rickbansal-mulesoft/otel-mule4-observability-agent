@@ -407,13 +407,83 @@ Java implementation, the Mule extension becomes completely stand-alone and does 
 participant in a distributed trace.
 
 
-==== MuleSoft OpenTelemetry Agent Architecture
+==== Mule 4 OpenTelemetry Agent Architecture
+
+The architecture of the Mule 4 OTel Agent is relatively straight forward.  As depicted in the diagram below, the agent is comprised of
+code which listens for notification events from the Mule runtime.  During the processing of the notification, the agent generates metadata
+about the notification and sends that data to the OpenTelemetry SDK via the OpenTelemetry API - shown as _Trace Data_ in the diagram.
+The OpenTelemetry SDK continues to gathers the extension generated trace data until all processing is complete.  At that point, the 
+OpenTelemetry SDK exports the trace data using the OpenTelemetry wire Protocol (OTLP) to an OpenTelemetry Collector.
 
 image::Agent-Arch.png[700, 700, title="Mule Agent Architecture", align="center"]
 
+===== Mule Trace
+
+.Causal relationship between nodes in a Mule Trace
+[literal]
+....
+Mule Trace:
+
+			             [Trace Root Span A] <-- (the uber pipeline span)
+                                 |
+			     +---------------+---------------+
+                 |                               |
+        [Pipeline Span B]               [Pipeline Span C] <-- (Spans B, C are 'children' of A)
+                 |                               |
+                 |                               |
+    [Message Processor Span D]                   |
+                                                 |
+                                 +---------------+----------------+
+                                 |                                |
+                    [Message Processor Span E]     [Message Processor Span F]
+
+....
+
+Mule Trace:: A Mule trace is simply a collection of OTel Spans structured hierarchically .  A trace has just one trace root 
+span and one or more child spans - Pipeline Spans and/or Message Processor Spans.
+
+Trace Root Span:: A Mule root span is an OTel Span which serves as the root node in a Mule trace.  It is associated
+with the initial Mule Flow. In reality it is also a pipeline span.
+
+Pipeline Span:: A Mule pipeline span is an OTel Span which is associated with subflows and/or flow references.
+
+Message Processor Span:: A Mule
+
+===== High-Level Agent Functionality
+====== Startup
+
+* Instantiates and configures the OTel Java SDK
+* Registers the following Mule Server notification listeners:
+** `PipelineMessageNotificationListener`
+** `MessageProcessorNotificationListener`
+* Listens for the subscribed notifications
+
+====== PipelineMessageNotification.PROCESS_START
+
+* *Start* an OTel Span - known as the *root parent span*
+* Add flow input metadata to the root parent span
+
+====== MessageProcessorNotification.MESSAGE_PROCESSOR_PRE_INVOKE
+
+* *Start* an OTel Span - known as a *child span*
+* Add message processor input metadata to the child span
+* Add the child span to the root parent span
+
+====== MessageProcessorNotification.MESSAGE_PROCESSOR_POST_INVOKE
+
+* Add message processor output metadata to the child span
+* *End* the *child span*
+
+====== PipelineMessageNotification.PROCESS_END
+
+* Add flow output metadata to the root parent span
+* End all child spans
+* End the root parent span
+* Export the trace
+
+
+
 == The How on the Mule 4 OTel Agent
-
-
 
 === Installation Guideline
 
