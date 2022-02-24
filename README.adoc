@@ -511,8 +511,17 @@ Message Processor Span:: A Message Processor Span is an OTel Span which is assoc
 ----
 dfa
 
-=== Configuration of the Agent
+=== Agent Configuration
 
+image::agent-connector-config.png[700, 700, title="Mule Agent Configuration", align="center"]
+
+<1> Add a OpenTelemetry Mule 4 Observability Configuration to the Mule project
+
+=== Trace Context Propagation
+
+image::http-requester-config.png[500, 500, title="Mule HTTP Requester Configuration", align="center"]
+
+<1> Add a OpenTelemetry Mule 4 Observability Configuration to the Mule project
 
 === Example Scenario
 

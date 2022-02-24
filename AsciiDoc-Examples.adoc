@@ -1017,7 +1017,7 @@ ls -la  <.>
 <.> Explanation for callout number 2.
 
 
-= Comment
+== Comment
 
 TIP: Comment highlighting supports the standard https://cgit.kde.org/syntax-highlighting.git/tree/data/syntax/alert.xml[KDE alerts] (TODO, FIXME, ...) in both single-line and multi-line comments.
 
