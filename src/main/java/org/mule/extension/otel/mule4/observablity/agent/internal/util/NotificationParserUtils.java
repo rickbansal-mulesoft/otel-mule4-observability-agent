@@ -32,7 +32,7 @@ import org.mule.runtime.api.notification.PipelineMessageNotification;
 public class NotificationParserUtils
 {
 	// --------------------------------------------------------------------------------------------
-	// Various public utilty parsing helpers
+	// Various public utility parsing helpers
 	// --------------------------------------------------------------------------------------------
 	/**
 	 * 
@@ -134,7 +134,7 @@ public class NotificationParserUtils
 	/**
 	 * 
 	 * @param notification
-	 * @return The qualifed name {@code <namespace:name>} of this component.  For example, {@code http:listener, http:requester,}...
+	 * @return The qualified name {@code <namespace:name>} of this component.  For example, {@code http:listener, http:requester,}...
 	 */
 	public static String getComponentId(EnrichedServerNotification notification)
 	{
@@ -143,6 +143,23 @@ public class NotificationParserUtils
 		return (componentIdentifier.getNamespace() + ":" + componentIdentifier.getName());
 	}
 
+	public static boolean skipParsing(EnrichedServerNotification notification)
+	{
+		
+		return Constants.SKIP_LIST.contains(getComponentId(notification));
+		
+		/*
+		boolean skip = false;
+		
+		String componentId = getComponentId(notification);
+		
+		if(Constants.SKIP_LIST.contains(componentId))
+			skip = true;
+			
+		return skip;
+		*/
+	}
+	
 	/**
 	 * 
 	 * @param <T>

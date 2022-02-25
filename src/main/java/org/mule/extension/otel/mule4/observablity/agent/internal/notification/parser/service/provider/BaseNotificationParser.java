@@ -1,8 +1,6 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider;
 
 
-import java.time.Instant;
-
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.config.MuleConnectorConfigStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.trace.MuleSoftTraceStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
@@ -27,7 +25,7 @@ public class BaseNotificationParser implements NotificationParser
 	private static Logger logger = LoggerFactory.getLogger(BaseNotificationParser.class);
 
 	// --------------------------------------------------------------------------------------------
-	// Verifiy if this Parser can handle this notification
+	// Verify if this Parser can handle this notification
 	// --------------------------------------------------------------------------------------------	
 	@Override
 	public boolean canParse(EnrichedServerNotification notification)

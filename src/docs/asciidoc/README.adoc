@@ -1,8 +1,8 @@
 = Mule 4 OpenTelemetry (OTel) Agent Extension
 // Document header
 Rick Bansal <rick.bansal@mulesoft.com>
-:revnumber: 1.0.92-SNAPSHOT
-:revdate: Feb. 19, 2022
+:revnumber: 1.0.95-SNAPSHOT
+:revdate: February 25, 2022
 :revremark: Initial Draft
 :doctype: book
 :icons: font
@@ -38,9 +38,16 @@ endif::[]
 // Document body
 == Introduction
 
-The Mule 4 OTel Agent is a custom MuleSoft *extension* for instrumenting MuleSoft applications to export tracing 
-specific *telemetry* data to any OpenTelemetry compliant collector.  Using the agent now allows Mule applications 
-to be insightful participants in the overall *distributed trace*.
+The Mule 4 OTel Agent is a custom MuleSoft *extension* developed for instrumenting MuleSoft applications to export 
+tracing specific *telemetry* data to any OpenTelemetry compliant collector.  Using the agent now allows Mule applications 
+to take on an active role in *distributed tracing* scenarios and be insightful and actionable participants in the overall 
+distributed trace.  
+
+[NOTE]
+This document is, intentionally, a bit long as it contains some background details on the motivation for building
+the extension as well as some design details on the extension itself.  However, if you prefer to *skip past the the "why" 
+and "what"* material (no offense taken but I did put some extra effort into generating the diagrams) and get right to the 
+*"how"*, simply go to <<The-How-Mule-OTel-Agent-id>> section of the document.
 
 == The Why on the Mule 4 OTel Agent
 
@@ -143,7 +150,7 @@ However, I think a *more important* consideration for observability is an answer
 
 The obtainment of true observability relies upon 3 core pillars.
 
-image::Pillars-of-Observability.png[600, 600, title="The 3 Pillars of Observability", align="center"]
+image::Pillars-of-Observability.png[500, 500, title="The 3 Pillars of Observability", align="center"]
 
 ===== Metrics
 A *_metric_* is a value that expresses some information about a system. Metrics are 
@@ -462,29 +469,54 @@ image::Mule-4-OTel-Agent-Flowchart-Startup.png[500, 500, title="Mule Agent Flowc
 
 image::Mule-4-OTel-Agent-Flowchart.png[1000, 1000, title="Mule Agent Flowchart - Notification Processing", align="center"]
 
+[#The-How-Mule-OTel-Agent-id]
 == The How on the Mule 4 OTel Agent
 
 === Installation Guideline
 
+==== Extension Download
+
 * Download the latest version of the extension from 
 https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/otel-mule4-observability-agent-1.0.92-SNAPSHOT-mule-plugin.jar[here]
 
+==== Add the Extension to Your Maven Repository
+
+You can add the extension to your local Maven repo in one of two ways:
+
+* Manually from the command line - assuming you have Maven installed
+* Through Anypoint Studio
+
+===== Add via Maven Command Line
+
+===== Add via Anypoint Studio
+
+
+image::add-to-maven-repo-via-studio.png[800, 800, title="Add Into Maven Repo via Studio", align="center"]
+
+<1> Click the "Install Artifact into local repository" button
+<2> Browse for the jar file in your file system
+<3> Click "Install" to complete the installation process
+
+==== Add Dependency to `pom.xml` file
+
+Add the following snippet into your Mule project `pom.xml` file in the `<dependencies>` section:
 [source, xml]
 ----
 <dependency>
 	<groupId>org.mulesoft.extensions.rickbansal.otel</groupId>
 	<artifactId>otel-mule4-observability-agent</artifactId>
-	<version>1.0.92-SNAPSHOT</version>
+	<version>1.0.92-SNAPSHOT</version> <1>
 	<classifier>mule-plugin</classifier>
 </dependency>
 ----
-dfa
+<1> The version could be different based up when you read this document and which version was downloaded.  Please make sure the version 
+element corresponds to the version you installed into your Maven repository.
 
 === Agent Configuration
 
 Minimally, follow the steps below to add and configure the agent into your Mule application.
 
-IMPORTANT: Only Mule applications which add the agent to their configuration will generate and export trace data.
+IMPORTANT: Only Mule applications which *add the agent* to their configuration will generate and export trace data.
 
 image::agent-connector-config.png[800, 800, title="Mule Agent Configuration", align="center"]
 
@@ -509,16 +541,16 @@ following:
 | `tracestate`   | `[tracestate value]`
 |===
 
-In order to propagate the trace header information to other web applications, the Mule HTTP Requester Configuration must
+In order to *propagate the trace header* information to other web applications, the Mule HTTP Requester Configuration *must*
 have default headers configured in the following way:
 
-<1> *key*: `traceparent`  *value*:  `#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]`
-<2> *key*: `tracestate`   *value*:  `#[vars.OTEL_TRACE_CONTEXT.tracestate  default '' as String]`
+//<1> *key*: `traceparent`  *value*:  `#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]`
+//<2> *key*: `tracestate`   *value*:  `#[vars.OTEL_TRACE_CONTEXT.tracestate  default '' as String]`
 
 image::http-requester-config.png[600, 600, title="Mule HTTP Requester Configuration", align="center"]
 
-////
 
+.HTTP Requester Configuration for Default Headers
 [cols="30%, 70%"]
 |===
 | *Key*          | *Value*
@@ -526,9 +558,10 @@ image::http-requester-config.png[600, 600, title="Mule HTTP Requester Configurat
 | `tracestate`   | `#[vars.OTEL_TRACE_CONTEXT.tracestate default ''  as String]`
 |===
 
-////
+=== Demo Scenario
 
-=== Example Scenario
+Below is a description of the demo scenario used to generate distributed trace information from 2 Mule applications and have it
+render in a Dynatrace backend.
 
 ==== Demo Architecture using Dynatrace Backend
 

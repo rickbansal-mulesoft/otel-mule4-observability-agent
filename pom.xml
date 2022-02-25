@@ -6,12 +6,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mulesoft.extensions.rickbansal.otel</groupId>
 	<artifactId>otel-mule4-observability-agent</artifactId>
-	<version>1.0.92-SNAPSHOT</version>
+	<version>1.0.95-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 	<name>OpenTelemetry Mule 4 Observability Agent Extension</name>
 
 	<properties>
 		<opentelemetry.version>1.9.1</opentelemetry.version>
+		<maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
 	</properties>
 
 	<parent>
@@ -45,6 +46,13 @@
 						<goals>
 							<goal>process-asciidoc</goal>
 						</goals>
+						<configuration>
+						    <outputDirectory>target/generated-docs/${project.version}</outputDirectory>
+							<attributes>
+								<rev-number>${project.version}</rev-number>
+								<rev-date>${maven.build.timestamp}</rev-date>
+							</attributes>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

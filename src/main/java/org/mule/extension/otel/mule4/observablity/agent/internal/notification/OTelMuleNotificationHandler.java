@@ -166,6 +166,9 @@ public class OTelMuleNotificationHandler
 	{
 		logger.debug("Handling processor start event");
 		
+		if (NotificationParserUtils.skipParsing(notification))
+			return;
+		
 		NotificationParser notificationParser = NotificationParserService.getInstance()
 				                                                         .getParserFor(notification)
                                                                          .orElse(new BaseNotificationParser());
@@ -186,6 +189,9 @@ public class OTelMuleNotificationHandler
 	public void handleProcessorEndEvent(MessageProcessorNotification notification)
 	{
 		logger.debug("Handling end event");
+		
+		if (NotificationParserUtils.skipParsing(notification))
+			return;
 		
 		NotificationParser notificationParser = NotificationParserService.getInstance()
 				                                                         .getParserFor(notification)

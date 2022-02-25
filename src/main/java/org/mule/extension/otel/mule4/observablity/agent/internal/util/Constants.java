@@ -1,5 +1,9 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 
  * Repository for Module level Constants
@@ -17,6 +21,11 @@ public class Constants
 	public static final String FLOW								= "flow";
 	public static final String LOGGER							= "mule:logger";
 	public static final String DB_SELECT						= "db:select";
+	public static final String FLOW_REFERENCE					= "mule:flow-ref";
+	public static final String TRY_SCOPE					    = "mule:try";
+	public static final String FOREACH_SCOPE					= "mule:foreach";
+	
+	
 	public static final String DB_MATCHER						= "^db:.*$";
 
 	public static final String FLOW_NAME_ATTRIBUTE				= "flow.name";
@@ -35,5 +44,8 @@ public class Constants
 	public static final String DB_URI_NS 						= "http://www.mulesoft.org/schema/mule/db";	
 
 	public static final String AGENT_ARTIFACT_ID 				= "otel-mule4-observability-agent";	
-
+	
+	public static final List<String> SKIP_LIST				    = new ArrayList<String>(Arrays.asList(FLOW_REFERENCE, 
+			                                                                                          TRY_SCOPE, 
+			                                                                                          FOREACH_SCOPE));
 }
