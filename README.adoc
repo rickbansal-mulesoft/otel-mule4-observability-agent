@@ -24,3 +24,5 @@ endif::[]
 == Links to the documentation
 
 link:src/docs/asciidoc/README.adoc[Extended Documentation in adoc format]
+
+link:target/generated-docs/README.html[Extended Documentation in HTML format]
