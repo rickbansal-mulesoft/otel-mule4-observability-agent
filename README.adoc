@@ -1,0 +1,26 @@
+= Mule 4 OpenTelemetry (OTel) Agent Extension
+// Document header
+
+// The following pass through will align the images and their titles
+ifndef::env-github[]
+++++
+<style>
+  .imageblock > .title {
+    text-align: inherit;
+    margin-top: 10px;
+  }
+</style>
+++++
+endif::[]
+
+ifdef::env-github[]
+:caution-caption: :fire:
+:important-caption: :heavy_exclamation_mark:
+:note-caption: :information_source:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+== Links to the documentation
+
+link:src/docs/asciidoc/README.adoc[Extended Documentation in adoc format]
