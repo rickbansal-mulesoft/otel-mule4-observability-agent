@@ -576,10 +576,16 @@ image::Demo-Distributed-App-Arch.png[1200, 1200, title="Demo Architecture", alig
 
 ==== Demo Architecture Mule Implementation Diagram
 
-image::Distributed-Mule-App-Diagram.png[1400, 1400, title="Demo Mule Application Diagram", align="center"]
+image::Distributed-Mule-App-Diagram.png[title="Demo Mule Application Diagram", align="center"]
 
 
 === Example Output - Dynatrace Backend
+
+image::dynatrace-distributed-span.png[title="Dynatrace - Complete Distributed Trace", align="center"]
+
+
+image::dynatrace-distributed-rootspan-summary.png[title="Dynatrace - Root Span Summary", align="center"]
+
 
 [bibliography]
 == References
@@ -591,3 +597,4 @@ image::Distributed-Mule-App-Diagram.png[1400, 1400, title="Demo Mule Application
 "Observability and Beyond for the Enterprise Cloud"]
 * https://www.splunk.com/en_us/form/beginners-guide-to-observability.html[Splunk e-book: "A Beginner's Guide to Observability"]
 * https://docs.mulesoft.com/monitoring/[MuleSoft: "Anypoint Monitoring Overview"]
+* https://docs.mulesoft.com/mule-sdk/1.1/getting-started[MuleSoft: "Getting Started with Mule SDK for Java"]
