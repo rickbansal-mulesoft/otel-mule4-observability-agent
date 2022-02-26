@@ -28,10 +28,6 @@ endif::[]
 :html-version-of-README: https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/generated-docs/README.html
 :docs-dir: src/docs/asciidoc
 
-////
-[IMPORTANT]
-include::src/docs/asciidoc/disclaimer.adoc[]
-////
  
 [IMPORTANT]
 ====
