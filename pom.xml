@@ -49,8 +49,8 @@
 						<configuration>
 <!-- 						    <outputDirectory>target/generated-docs/${project.version}</outputDirectory> -->
 							<attributes>
-								<rev-number>${project.version}</rev-number>
-								<rev-date>${maven.build.timestamp}</rev-date>
+								<revnumber>${project.version}</revnumber>
+								<revdate>${maven.build.timestamp}</revdate>
 							</attributes>
 						</configuration>
 					</execution>

@@ -21,15 +21,23 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
+:html-previewer: https://htmlpreview.github.io/?
+:html-version-of-README: https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/generated-docs/README.html
+
+[IMPORTANT]
+include::src/docs/asciidoc/disclaimer.adoc[]
+ 
 == Links to the documentation
 
 //link:target/generated-docs/README.html[Extended Documentation in HTML format]
 === HTML Version
 The HTML version is usually more presentation friendly and *preferred* for viewing this documentation.
 
-* https://htmlpreview.github.io/?https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/generated-docs/README.html[Extended Documentation in HTML format]
+//* https://htmlpreview.github.io/?https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/generated-docs/README.html[Extended Documentation in HTML format]
 
-=== Adoc Verion
+* {html-previewer}{html-version-of-README}[Extended Documentation in HTML format]
+
+=== ADOC Version
 The adoc verion doesn't always render optimally in GitHub but if you have trouble with HTML then
 use this link.
 
