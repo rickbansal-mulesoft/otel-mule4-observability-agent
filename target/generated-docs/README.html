@@ -1237,9 +1237,15 @@ configuration file.</p>
 <div class="listingblock">
 <div class="title">Example of subscribing to notifications programmatically</div>
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java">notificationListenerRegistry.registerListener(<span class="keyword">new</span> MuleMessageProcessorNotificationListener(otelMuleNotificationHandler));
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+</pre></td>
+  <td class="code"><pre>notificationListenerRegistry.registerListener(<span class="keyword">new</span> MuleMessageProcessorNotificationListener(otelMuleNotificationHandler));
 
-notificationListenerRegistry.registerListener(<span class="keyword">new</span> MulePipelineNotificationListener(otelMuleNotificationHandler));</code></pre>
+notificationListenerRegistry.registerListener(<span class="keyword">new</span> MulePipelineNotificationListener(otelMuleNotificationHandler));</pre></td>
+</tr></table></code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1851,7 +1857,7 @@ in the development of this extension.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.95-SNAPSHOT<br>
-Last updated 2022-02-26 10:02:44 -0600
+Last updated 2022-02-26 10:18:46 -0600
 </div>
 </div>
 </body>

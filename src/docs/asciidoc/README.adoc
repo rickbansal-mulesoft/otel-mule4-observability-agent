@@ -380,7 +380,7 @@ These notifications can be subscribed to by "listeners" either programmatically 
 configuration file.
 
 .Example of subscribing to notifications programmatically
-[source%nowrap, java]
+[source%nowrap%linenums, java]
 ----
 notificationListenerRegistry.registerListener(new MuleMessageProcessorNotificationListener(otelMuleNotificationHandler));
 
