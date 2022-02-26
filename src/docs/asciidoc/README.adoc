@@ -116,7 +116,7 @@ etc.), *custom* coded applications and *SaaS* applications (e.g., Salesforce, Ne
 So as you can see, the composable enterprise already exists and will, rapidly, become more composable over time, especially,
 with the support of companies like MuleSoft, products like the Anypoint Platform and methodologies like API-Led Connectivity.
 
-image::API-Led-1.png[title="API Led to Help Solve for Composability",1000, 1000, align="center"]
+image::API-Led-1.png[title="API Led to Help Solve for Composability", align="center"]
 
 
 //image::MuleSoft-Solution-Composability.png[title="API Led for Composability", align="center"]
@@ -167,7 +167,7 @@ such as the following:
 | ...                             | ...
 |===
 
-image::Macro-Micro-Metrics.png[title="Micro-level and Macro-level Metrics", 1000, 1000, align="center"]
+image::Macro-Micro-Metrics.png[title="Micro-level and Macro-level Metrics", align="center"]
 
 ===== Logs
 A *log* is an immutable, time-stamped text or binary record, either structured (recommended) or unstructured, potentially including 
@@ -484,7 +484,9 @@ https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/
 You can add the extension to your local Maven repo in one of two ways:
 
 * Manually from the command line - assuming you have Maven installed and are comfortable with using Maven
-* Through Anypoint Studio - preferred as it's less error prone
+* Through Anypoint Studio - *preferred* as it's less error prone
+
+IMPORTANT: Using Anypoint Studio is the recommended method for installing the extension into your local Maven repo. 
 
 ===== Add via Maven Command Line
  mvn install:install-file -Dfile=<path-to-file> \

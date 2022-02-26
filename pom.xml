@@ -47,7 +47,7 @@
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
-						    <outputDirectory>target/generated-docs/${project.version}</outputDirectory>
+<!-- 						    <outputDirectory>target/generated-docs/${project.version}</outputDirectory> -->
 							<attributes>
 								<rev-number>${project.version}</rev-number>
 								<rev-date>${maven.build.timestamp}</rev-date>

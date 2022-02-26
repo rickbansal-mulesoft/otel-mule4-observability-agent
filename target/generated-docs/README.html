@@ -722,7 +722,7 @@ better answer the following when things so sideways:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="./Images/Pillars-of-Observability.png" alt="600" width="600">
+<img src="./Images/Pillars-of-Observability.png" alt="500" width="500">
 </div>
 <div class="title">Figure 3. The 3 Pillars of Observability</div>
 </div>
@@ -1313,19 +1313,40 @@ with the initial Mule Flow. In reality it is also a pipeline span.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Manually from the command line - assuming you have Maven installed</p>
+<p>Manually from the command line - assuming you have Maven installed and are comfortable with using Maven</p>
 </li>
 <li>
-<p>Through Anypoint Studio</p>
+<p>Through Anypoint Studio - preferred as it&#8217;s less error prone</p>
 </li>
 </ul>
 </div>
 <div class="sect4">
 <h5 id="_add_via_maven_command_line">Add via Maven Command Line</h5>
-
+<div class="literalblock">
+<div class="content">
+<pre>mvn install:install-file -Dfile=&lt;path-to-file&gt; \
+                         -DgroupId=org.mulesoft.extensions.rickbansal.otel \
+                         -DartifactId=otel-mule4-observability-agent \
+                         -Dclassifier=mule-plugin \
+                         -Dversion=1.0.92-SNAPSHOT <i class="conum" data-value="1"></i><b>(1)</b></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The version could be different based up when you read this document and which version was downloaded.  Please make sure the version
+element corresponds to the version you installed into your Maven repository.</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect4">
-<h5 id="_add_via_anypoint_studio">Add via Anypoint Studio</h5>
+<h5 id="_add_via_anypoint_studio_preferred_method">Add via Anypoint Studio - Preferred Method</h5>
+<div class="paragraph">
+<p>Using Anypoint Studio to install the extension into your local Maven repository is simple, straight forward and less error
+prone.  It&#8217;s the preferred method, especially, if you aren&#8217;t very comfortable using Maven directly.</p>
+</div>
 <div class="imageblock text-center">
 <div class="content">
 <img src="./Images/add-to-maven-repo-via-studio.png" alt="800" width="800">
@@ -1486,6 +1507,18 @@ have default headers configured in the following way:</p>
 </tr>
 </tbody>
 </table>
+<div class="listingblock">
+<div class="title">Mule configuration xml for setting default headers in the HTTP Requester Configuration</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="7c863500-0642-4e9d-b759-5e317225e015" sendCorrelationId="NEVER"&gt;
+	&lt;http:request-connection host="mule-hello-world-api.us-e1.cloudhub.io" /&gt;
+	&lt;http:default-headers &gt;
+		&lt;http:default-header key='traceparent' value="#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]" /&gt;
+		&lt;http:default-header key='tracestate' value="#[vars.OTEL_TRACE_CONTEXT.tracestate default '' as String]" /&gt;
+	&lt;/http:default-headers&gt;
+&lt;/http:request-config&gt;</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_demo_scenario">Demo Scenario</h3>
@@ -1536,9 +1569,27 @@ render in a Dynatrace backend.</p>
 </div>
 <div class="sect3">
 <h4 id="_demo_architecture_mule_implementation_diagram">Demo Architecture Mule Implementation Diagram</h4>
+<div class="paragraph">
+<p>Below is an implementation of the demo architecture described above. At a high-level Mule_App_1 receives the initial request from
+the external client, performs various functions including making a request to an external application, Mule_App_2, and calling a secondary
+flow within Mule_App_1 before returning a response to the calling client application.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The demo applications use a variety of Mule components to showcase how different message processors generate different span attributes,
+including error events and log output.
+</td>
+</tr>
+</table>
+</div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="./Images/Distributed-Mule-App-Diagram.png" alt="1400" width="1400">
+<img src="./Images/Distributed-Mule-App-Diagram.png" alt="Distributed Mule App Diagram">
 </div>
 <div class="title">Figure 17. Demo Mule Application Diagram</div>
 </div>
@@ -1546,7 +1597,108 @@ render in a Dynatrace backend.</p>
 </div>
 <div class="sect2">
 <h3 id="_example_output_dynatrace_backend">Example Output - Dynatrace Backend</h3>
-
+<div class="paragraph">
+<p>Below are several screenshots from a Dynatrace Distributed Traces Dashboard to provide examples regarding the type of output generated
+by the Mule 4 OTel Agent and visualized by observability backend.</p>
+</div>
+<div class="sect3">
+<h4 id="_overall_distributed_trace_temporal_graph">Overall Distributed Trace Temporal Graph</h4>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/dynatrace-distributed-span.png" alt="dynatrace distributed span">
+</div>
+<div class="title">Figure 18. Dynatrace - Complete Distributed Trace</div>
+</div>
+<div class="paragraph">
+<p>As you can see in the graph above, the Agent generates spans in a manner which is hierarchically consistent with the progression of
+a transaction through and between Mule applications.</p>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Represents the overall set of spans in the distributed trace.  Nested (child) spans are indented appropriately at each level.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Represents the overall set of spans associated with the external Mule application (Mule_App_2). Nested (child) spans are
+indented appropriately.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Represents the overall set of spans associated with the secondary flow in Mule_App_1. Nested (child) spans are indented
+appropriately.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_root_span_summary_details">Root Span Summary Details</h4>
+<div class="paragraph">
+<p>Below is a screenshot of the summary details associated with a Mule Flow (Pipeline) span.  In this case, it&#8217;s the trace root span
+which has an HTTP Listener as its source trigger.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/dynatrace-distributed-rootspan-summary.png" alt="dynatrace distributed rootspan summary">
+</div>
+<div class="title">Figure 19. Dynatrace - Root Span Summary</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The Metadata is generated automatically by the OTel SDK.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The Attributes data is generated by the Agent and specific to the span type, either a Flow(Pipeline) or Message Processor span
+and if a Message Processor span then Message Processor type (e.g. Logger, Transform, DB, HTTP Requester, &#8230;&#8203;).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The Resource Attributes are specified in the configuration of the Agent</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_logger_message_processor_output">Logger Message Processor Output</h4>
+<div class="paragraph">
+<p>As a matter of convenience, the Agent exports the output of the Logger processor.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/dynatrace-distributed-span-logger-event.png" alt="dynatrace distributed span logger event">
+</div>
+<div class="title">Figure 20. Dynatrace - Logger Processor Output Event</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_database_processor_summary">Database Processor Summary</h4>
+<div class="paragraph">
+<p>Database Processor specific attributes.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/dynatrace-distributed-db-summary.png" alt="dynatrace distributed db summary">
+</div>
+<div class="title">Figure 21. Dynatrace - Database Processor Summary</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_database_processor_error_event">Database Processor Error Event</h4>
+<div class="paragraph">
+<p>To facilitate triaging and remediation of faults, when an error occurs in a Mule application, the Agent exports the entire Mule
+exception message.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/dynatrace-distributed-db-error-event.png" alt="dynatrace distributed db error event">
+</div>
+<div class="title">Figure 22. Dynatrace - Database Processor Error Event</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1577,6 +1729,9 @@ render in a Dynatrace backend.</p>
 <li>
 <p><a href="https://docs.mulesoft.com/monitoring/">MuleSoft: "Anypoint Monitoring Overview"</a></p>
 </li>
+<li>
+<p><a href="https://docs.mulesoft.com/mule-sdk/1.1/getting-started">MuleSoft: "Getting Started with Mule SDK for Java"</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -1585,7 +1740,7 @@ render in a Dynatrace backend.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.95-SNAPSHOT<br>
-Last updated 2022-02-25 16:06:51 -0600
+Last updated 2022-02-25 20:14:39 -0600
 </div>
 </div>
 </body>
