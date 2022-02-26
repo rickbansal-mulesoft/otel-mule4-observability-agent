@@ -587,6 +587,8 @@ image::dynatrace-distributed-span.png[title="Dynatrace - Complete Distributed Tr
 image::dynatrace-distributed-rootspan-summary.png[title="Dynatrace - Root Span Summary", align="center"]
 
 
+image::dynatrace-distributed-span-logger-event.png[title="Dynatrace - Logger Output", align="center"]
+
 [bibliography]
 == References
 * {wc3-trace-context-url}[wc3.org: "Trace Context Draft Recommendation"]
