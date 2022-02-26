@@ -39,6 +39,7 @@ Issues* to provide feedback, suggest enhancements or report a bug.
 ==== 
 == Links to the documentation
 
+Please refer to one of the two options below for extended documentation on this extension.
 
 === HTML Version - Recommended
 The HTML version is usually more presentation friendly and *preferred* for viewing this documentation.
