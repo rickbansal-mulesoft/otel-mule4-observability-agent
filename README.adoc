@@ -24,9 +24,19 @@ endif::[]
 :html-previewer: https://htmlpreview.github.io/?
 :html-version-of-README: https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/generated-docs/README.html
 
+////
 [IMPORTANT]
 include::src/docs/asciidoc/disclaimer.adoc[]
+////
  
+[IMPORTANT]
+====
+This work effort is a field extension; hence, it is delivered on an "*as-is*" basis.
+Please refrain from contacting MuleSoft Support for technical support. Instead. use *GitHub 
+Issues* to provide feedback, suggest enhancements or report a bug.
+
+
+==== 
 == Links to the documentation
 
 //link:target/generated-docs/README.html[Extended Documentation in HTML format]
