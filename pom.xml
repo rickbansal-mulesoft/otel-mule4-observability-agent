@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mulesoft.extensions.rickbansal.otel</groupId>
 	<artifactId>otel-mule4-observability-agent</artifactId>
-	<version>1.0.95-SNAPSHOT</version>
+	<version>1.0.118-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 	<name>OpenTelemetry Mule 4 Observability Agent Extension</name>
 

@@ -30,12 +30,23 @@ Default configuration
 |Name | String | The name for this configuration. Connectors reference the configuration with this name. | | *x*{nbsp}
 | Connection a| <<config_connection, Connection>>
  | The connection types that can be provided to this configuration. | | *x*{nbsp}
-| OTLP Trace Exporter a| One of:
-
-* <<OtlpTraceExporterConfig>> |  +++OpenTelemetry Protocol Trace Exporter Configuration.  <b>Note:  System or Environment Variables will BE overriden by this configuration.</b>+++ |  | *x*{nbsp}
 | Expiration Policy a| <<ExpirationPolicy>> |  +++Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.+++ |  | {nbsp}
 | Service Name a| String |  +++Logical (unique) name for this application (e.g., shoppingcart, productAPI, ...).+++ |  | *x*{nbsp}
 | Resource Attributes a| Array of <<attribute>> |  +++Optional attributes for this application defined as <key,value> pairs(e.g., service.namespace:com.mycompany, service.version:0.0.1, ...). Attributes provide context to a distributed trace which can help with correlations to proivde a clear view of what was involved when performance changes occur.+++ |  | {nbsp}
+| Trace Collector Endpoint a| String |  +++Traget URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.+++ |  | *x*{nbsp}
+| OTLP Transport Protocol a| Enumeration, one of:
+
+** GRPC
+** HTTP_PROTOBUF
+** HTTP_JSON |  |  +++HTTP_PROTOBUF+++ | {nbsp}
+| Compression Type a| Enumeration, one of:
+
+** NONE
+** GZIP |  |  +++NONE+++ | {nbsp}
+| Export Timeout a| String |  +++Maximum time the OTLP exporter will wait for each batch export.+++ |  +++10s+++ | {nbsp}
+| Trace Headers a| Array of <<header>> |  +++Key-value pairs separated by commas to pass as request headers on an OTLP trace.+++ |  | {nbsp}
+| Generate Message Processor Spans a| Boolean |  +++Generate Message Processor spans and them to the trace+++ |  +++true+++ | {nbsp}
+| Message Processor Span Bypass a| Array of <<MuleComponent>> |  +++List of Message Processors to bypass when generating Message Processor spans.+++ |  | {nbsp}
 |======================
 
 ==== Connection Types
@@ -151,26 +162,6 @@ Example of an operation that uses the configuration and a connection instance to
 | Value a| String |  |  | x
 |======================
 
-[[OtlpTraceExporterConfig]]
-=== Otlp Trace Exporter Config
-
-[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
-|======================
-| Field | Type | Description | Default Value | Required
-| Trace Collector Endpoint a| String |  |  | x
-| Transport Protocol a| Enumeration, one of:
-
-** GRPC
-** HTTP_PROTOBUF
-** HTTP_JSON |  | HTTP_PROTOBUF | 
-| Compression a| Enumeration, one of:
-
-** NONE
-** GZIP |  | NONE | 
-| Timeout a| String |  | 10s | 
-| Headers a| Array of <<header>> |  |  | 
-|======================
-
 [[header]]
 === Header
 
@@ -179,5 +170,15 @@ Example of an operation that uses the configuration and a connection instance to
 | Field | Type | Description | Default Value | Required
 | Key a| String |  |  | x
 | Value a| String |  |  | x
+|======================
+
+[[MuleComponent]]
+=== Mule Component
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Namespace a| String |  |  | x
+| Name a| String |  |  | x
 |======================
 

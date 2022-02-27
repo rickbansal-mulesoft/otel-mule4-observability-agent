@@ -1,10 +1,10 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.config;
 
-import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.OTelResourceConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OTelMule4ObservablityAgentConnectionProvider;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
-import org.mule.extension.otel.mule4.observablity.agent.internal.interceptor.TracingProcessorInterceptorFactory;
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.OTelMuleNotificationHandler;
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MuleMessageProcessorNotificationListener;
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MulePipelineNotificationListener;
@@ -13,15 +13,12 @@ import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
-import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
-import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.api.exception.MuleException;
 import org.mule.runtime.api.lifecycle.Startable;
 import org.mule.runtime.api.notification.NotificationListenerRegistry;
-import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
 import org.mule.runtime.core.api.config.MuleConfiguration;
 
 import java.util.function.Supplier;
@@ -35,7 +32,7 @@ import javax.inject.Inject;
 //		1. Resource configuration details
 //		2. Exporter configuration details
 //
-// 	Note:  System or Environment Variables will be overriden by this configuration. 
+// 	Note:  System or Environment Variables will be overridden by this configuration. 
 //----------------------------------------------------------------------------------
 /**
  * This class represents an extension configuration. Values set in this class are 
@@ -61,6 +58,7 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	 * @see OTelResourceConfig
 	 */
 	@ParameterGroup(name = "Resource")
+	//@DisplayName(value = "Resources")
 	@Placement(order = 1)
 	@Summary("Open Telemetry Resource Configuration. An OpenTelemetry Resource is an " +
 			 "immutable representation of the entity producing telemetry specified as " +
@@ -92,18 +90,32 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	 * 		OTLP Exporter
 	 * 	</a>
 	 */
-	//@ParameterGroup(name = "OTLP Trace Exporter")
-	@Parameter()
-	@DisplayName(value = "OTLP Trace Exporter")
+	@ParameterGroup(name = "OTLP Trace Exporter")
+	//@Parameter()
+	//@DisplayName(value = "OTLP Trace Exporter Configuration")
 	@Summary("OpenTelemetry Protocol Trace Exporter Configuration.  <b>Note:  System or Environment Variables will BE overriden by this configuration.</b>")
 	@Placement(order = 2)
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
-	private OtlpExporterConfig traceExporter;
+	// private OtlpExporterConfig traceExporter;
+	private OtlpTraceExporterConfig traceExporter;
 
-	public OtlpExporterConfig getTraceExporter()
+	//public OtlpExporterConfig getTraceExporter()
+	public  OtlpTraceExporterConfig getTraceExporter() 
 	{
 		return traceExporter;
 	}
+	
+	@ParameterGroup(name = "Span Generation")
+	@Summary("Select if Message Processors spans should be added to the trace in general.  You can bypass certain Message Processors by adding them to list below.")
+	@Placement(order = 3)
+	@Expression(ExpressionSupport.NOT_SUPPORTED)
+	private SpanGenerationConfig spanGenerationConfig;
+
+	public  SpanGenerationConfig getSpanGenerationConfig() 
+	{
+		return spanGenerationConfig;
+	}
+	
 	
 	@Inject
 	NotificationListenerRegistry notificationListenerRegistry;
@@ -116,7 +128,7 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	public void start() throws MuleException
 	{
 		//------------------------------------------------------------------------------
-		// 	Based on observations from our partner, this phase is too early to initiate 
+		// 	Based on observations from our partner, this phase is too early to initiate
 		//	the configuration and initialization of the OpenTelemetry SDK. It fails with 
 		// 	unresolved Otel dependencies.
 		//
@@ -126,7 +138,8 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 		//------------------------------------------------------------------------------
 		Supplier<OtelSdkConnection> otelSdkConnection = () -> OtelSdkConnection.getInstance(new OTelSdkConfig(getResource(), 
 				 						                                                                      getTraceExporter(),
-				 						                                                                      muleConfiguration));
+				 						                                                                      muleConfiguration,
+				                                                                                              getSpanGenerationConfig()));
 		
 		OTelMuleNotificationHandler otelMuleNotificationHandler = new OTelMuleNotificationHandler(otelSdkConnection);
 		

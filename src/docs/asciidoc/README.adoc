@@ -1,8 +1,8 @@
 = Mule 4 OpenTelemetry (OTel) Agent Extension
 // Document header
 Rick Bansal <rick.bansal@mulesoft.com>
-:revnumber: 1.0.95-SNAPSHOT
-:revdate: February 25, 2022
+:revnumber: 1.0.118-SNAPSHOT
+:revdate: February 27, 2022
 :revremark: Initial Draft
 :doctype: book
 :icons: font
@@ -530,15 +530,17 @@ element corresponds to the version you installed into your Maven repository.
 
 Minimally, follow the steps below to add and configure the agent into your Mule application.
 
-IMPORTANT: Only Mule applications which *add the agent* to their configuration will generate and export trace data.
+IMPORTANT: Only Mule applications which *add the agent* to their configuration will generate and *export* trace data.
 
 image::agent-connector-config.png[800, 800, title="Mule Agent Configuration", align="center"]
 
 <1> Add an OpenTelemetry Mule 4 Observability Configuration to the Mule project
-<2> Configure Collector Endpoint for trace data - must be the entire URL, including the scheme (HTTP/S) and port
-<3> Configure OTLP Transport Protocol  - the following transports are supported:  `GRPC`, `HTTP_JSON` and `HTTP_PROTOBUF`
-<4> Add any necessary vendor-specific headers
-<5> Provide a service name - usually the application name
+<2> Provide a service name - usually the application name
+<3> Configure Collector Endpoint for trace data - must be the entire URL, including the scheme (HTTP/S) and port
+<4> Configure OTLP Transport Protocol  - the following transports are supported:  `GRPC`, `HTTP_JSON` and `HTTP_PROTOBUF`
+<5> Add any necessary vendor-specific headers (e.g., `Authorization` header with `API Token` key for authentication)
+<6> Optionally disable generating span data for all Message Processors
+<7> Or mute individual Message Processor(s)
 
 === Trace Context Propagation
 

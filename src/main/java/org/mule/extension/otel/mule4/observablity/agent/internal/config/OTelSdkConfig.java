@@ -1,5 +1,6 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.config;
 
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.OTelResourceConfig;
 import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
@@ -19,12 +20,14 @@ public class OTelSdkConfig
 	private final OTelResourceConfig 	resourceConfig;
 	private final OtlpExporterConfig 	traceExporterConfig;
 	private final MuleConfiguration		muleConfiguration;
+	private final SpanGenerationConfig	spanGenerationConfig;
 
-	public OTelSdkConfig(OTelResourceConfig r, OtlpExporterConfig t, MuleConfiguration m)
+	public OTelSdkConfig(OTelResourceConfig r, OtlpExporterConfig t, MuleConfiguration m, SpanGenerationConfig s)
 	{
 		this.resourceConfig = r;
 		this.traceExporterConfig = t;
 		this.muleConfiguration = m;
+		this.spanGenerationConfig = s;
 	}
 
 	public OTelResourceConfig getResourceConfig()
@@ -40,5 +43,10 @@ public class OTelSdkConfig
 	public MuleConfiguration getMuleConfiguration()
 	{
 		return muleConfiguration;
+	}
+	
+	public SpanGenerationConfig getSpanGenerationConfig()
+	{
+		return spanGenerationConfig;
 	}
 }

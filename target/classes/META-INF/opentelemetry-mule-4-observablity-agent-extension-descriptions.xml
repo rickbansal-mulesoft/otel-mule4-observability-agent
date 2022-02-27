@@ -4,9 +4,6 @@
         <config name="config">
             <description><![CDATA[Default configuration]]></description>
             <parameters>
-                <parameter name="traceExporter">
-                    <description><![CDATA[]]></description>
-                </parameter>
                 <parameter name="expirationPolicy">
                     <description><![CDATA[Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.]]></description>
                 </parameter>
@@ -14,6 +11,27 @@
                     <description><![CDATA[]]></description>
                 </parameter>
                 <parameter name="resourceAttributes">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="traceCollectorEndpoint">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="transportProtocol">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="compression">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="timeout">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="headers">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="generateMessageProcessorsSpans">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="bypassComponents">
                     <description><![CDATA[]]></description>
                 </parameter>
             </parameters>
@@ -54,26 +72,24 @@
     </operations>
     <sources/>
     <types>
-        <type name="org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig">
-            <description><![CDATA[]]></description>
-            <parameters/>
-        </type>
-        <type name="org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig">
+        <type name="org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.MuleComponent">
             <description><![CDATA[]]></description>
             <parameters>
-                <parameter name="traceCollectorEndpoint">
+                <parameter name="namespace">
                     <description><![CDATA[]]></description>
                 </parameter>
-                <parameter name="transportProtocol">
+                <parameter name="name">
                     <description><![CDATA[]]></description>
                 </parameter>
-                <parameter name="compression">
+            </parameters>
+        </type>
+        <type name="org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header">
+            <description><![CDATA[This class is a default extension of the KeyValuePair class]]></description>
+            <parameters>
+                <parameter name="key">
                     <description><![CDATA[]]></description>
                 </parameter>
-                <parameter name="timeout">
-                    <description><![CDATA[]]></description>
-                </parameter>
-                <parameter name="headers">
+                <parameter name="value">
                     <description><![CDATA[]]></description>
                 </parameter>
             </parameters>

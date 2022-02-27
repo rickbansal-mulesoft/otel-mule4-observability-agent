@@ -1,31 +1,18 @@
 {
   "name": "OpenTelemetry Mule 4 Observablity Agent",
   "description": "This is the main class of an extension, is the entry point from which configurations, connection providers, operations and sources are going to be declared. \u003cp\u003e",
-  "version": "1.0.95-SNAPSHOT",
+  "version": "1.0.118-SNAPSHOT",
   "vendor": "MuleSoft",
   "category": "COMMUNITY",
   "xmlDsl": {
     "prefix": "otel-mule4-observablity-agent",
     "namespace": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent",
     "schemaLocation": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent/current/mule-otel-mule4-observablity-agent.xsd",
-    "schemaVersion": "1.0.95-SNAPSHOT",
+    "schemaVersion": "1.0.118-SNAPSHOT",
     "xsdFileName": "mule-otel-mule4-observablity-agent.xsd"
   },
   "resources": [],
-  "subTypes": [
-    {
-      "baseType": {
-        "format": "java",
-        "type": "@ref:org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig"
-      },
-      "subTypes": [
-        {
-          "format": "java",
-          "type": "@ref:org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig"
-        }
-      ]
-    }
-  ],
+  "subTypes": [],
   "privilegedPackages": [],
   "privilegedArtifacts": [],
   "externalLibraries": [],
@@ -43,37 +30,6 @@
       "parameterGroupModels": [
         {
           "parameters": [
-            {
-              "type": {
-                "format": "java",
-                "type": "@ref:org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig"
-              },
-              "hasDynamicType": false,
-              "required": true,
-              "isConfigOverride": false,
-              "expressionSupport": "NOT_SUPPORTED",
-              "role": "BEHAVIOUR",
-              "dslConfiguration": {
-                "allowsInlineDefinition": true,
-                "allowsReferences": true,
-                "allowTopLevelDefinition": false
-              },
-              "layoutModel": {
-                "password": false,
-                "text": false,
-                "query": false,
-                "order": 2,
-                "tabName": "General"
-              },
-              "allowedStereotypeModels": [],
-              "name": "traceExporter",
-              "displayModel": {
-                "displayName": "OTLP Trace Exporter",
-                "summary": "OpenTelemetry Protocol Trace Exporter Configuration.  \u003cb\u003eNote:  System or Environment Variables will BE overriden by this configuration.\u003c/b\u003e"
-              },
-              "description": "",
-              "modelProperties": {}
-            },
             {
               "type": {
                 "format": "java",
@@ -170,7 +126,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 1,
+                "order": 10,
                 "tabName": "Advanced"
               },
               "allowedStereotypeModels": [],
@@ -223,7 +179,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 3
+                "order": 1
               },
               "allowedStereotypeModels": [],
               "name": "serviceName",
@@ -273,7 +229,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 4
+                "order": 2
               },
               "allowedStereotypeModels": [],
               "name": "resourceAttributes",
@@ -294,6 +250,317 @@
           },
           "showInDsl": false,
           "name": "Resource",
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": true,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 3
+              },
+              "allowedStereotypeModels": [],
+              "name": "traceCollectorEndpoint",
+              "displayModel": {
+                "displayName": "Trace Collector Endpoint",
+                "summary": "Traget URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.",
+                "example": "http://mycollector.com:4317/v1/traces"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String",
+                "annotations": {
+                  "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterTransportProtocolType",
+                  "enum": {
+                    "type": "[Ljava.lang.String;",
+                    "values": [
+                      "GRPC",
+                      "HTTP_PROTOBUF",
+                      "HTTP_JSON"
+                    ]
+                  }
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "HTTP_PROTOBUF",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 4
+              },
+              "allowedStereotypeModels": [],
+              "name": "transportProtocol",
+              "displayModel": {
+                "displayName": "OTLP Transport Protocol"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String",
+                "annotations": {
+                  "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterCompressionType",
+                  "enum": {
+                    "type": "[Ljava.lang.String;",
+                    "values": [
+                      "NONE",
+                      "GZIP"
+                    ]
+                  }
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "NONE",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 5
+              },
+              "allowedStereotypeModels": [],
+              "name": "compression",
+              "displayModel": {
+                "displayName": "Compression Type"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "10s",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 6
+              },
+              "allowedStereotypeModels": [],
+              "name": "timeout",
+              "displayModel": {
+                "displayName": "Export Timeout",
+                "summary": "Maximum time the OTLP exporter will wait for each batch export."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "Array",
+                "annotations": {
+                  "classInformation": {
+                    "classname": "java.util.List",
+                    "hasDefaultConstructor": false,
+                    "isInterface": true,
+                    "isInstantiable": false,
+                    "isAbstract": true,
+                    "isFinal": false,
+                    "implementedInterfaces": [
+                      "java.util.Collection"
+                    ],
+                    "parent": "",
+                    "genericTypes": [
+                      "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header"
+                    ],
+                    "isMap": false
+                  }
+                },
+                "item": {
+                  "type": "@ref:org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 7
+              },
+              "allowedStereotypeModels": [],
+              "name": "headers",
+              "displayModel": {
+                "displayName": "Trace Headers",
+                "summary": "Key-value pairs separated by commas to pass as request headers on an OTLP trace."
+              },
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 2,
+            "tabName": "General"
+          },
+          "showInDsl": false,
+          "name": "OTLP Trace Exporter",
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Boolean",
+                "annotations": {
+                  "typeId": "boolean"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "NOT_SUPPORTED",
+              "defaultValue": "true",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 8
+              },
+              "allowedStereotypeModels": [],
+              "name": "generateMessageProcessorsSpans",
+              "displayModel": {
+                "displayName": "Generate Message Processor Spans",
+                "summary": "Generate Message Processor spans and them to the trace"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "Array",
+                "annotations": {
+                  "classInformation": {
+                    "classname": "java.util.List",
+                    "hasDefaultConstructor": false,
+                    "isInterface": true,
+                    "isInstantiable": false,
+                    "isAbstract": true,
+                    "isFinal": false,
+                    "implementedInterfaces": [
+                      "java.util.Collection"
+                    ],
+                    "parent": "",
+                    "genericTypes": [
+                      "org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.MuleComponent"
+                    ],
+                    "isMap": false
+                  }
+                },
+                "item": {
+                  "type": "@ref:org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.MuleComponent"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 9
+              },
+              "allowedStereotypeModels": [],
+              "name": "bypassComponents",
+              "displayModel": {
+                "displayName": "Message Processor Span Bypass",
+                "summary": "List of Message Processors to bypass when generating Message Processor spans."
+              },
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 3,
+            "tabName": "General"
+          },
+          "showInDsl": false,
+          "name": "Span Generation",
           "description": "",
           "modelProperties": {}
         }
@@ -617,7 +884,7 @@
         {
           "connectionManagementType": "CACHED",
           "externalLibraryModels": [],
-          "supportsConnectivityTesting": true,
+          "supportsConnectivityTesting": false,
           "stereotype": {
             "type": "CONNECTION",
             "namespace": "OTEL-MULE4-OBSERVABLITY-AGENT",
@@ -864,13 +1131,13 @@
       "format": "java",
       "type": "Object",
       "annotations": {
-        "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig",
+        "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.MuleComponent",
         "classInformation": {
-          "classname": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig",
-          "hasDefaultConstructor": false,
-          "isInterface": true,
-          "isInstantiable": false,
-          "isAbstract": true,
+          "classname": "org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.MuleComponent",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
           "isFinal": false,
           "implementedInterfaces": [],
           "parent": "",
@@ -878,38 +1145,13 @@
           "isMap": false
         },
         "typeAlias": {
-          "value": "OtlpExporterConfig"
-        }
-      },
-      "fields": []
-    },
-    {
-      "format": "java",
-      "type": "Object",
-      "annotations": {
-        "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig",
-        "classInformation": {
-          "classname": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig",
-          "hasDefaultConstructor": true,
-          "isInterface": false,
-          "isInstantiable": true,
-          "isAbstract": false,
-          "isFinal": false,
-          "implementedInterfaces": [
-            "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig"
-          ],
-          "parent": "",
-          "genericTypes": [],
-          "isMap": false
-        },
-        "typeAlias": {
-          "value": "OtlpTraceExporterConfig"
+          "value": "MuleComponent"
         }
       },
       "fields": [
         {
           "key": {
-            "name": "traceCollectorEndpoint",
+            "name": "namespace",
             "required": "true"
           },
           "model": {
@@ -921,177 +1163,81 @@
             },
             "display": {
               "displayModel": {
-                "displayName": "Trace Collector Endpoint",
-                "summary": "Traget URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.",
-                "example": "http://mycollector.com:4317/v1/traces"
+                "summary": "Provide the namespace for this component (e.g., http, mule, db, ...",
+                "example": "http"
               }
             }
           }
         },
         {
           "key": {
-            "name": "transportProtocol"
-          },
-          "model": {
-            "type": "String",
-            "annotations": {
-              "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterTransportProtocolType",
-              "enum": {
-                "type": "[Ljava.lang.String;",
-                "values": [
-                  "GRPC",
-                  "HTTP_PROTOBUF",
-                  "HTTP_JSON"
-                ]
-              }
-            }
-          },
-          "annotations": {
-            "default": "HTTP_PROTOBUF",
-            "expressionSupport": {
-              "value": "SUPPORTED"
-            },
-            "display": {
-              "displayModel": {
-                "displayName": "OTLP Transport Protocol"
-              }
-            }
-          }
-        },
-        {
-          "key": {
-            "name": "compression"
-          },
-          "model": {
-            "type": "String",
-            "annotations": {
-              "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterCompressionType",
-              "enum": {
-                "type": "[Ljava.lang.String;",
-                "values": [
-                  "NONE",
-                  "GZIP"
-                ]
-              }
-            }
-          },
-          "annotations": {
-            "default": "NONE",
-            "expressionSupport": {
-              "value": "SUPPORTED"
-            },
-            "display": {
-              "displayModel": {
-                "displayName": "Compression Type"
-              }
-            }
-          }
-        },
-        {
-          "key": {
-            "name": "timeout"
+            "name": "name",
+            "required": "true"
           },
           "model": {
             "type": "String"
           },
           "annotations": {
-            "default": "10s",
             "expressionSupport": {
               "value": "SUPPORTED"
             },
             "display": {
               "displayModel": {
-                "displayName": "Export Timeout",
-                "summary": "Maximum time the OTLP exporter will wait for each batch export."
+                "summary": "Provide the name for this component (e.g., listener, requester, select, ...",
+                "example": "requester"
               }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "format": "java",
+      "type": "Object",
+      "annotations": {
+        "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header",
+        "classInformation": {
+          "classname": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header",
+          "hasDefaultConstructor": true,
+          "isInterface": false,
+          "isInstantiable": true,
+          "isAbstract": false,
+          "isFinal": false,
+          "implementedInterfaces": [],
+          "parent": "org.mule.extension.otel.mule4.observablity.agent.internal.util.KeyValuePair",
+          "genericTypes": [],
+          "isMap": false
+        },
+        "typeAlias": {
+          "value": "header"
+        }
+      },
+      "fields": [
+        {
+          "key": {
+            "name": "key",
+            "required": "true"
+          },
+          "model": {
+            "type": "String"
+          },
+          "annotations": {
+            "expressionSupport": {
+              "value": "SUPPORTED"
             }
           }
         },
         {
           "key": {
-            "name": "headers"
+            "name": "value",
+            "required": "true"
           },
           "model": {
-            "type": "Array",
-            "annotations": {
-              "classInformation": {
-                "classname": "java.util.List",
-                "hasDefaultConstructor": false,
-                "isInterface": true,
-                "isInstantiable": false,
-                "isAbstract": true,
-                "isFinal": false,
-                "implementedInterfaces": [
-                  "java.util.Collection"
-                ],
-                "parent": "",
-                "genericTypes": [
-                  "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header"
-                ],
-                "isMap": false
-              }
-            },
-            "item": {
-              "type": "Object",
-              "annotations": {
-                "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header",
-                "classInformation": {
-                  "classname": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header",
-                  "hasDefaultConstructor": true,
-                  "isInterface": false,
-                  "isInstantiable": true,
-                  "isAbstract": false,
-                  "isFinal": false,
-                  "implementedInterfaces": [],
-                  "parent": "org.mule.extension.otel.mule4.observablity.agent.internal.util.KeyValuePair",
-                  "genericTypes": [],
-                  "isMap": false
-                },
-                "typeAlias": {
-                  "value": "header"
-                }
-              },
-              "fields": [
-                {
-                  "key": {
-                    "name": "key",
-                    "required": "true"
-                  },
-                  "model": {
-                    "type": "String"
-                  },
-                  "annotations": {
-                    "expressionSupport": {
-                      "value": "SUPPORTED"
-                    }
-                  }
-                },
-                {
-                  "key": {
-                    "name": "value",
-                    "required": "true"
-                  },
-                  "model": {
-                    "type": "String"
-                  },
-                  "annotations": {
-                    "expressionSupport": {
-                      "value": "SUPPORTED"
-                    }
-                  }
-                }
-              ]
-            }
+            "type": "String"
           },
           "annotations": {
             "expressionSupport": {
               "value": "SUPPORTED"
-            },
-            "display": {
-              "displayModel": {
-                "displayName": "Trace Headers",
-                "summary": "Key-value pairs separated by commas to pass as request headers on an OTLP trace."
-              }
             }
           }
         }

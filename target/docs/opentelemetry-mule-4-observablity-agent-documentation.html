@@ -2086,8 +2086,8 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#reconnect-forever">Reconnect Forever</a></li>
 <li><a href="#ExpirationPolicy">Expiration Policy</a></li>
 <li><a href="#attribute">Attribute</a></li>
-<li><a href="#OtlpTraceExporterConfig">Otlp Trace Exporter Config</a></li>
 <li><a href="#header">Header</a></li>
+<li><a href="#MuleComponent">Mule Component</a></li>
 </ul>
 </li>
 </ul>
@@ -2151,22 +2151,6 @@ Default configuration
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">OTLP Trace Exporter</p></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>One of:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="#OtlpTraceExporterConfig">Otlp Trace Exporter Config</a></p>
-</li>
-</ul>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">OpenTelemetry Protocol Trace Exporter Configuration.  <b>Note:  System or Environment Variables will BE overriden by this configuration.</b></p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Expiration Policy</p></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><a href="#ExpirationPolicy">Expiration Policy</a></p>
@@ -2190,6 +2174,92 @@ Default configuration
 <p>Array of <a href="#attribute">Attribute</a></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Optional attributes for this application defined as <key,value> pairs(e.g., service.namespace:com.mycompany, service.version:0.0.1, ...). Attributes provide context to a distributed trace which can help with correlations to proivde a clear view of what was involved when performance changes occur.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Trace Collector Endpoint</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Traget URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OTLP Transport Protocol</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Enumeration, one of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GRPC</p>
+</li>
+<li>
+<p>HTTP_PROTOBUF</p>
+</li>
+<li>
+<p>HTTP_JSON</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">HTTP_PROTOBUF</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Compression Type</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Enumeration, one of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NONE</p>
+</li>
+<li>
+<p>GZIP</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">NONE</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Export Timeout</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Maximum time the OTLP exporter will wait for each batch export.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">10s</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Trace Headers</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Array of <a href="#header">Header</a></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Key-value pairs separated by commas to pass as request headers on an OTLP trace.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Generate Message Processor Spans</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Boolean</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Generate Message Processor spans and them to the trace</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">true</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Message Processor Span Bypass</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Array of <a href="#MuleComponent">Mule Component</a></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">List of Message Processors to bypass when generating Message Processor spans.</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
@@ -2608,97 +2678,6 @@ Example of an operation that uses the configuration and a connection instance to
 </table>
 </div>
 <div class="sect2">
-<h3 id="OtlpTraceExporterConfig">Otlp Trace Exporter Config</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 25%;">
-<col style="width: 30%;">
-<col style="width: 15%;">
-<col style="width: 10%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Field</th>
-<th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Default Value</th>
-<th class="tableblock halign-left valign-middle">Required</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Trace Collector Endpoint</p></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>String</p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">x</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Transport Protocol</p></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>Enumeration, one of:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>GRPC</p>
-</li>
-<li>
-<p>HTTP_PROTOBUF</p>
-</li>
-<li>
-<p>HTTP_JSON</p>
-</li>
-</ul>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">HTTP_PROTOBUF</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Compression</p></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>Enumeration, one of:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>NONE</p>
-</li>
-<li>
-<p>GZIP</p>
-</li>
-</ul>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">NONE</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Timeout</p></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>String</p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">10s</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Headers</p></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>Array of <a href="#header">Header</a></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-left valign-middle"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
 <h3 id="header">Header</h3>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -2729,6 +2708,47 @@ Example of an operation that uses the configuration and a connection instance to
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Value</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">x</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="MuleComponent">Mule Component</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 25%;">
+<col style="width: 30%;">
+<col style="width: 15%;">
+<col style="width: 10%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Field</th>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Default Value</th>
+<th class="tableblock halign-left valign-middle">Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Namespace</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">x</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name</p></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>String</p>
 </div></div></td>

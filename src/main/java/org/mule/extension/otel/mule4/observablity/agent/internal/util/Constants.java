@@ -15,19 +15,20 @@ public class Constants
 	public static final String TRACE_CONTEXT_MAP_KEY 			= "OTEL_TRACE_CONTEXT";	
 	
 	public static final String HTTP_REQUEST_BUILDER 			= "_HTTP_REQUEST_BUILDER";	
-	
+
+	public static final String FLOW								= "flow";
+
+	public static final String DB_SELECT						= "db:select";
+	public static final String DB_MATCHER						= "^db:.*$";
+
 	public static final String HTTP_LISTENER 					= "http:listener";	
 	public static final String HTTP_REQUESTER					= "http:request";
-	public static final String FLOW								= "flow";
+
 	public static final String LOGGER							= "mule:logger";
-	public static final String DB_SELECT						= "db:select";
 	public static final String FLOW_REFERENCE					= "mule:flow-ref";
 	public static final String TRY_SCOPE					    = "mule:try";
 	public static final String FOREACH_SCOPE					= "mule:foreach";
 	
-	
-	public static final String DB_MATCHER						= "^db:.*$";
-
 	public static final String FLOW_NAME_ATTRIBUTE				= "flow.name";
 	public static final String SERVER_ID_ATTRIBUTE				= "server.id";
 	public static final String DOC_NAME_ATTRIBUTE				= "doc.name";
@@ -45,7 +46,7 @@ public class Constants
 
 	public static final String AGENT_ARTIFACT_ID 				= "otel-mule4-observability-agent";	
 	
-	public static final List<String> SKIP_LIST				    = new ArrayList<String>(Arrays.asList(FLOW_REFERENCE, 
+	public static final List<String> AUTO_SKIP_LIST				= new ArrayList<String>(Arrays.asList(FLOW_REFERENCE, 
 			                                                                                          TRY_SCOPE, 
 			                                                                                          FOREACH_SCOPE));
 }

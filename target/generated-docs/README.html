@@ -534,8 +534,8 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <div class="details">
 <span id="author" class="author">Rick Bansal</span><br>
 <span id="email" class="email"><a href="mailto:rick.bansal@mulesoft.com">rick.bansal@mulesoft.com</a></span><br>
-<span id="revnumber">version 1.0.95-SNAPSHOT,</span>
-<span id="revdate">February 25, 2022</span>
+<span id="revnumber">version 1.0.118-SNAPSHOT,</span>
+<span id="revdate">February 27, 2022</span>
 <br><span id="revremark">Initial Draft</span>
 </div>
 <div id="toc" class="toc2">
@@ -1517,7 +1517,7 @@ element corresponds to the version you installed into your Maven repository.</td
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Only Mule applications which <strong>add the agent</strong> to their configuration will generate and export trace data.
+Only Mule applications which <strong>add the agent</strong> to their configuration will generate and <strong>export</strong> trace data.
 </td>
 </tr>
 </table>
@@ -1536,19 +1536,27 @@ Only Mule applications which <strong>add the agent</strong> to their configurati
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure Collector Endpoint for trace data - must be the entire URL, including the scheme (HTTP/S) and port</td>
+<td>Provide a service name - usually the application name</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Configure OTLP Transport Protocol  - the following transports are supported:  <code>GRPC</code>, <code>HTTP_JSON</code> and <code>HTTP_PROTOBUF</code></td>
+<td>Configure Collector Endpoint for trace data - must be the entire URL, including the scheme (HTTP/S) and port</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Add any necessary vendor-specific headers</td>
+<td>Configure OTLP Transport Protocol  - the following transports are supported:  <code>GRPC</code>, <code>HTTP_JSON</code> and <code>HTTP_PROTOBUF</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Provide a service name - usually the application name</td>
+<td>Add any necessary vendor-specific headers (e.g., <code>Authorization</code> header with <code>API Token</code> key for authentication)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Optionally disable generating span data for all Message Processors</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Or mute individual Message Processor(s)</td>
 </tr>
 </table>
 </div>
@@ -1856,8 +1864,8 @@ in the development of this extension as well as their ongoing support.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.95-SNAPSHOT<br>
-Last updated 2022-02-26 11:30:00 -0600
+Version 1.0.118-SNAPSHOT<br>
+Last updated 2022-02-27 15:27:55 -0600
 </div>
 </div>
 </body>

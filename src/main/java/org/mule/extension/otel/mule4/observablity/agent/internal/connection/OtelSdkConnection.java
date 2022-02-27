@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.OTelSdkConfig;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
 import org.mule.runtime.core.api.config.MuleConfiguration;
@@ -29,8 +30,8 @@ import com.google.gson.JsonObject;
 
 /**
  * This is a Singleton class represents a connection to the local OpenTelemetry SDK.  
- * Any component requring access to the SDK will need to retrieve the <b>shared connection</b> 
- * instance from this clasd using the getInstance() method.
+ * Any component requiring access to the SDK will need to retrieve the <b>shared connection</b> 
+ * instance from this class using the getInstance() method.
  * <p>
  * When the singleton is instantiated, the SDK will be configured by properties and values set
  * in the <i><b>OpenTelemetry Mule 4 Observability Agent Config</b></i> editor.
@@ -44,6 +45,7 @@ public final class OtelSdkConnection
 	private final Tracer tracer;
 	private final TextMapPropagator textMapPropagator;
 	private final MuleConfiguration muleConfiguration;
+	private final SpanGenerationConfig	spanGenerationConfig;
 	
 	//------------------------------------------------------------------------------------------------
 	//	Singleton 
@@ -52,14 +54,14 @@ public final class OtelSdkConnection
 	 * 
 	 * @param name 
 	 * @param version
-	 * @param otelSdkConfig - container holding the configuraion for the OpenTelemetry SDK
+	 * @param otelSdkConfig - container holding the configuration for the OpenTelemetry SDK
 	 * @see	
 	 * <a href=https://javadoc.io/doc/io.opentelemetry/opentelemetry-api/latest/io/opentelemetry/api/OpenTelemetry.html>
 	 * 	OpenTelemetry Entry Point
 	 * </a>  	
 	 * @see
 	 * <a href=https://github.com/open-telemetry/opentelemetry-java/tree/main/sdk-extensions/autoconfigure>
-	 * 	OpenTelemetry SDK Autoconfigure
+	 * 	OpenTelemetry SDK Auto-configure
 	 * </a> 
 	 * @see #getTracer()
 	 * @see #getTextMapPropagator() 	 
@@ -107,6 +109,8 @@ public final class OtelSdkConnection
 		textMapPropagator = openTelemetry.getPropagators().getTextMapPropagator();
 		
 		muleConfiguration = otelSdkConfig.getMuleConfiguration();
+		
+		spanGenerationConfig = otelSdkConfig.getSpanGenerationConfig();
 	}
 
 	public void invalidate()
@@ -114,10 +118,6 @@ public final class OtelSdkConnection
 		// Nothing to invalidate.
 	}
 
-	public Optional<MuleConfiguration> getMuleConfiguration()
-	{
-		return Optional.ofNullable(muleConfiguration);
-	}
 	
 	public static Optional<OtelSdkConnection> get()
 	{
@@ -270,5 +270,19 @@ public final class OtelSdkConnection
 	public synchronized Optional<TextMapPropagator> getTextMapPropagator()
 	{
 		return Optional.ofNullable(textMapPropagator);
+	}
+	
+	/**
+	 * 
+	 * @return the MuleConfiguration for this application
+	 */
+	public Optional<MuleConfiguration> getMuleConfiguration()
+	{
+		return Optional.ofNullable(muleConfiguration);
+	}
+	
+	public Optional<SpanGenerationConfig> getSpanGenerationConfig()
+	{
+		return Optional.ofNullable(spanGenerationConfig);
 	}
 }

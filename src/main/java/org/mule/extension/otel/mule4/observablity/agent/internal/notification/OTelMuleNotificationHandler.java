@@ -6,6 +6,7 @@ import io.opentelemetry.api.trace.Tracer;
 import org.mule.runtime.api.notification.MessageProcessorNotification;
 import org.mule.runtime.api.notification.PipelineMessageNotification;
 import org.mule.runtime.core.api.config.MuleConfiguration;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.NotificationParserUtils;
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.NotificationParserService;
@@ -66,6 +67,15 @@ public class OTelMuleNotificationHandler
 			otelSdkConnection = sdkConnectionSupplier.get();
 		}
 		return otelSdkConnection.getMuleConfiguration().get();
+	}
+	
+	private SpanGenerationConfig getSpanGenerationConfig()
+	{
+		if (otelSdkConnection == null)
+		{
+			otelSdkConnection = sdkConnectionSupplier.get();
+		}
+		return otelSdkConnection.getSpanGenerationConfig().get();
 	}
 	
 	private MuleConnectorConfigStore getMuleConnectorConfigStore()
@@ -166,7 +176,7 @@ public class OTelMuleNotificationHandler
 	{
 		logger.debug("Handling processor start event");
 		
-		if (NotificationParserUtils.skipParsing(notification))
+		if (NotificationParserUtils.skipParsing(notification, getSpanGenerationConfig()))
 			return;
 		
 		NotificationParser notificationParser = NotificationParserService.getInstance()
@@ -190,7 +200,7 @@ public class OTelMuleNotificationHandler
 	{
 		logger.debug("Handling end event");
 		
-		if (NotificationParserUtils.skipParsing(notification))
+		if (NotificationParserUtils.skipParsing(notification, getSpanGenerationConfig()))
 			return;
 		
 		NotificationParser notificationParser = NotificationParserService.getInstance()

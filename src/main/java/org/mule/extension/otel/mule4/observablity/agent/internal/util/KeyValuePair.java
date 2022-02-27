@@ -69,6 +69,4 @@ public abstract class KeyValuePair
 	{
 		return key + "=" + value;
 	}
-
-
 }

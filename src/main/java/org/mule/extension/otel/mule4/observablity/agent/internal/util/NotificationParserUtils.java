@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.MuleComponent;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.runtime.api.component.ComponentIdentifier;
 import org.mule.runtime.api.event.Event;
 import org.mule.runtime.api.notification.EnrichedServerNotification;
@@ -138,15 +140,33 @@ public class NotificationParserUtils
 	 */
 	public static String getComponentId(EnrichedServerNotification notification)
 	{
-		ComponentIdentifier componentIdentifier = getComponentAnnotation("{config}componentIdentifier", notification);
+		//ComponentIdentifier componentIdentifier = getComponentAnnotation("{config}componentIdentifier", notification);
+		ComponentIdentifier componentIdentifier = getComponentIdentifier(notification);
 
 		return (componentIdentifier.getNamespace() + ":" + componentIdentifier.getName());
 	}
-
-	public static boolean skipParsing(EnrichedServerNotification notification)
+	
+	public static ComponentIdentifier getComponentIdentifier(EnrichedServerNotification notification)
 	{
+		return getComponentAnnotation("{config}componentIdentifier", notification);
+	}
+	
+	public static MuleComponent getComponentAsMuleComponent(EnrichedServerNotification notification) 
+	{
+		MuleComponent muleComponent = new MuleComponent();
+		ComponentIdentifier ci = getComponentIdentifier(notification);
+	
+		muleComponent.setNamespace(ci.getNamespace());
+		muleComponent.setName(ci.getName());
 		
-		return Constants.SKIP_LIST.contains(getComponentId(notification));
+		return muleComponent;
+	}
+
+	public static boolean skipParsing(EnrichedServerNotification notification, SpanGenerationConfig spanGenerationConfig)
+	{
+		return (Constants.AUTO_SKIP_LIST.contains(getComponentId(notification))
+				|| !(spanGenerationConfig.getGenerateMessageProcessorsSpans())
+				|| spanGenerationConfig.getBypassComponents().contains((MuleComponent)getComponentAsMuleComponent(notification)));
 		
 		/*
 		boolean skip = false;
