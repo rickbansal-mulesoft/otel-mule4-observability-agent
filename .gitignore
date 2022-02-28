@@ -19,8 +19,11 @@
 *.tar.gz
 *.rar
 
+target/test-classes/
 # un-ignore the extension jar file
-!otel-mule4-observability-agent-1.0.92-SNAPSHOT-mule-plugin.jar
+#!otel-mule4-observability-agent-1.0.92-SNAPSHOT-mule-plugin.jar
+
+!target/otel-mule4-observability-agent-*-plugin.jar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
@@ -35,4 +38,4 @@ replay_pid*
 README-avio.adoc
 AsciiDoc-Examples.adoc
 *.deprecated
-/target/
+

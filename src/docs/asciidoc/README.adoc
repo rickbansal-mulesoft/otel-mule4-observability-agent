@@ -478,7 +478,7 @@ image::Mule-4-OTel-Agent-Flowchart.png[1000, 1000, title="Mule Agent Flowchart -
 ==== Extension Download
 
 * Download the latest version of the extension from 
-https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/otel-mule4-observability-agent-1.0.92-SNAPSHOT-mule-plugin.jar[here]
+https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/otel-mule4-observability-agent-{revnumber}-mule-plugin.jar[here]
 
 ==== Add the Extension to Your Maven Repository
 
@@ -548,8 +548,8 @@ and let you more effectively focus in on Message Processors(s) of concern).
 
 Currently, trace context propagation is only supported via WC3 Trace Context headers:  `traceparent` and `tracestate`.
 
-The agent will automatically extract the trace headers from the incoming HTTP request and inject the headers into the application via
-an event variable named: `OTEL_TRACE_CONTEXT` of type:  `Map<String, String>`, where `Map<String, String>` contains the 
+The agent will automatically *extract* the trace headers from the incoming HTTP request and *inject* the headers into the application via
+an event *variable* named: `OTEL_TRACE_CONTEXT` of type:  `Map<String, String>`, where `Map<String, String>` contains the 
 following:
 
 .`OTEL_TRACE_CONTEXT` Map
