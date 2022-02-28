@@ -477,8 +477,10 @@ image::Mule-4-OTel-Agent-Flowchart.png[1000, 1000, title="Mule Agent Flowchart -
 
 ==== Extension Download
 
-* Download the latest version of the extension from 
-https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/otel-mule4-observability-agent-{revnumber}-mule-plugin.jar[here]
+* Download the latest version, `otel-mule4-observability-agent-{revnumber}-mule-plugin.jar`, of the extension from 
+https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target[here]
+
+//https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/otel-mule4-observability-agent-{revnumber}-mule-plugin.jar[here]
 
 ==== Add the Extension to Your Maven Repository
 

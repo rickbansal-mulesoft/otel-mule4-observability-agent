@@ -1395,8 +1395,8 @@ with the initial Mule Flow. In reality it is also a pipeline span.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Download the latest version of the extension from
-<a href="https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/otel-mule4-observability-agent-1.0.92-SNAPSHOT-mule-plugin.jar">here</a></p>
+<p>Download the latest version, <code>otel-mule4-observability-agent-1.0.118-SNAPSHOT-mule-plugin.jar</code>, of the extension from
+<a href="https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target">here</a></p>
 </li>
 </ul>
 </div>
@@ -1569,8 +1569,8 @@ and let you more effectively focus in on Message Processors(s) of concern).</td>
 <p>Currently, trace context propagation is only supported via WC3 Trace Context headers:  <code>traceparent</code> and <code>tracestate</code>.</p>
 </div>
 <div class="paragraph">
-<p>The agent will automatically extract the trace headers from the incoming HTTP request and inject the headers into the application via
-an event variable named: <code>OTEL_TRACE_CONTEXT</code> of type:  <code>Map&lt;String, String&gt;</code>, where <code>Map&lt;String, String&gt;</code> contains the
+<p>The agent will automatically <strong>extract</strong> the trace headers from the incoming HTTP request and <strong>inject</strong> the headers into the application via
+an event <strong>variable</strong> named: <code>OTEL_TRACE_CONTEXT</code> of type:  <code>Map&lt;String, String&gt;</code>, where <code>Map&lt;String, String&gt;</code> contains the
 following:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -1872,7 +1872,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.118-SNAPSHOT<br>
-Last updated 2022-02-27 17:40:48 -0600
+Last updated 2022-02-27 18:46:50 -0600
 </div>
 </div>
 </body>
