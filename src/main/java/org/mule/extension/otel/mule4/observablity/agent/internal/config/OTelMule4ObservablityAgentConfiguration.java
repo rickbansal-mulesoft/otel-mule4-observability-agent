@@ -58,7 +58,6 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	 * @see OTelResourceConfig
 	 */
 	@ParameterGroup(name = "Resource")
-	//@DisplayName(value = "Resources")
 	@Placement(order = 1)
 	@Summary("Open Telemetry Resource Configuration. An OpenTelemetry Resource is an " +
 			 "immutable representation of the entity producing telemetry specified as " +
@@ -91,15 +90,11 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	 * 	</a>
 	 */
 	@ParameterGroup(name = "OTLP Trace Exporter")
-	//@Parameter()
-	//@DisplayName(value = "OTLP Trace Exporter Configuration")
 	@Summary("OpenTelemetry Protocol Trace Exporter Configuration.  <b>Note:  System or Environment Variables will BE overriden by this configuration.</b>")
 	@Placement(order = 2)
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
-	// private OtlpExporterConfig traceExporter;
 	private OtlpTraceExporterConfig traceExporter;
 
-	//public OtlpExporterConfig getTraceExporter()
 	public  OtlpTraceExporterConfig getTraceExporter() 
 	{
 		return traceExporter;

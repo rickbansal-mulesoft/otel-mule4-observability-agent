@@ -19,8 +19,6 @@ import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 @Xml(prefix = "otel-mule4-observablity-agent")
 @Extension(name = "OpenTelemetry Mule 4 Observablity Agent", vendor ="MuleSoft")
 @Configurations(OTelMule4ObservablityAgentConfiguration.class)
-//@SubTypeMapping(baseType = OtlpExporterConfig.class, 
-//		        subTypes = { OtlpTraceExporterConfig.class})
 public class OTelMule4ObservablityAgentExtension
 {
 

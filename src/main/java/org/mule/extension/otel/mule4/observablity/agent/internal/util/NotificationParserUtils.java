@@ -140,7 +140,6 @@ public class NotificationParserUtils
 	 */
 	public static String getComponentId(EnrichedServerNotification notification)
 	{
-		//ComponentIdentifier componentIdentifier = getComponentAnnotation("{config}componentIdentifier", notification);
 		ComponentIdentifier componentIdentifier = getComponentIdentifier(notification);
 
 		return (componentIdentifier.getNamespace() + ":" + componentIdentifier.getName());
@@ -167,17 +166,6 @@ public class NotificationParserUtils
 		return (Constants.AUTO_SKIP_LIST.contains(getComponentId(notification))
 				|| !(spanGenerationConfig.getGenerateMessageProcessorsSpans())
 				|| spanGenerationConfig.getBypassComponents().contains((MuleComponent)getComponentAsMuleComponent(notification)));
-		
-		/*
-		boolean skip = false;
-		
-		String componentId = getComponentId(notification);
-		
-		if(Constants.SKIP_LIST.contains(componentId))
-			skip = true;
-			
-		return skip;
-		*/
 	}
 	
 	/**
