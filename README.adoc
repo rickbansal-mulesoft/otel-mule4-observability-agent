@@ -1,5 +1,14 @@
 = Mule 4 OpenTelemetry (OTel) Agent Extension
 // Document header
+// Document header
+Rick Bansal <rick.bansal@mulesoft.com>
+:revnumber: 1.0.118-SNAPSHOT
+:revdate: February 27, 2022
+:revremark: Initial Draft
+:doctype: book
+:icons: font
+:toc: left
+:keywords: Mule, MuleSoft, Observability, OpenTelemetry, OTel, Tracing, Instrumentation, Distributed
 
 // The following pass through will align the images and their titles
 ifndef::env-github[]
@@ -27,6 +36,7 @@ endif::[]
 :html-previewer: https://htmlpreview.github.io/?
 :html-version-of-README: https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/blob/main/target/generated-docs/README.html
 :docs-dir: src/docs/asciidoc
+:extension-jar-filepath: target/otel-mule4-observability-agent-{revnumber}-mule-plugin.jar
 
  
 [IMPORTANT]
@@ -53,4 +63,8 @@ use this link.
 //* link:src/docs/asciidoc/README.adoc[Extended Documentation in adoc format]
 
 * link:{docs-dir}/README.adoc[Extended Documentation in adoc format]
+
+== Link to the Extension jar file
+
+The latest version of the extension, `otel-mule4-observability-agent-{revnumber}-mule-plugin.jar` can be downloaded from link:{extension-jar-filepath}[here].
 
