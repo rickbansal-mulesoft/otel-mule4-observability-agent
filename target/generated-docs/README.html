@@ -545,25 +545,72 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_the_why_on_the_mule_4_otel_agent">The Why on the Mule 4 OTel Agent</a>
 <ul class="sectlevel2">
 <li><a href="#_composability">Composability</a></li>
-<li><a href="#_composable_enterprise">Composable Enterprise</a></li>
-<li><a href="#_observability">Observability</a></li>
+<li><a href="#_composable_enterprise">Composable Enterprise</a>
+<ul class="sectlevel3">
+<li><a href="#_so_how_long_before_we_have_true_composable_enterprises">So how long before we have true composable enterprises?</a></li>
+</ul>
+</li>
+<li><a href="#_observability">Observability</a>
+<ul class="sectlevel3">
+<li><a href="#_observability_trinity">Observability Trinity</a></li>
+<li><a href="#_why_is_observability_important">Why is observability important?</a></li>
+<li><a href="#_so_what_do_composability_and_observability_have_to_do_with_each_other">So what do composability and observability have to do with each other?</a></li>
+</ul>
+</li>
 <li><a href="#_solving_for_observability">Solving for Observability</a></li>
 </ul>
 </li>
 <li><a href="#_the_what_on_the_mule_4_otel_agent">The What on the Mule 4 OTel Agent</a>
 <ul class="sectlevel2">
-<li><a href="#_opentelemetry_otel">OpenTelemetry (OTel)</a></li>
-<li><a href="#_wc3_trace_context">WC3 Trace Context</a></li>
-<li><a href="#_mulesoft_opentelemetry_otel_agent">MuleSoft OpenTelemetry (OTel) Agent</a></li>
+<li><a href="#_opentelemetry_otel">OpenTelemetry (OTel)</a>
+<ul class="sectlevel3">
+<li><a href="#_opentelemetry_reference_architecture">OpenTelemetry Reference Architecture</a></li>
+<li><a href="#_vendor_support_for_opentelemetry">Vendor Support for OpenTelemetry</a></li>
+</ul>
+</li>
+<li><a href="#_wc3_trace_context">WC3 Trace Context</a>
+<ul class="sectlevel3">
+<li><a href="#_trace_context">Trace Context</a></li>
+<li><a href="#_trace_context_headers">Trace Context Headers</a></li>
+<li><a href="#_traceparent_http_header_details"><code>traceparent</code> HTTP Header Details</a></li>
+</ul>
+</li>
+<li><a href="#_mulesoft_opentelemetry_otel_agent">MuleSoft OpenTelemetry (OTel) Agent</a>
+<ul class="sectlevel3">
+<li><a href="#_mulesoft_java_sdk">MuleSoft Java SDK</a></li>
+<li><a href="#_mulesoft_server_notifications">MuleSoft Server Notifications</a></li>
+<li><a href="#_opentelemetry">OpenTelemetry</a></li>
+<li><a href="#_mule_4_opentelemetry_agent_architecture">Mule 4 OpenTelemetry Agent Architecture</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#The-How-Mule-OTel-Agent-id">The How on the Mule 4 OTel Agent</a>
 <ul class="sectlevel2">
-<li><a href="#_installation_guideline">Installation Guideline</a></li>
+<li><a href="#_installation_guideline">Installation Guideline</a>
+<ul class="sectlevel3">
+<li><a href="#_extension_download">Extension Download</a></li>
+<li><a href="#_add_the_extension_to_your_maven_repository">Add the Extension to Your Maven Repository</a></li>
+<li><a href="#_add_dependency_to_pom_xml_file">Add Dependency to <code>pom.xml</code> file</a></li>
+</ul>
+</li>
 <li><a href="#_agent_configuration">Agent Configuration</a></li>
 <li><a href="#_trace_context_propagation">Trace Context Propagation</a></li>
-<li><a href="#_demo_scenario">Demo Scenario</a></li>
-<li><a href="#_example_output_dynatrace_backend">Example Output - Dynatrace Backend</a></li>
+<li><a href="#_demo_scenario">Demo Scenario</a>
+<ul class="sectlevel3">
+<li><a href="#_demo_architecture_using_dynatrace_backend">Demo Architecture using Dynatrace Backend</a></li>
+<li><a href="#_demo_architecture_mule_implementation_diagram">Demo Architecture Mule Implementation Diagram</a></li>
+</ul>
+</li>
+<li><a href="#_example_output_dynatrace_backend">Example Output - Dynatrace Backend</a>
+<ul class="sectlevel3">
+<li><a href="#_overall_distributed_trace_temporal_graph">Overall Distributed Trace Temporal Graph</a></li>
+<li><a href="#_root_span_summary_details">Root Span Summary Details</a></li>
+<li><a href="#_logger_message_processor_output">Logger Message Processor Output</a></li>
+<li><a href="#_database_processor_summary">Database Processor Summary</a></li>
+<li><a href="#_database_processor_error_event">Database Processor Error Event</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_references">References</a></li>
@@ -1888,7 +1935,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.119-SNAPSHOT<br>
-Last updated 2022-03-04 12:49:28 -0600
+Last updated 2022-03-04 13:14:02 -0600
 </div>
 </div>
 </body>
