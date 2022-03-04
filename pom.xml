@@ -135,7 +135,6 @@
 		</dependency>
 
 		<!-- provided SLF4J support -->
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
