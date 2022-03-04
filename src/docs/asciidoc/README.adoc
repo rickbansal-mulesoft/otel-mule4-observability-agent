@@ -1,9 +1,11 @@
 = Mule 4 OpenTelemetry (OTel) Agent Extension
 // Document header
 Rick Bansal <rick.bansal@mulesoft.com>
-:revnumber: 1.0.119-SNAPSHOT
-:revdate: February 27, 2022
-:revremark: Initial Draft
+//:revnumber: 1.0.119-SNAPSHOT
+//:revdate: February 27, 2022
+:revnumber:
+:revdate:
+:revremark: Initial Draft v2
 :doctype: book
 :icons: font
 :toc: left
@@ -306,6 +308,15 @@ and sending data to one or more back-ends. It also supports processing and filte
 You can find more details on the API and SDK https://opentelemetry.io/docs/reference/specification/#table-of-contents[here] 
 and on the Collector https://opentelemetry.io/docs/collector/[here].
 
+==== Vendor Support for OpenTelemetry
+As shown below in the graphic, a 2021 GigaOm study concluded that big-name cloud players are moving to embrace OpenTelemetry quickly 
+and observability vendors are likewise offering integration with OpenTelemetry tools.  The GigaOm study also reveals full adoption 
+of the OpenTelemetry standards can yield *significant benefits* around instrumentation, as customers can deploy drop-in 
+instrumentation regardless of the platform. Furthermore, *portability* becomes achievable as well, improving both *cost savings* 
+and efficiency.
+
+image::GigaOm-Gartner-MQ-APM-2021.png[900, 900, title="Vendor Support for OpenTelemetry - 2021", align="center"]
+
 === WC3 Trace Context
 The Mule 4 OTel Agent currently only supports the WC3 Trace Context format as a mechanism for context propagation.
 
@@ -424,7 +435,7 @@ about the notification and sends that data to the OpenTelemetry SDK via the Open
 The OpenTelemetry SDK continues to gathers the extension generated trace data until all processing is complete.  At that point, the 
 OpenTelemetry SDK exports the trace data using the OpenTelemetry wire Protocol (OTLP) to an OpenTelemetry Collector.
 
-image::Agent-Arch.png[700, 700, title="Mule Agent Architecture", align="center"]
+image::Agent-Arch-v2.png[900, 900, title="Mule Agent Architecture", align="center"]
 
 ===== Mule Trace
 
