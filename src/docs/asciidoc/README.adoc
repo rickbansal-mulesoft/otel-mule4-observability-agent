@@ -84,13 +84,16 @@ DEM allows an enterprise to provide the best experience possible to all customer
 ====
  
 .Technical Concern 
-In order to better support the business aspirations of DEM, I believe these two *technical* capabilities are necessary prerequisites at
-the *IT level*:
+In order to better support the business aspirations for insightful and actionable DEM, I believe these two *technical* capabilities 
+are necessary prerequisites at the *IT level*:
 
 * Composability
 * Observability
 
-image::DEM-evolutionary-progression.png[900, 900, title="DEM Across Composability and Observability", align="center"]
+image::DEM-evolutionary-progression.png[800, 800, title="DEM Across Composability and Observability", align="center"]
+
+As depicted in the graphic above, DEM is an *evolutionary progression* of monitoring technology which benefits high composability and 
+leverages greater observability.  The next two sections will describe both concepts in more detail.
 
 === Composability
 
