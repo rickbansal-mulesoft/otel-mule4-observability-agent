@@ -645,7 +645,7 @@ distributed trace.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This document is, intentionally, a bit long as it contains some background details on the motivation for building
+This document is, <strong>intentionally, a bit long</strong> as it contains some background details on the motivation for building
 the extension as well as some design details on the extension itself.  However, if you prefer to <strong>skip past the the "why"
 and "what"</strong> material (no offense taken but I did put some extra effort into generating the diagrams) and get right to the
 <strong>"how"</strong>, simply go to <a href="#The-How-Mule-OTel-Agent-id">The How on the Mule 4 OTel Agent</a> section of the document.
@@ -659,8 +659,57 @@ and "what"</strong> material (no offense taken but I did put some extra effort i
 <h2 id="_the_why_on_the_mule_4_otel_agent">The Why on the Mule 4 OTel Agent</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The motivation behind developing this extension is predicated on <strong>two primary concerns</strong> as it
-relates to enterprise software:</p>
+<p>The motivation behind developing this extension is predicated on <strong>two primary concerns</strong> - a <strong><em>business</em></strong> one and a
+<strong><em>technical</em></strong> one, as it relates to the enterprise and the software they develop.</p>
+</div>
+<div class="paragraph">
+<div class="title">Business Concern</div>
+<p>At a strategic level, that is, at the <strong>business level</strong>, the goal is to better support the <strong>DEM (Digital Experience Monitor)</strong>
+solutions enterprises are rapidly either starting to invest in or adding to their current investment, especially with the need
+to support and enhance the hugely popular "work-from-home" experience.</p>
+</div>
+<div class="paragraph">
+<p>DEM is not necessarily a new technology solution, rather it&#8217;s a <strong>progression and aggregation</strong> of existing technologies such
+Application Performance Monitoring (APM), Endpoint Monitoring (EM), Real User Monitoring (RUM), Synthetic Transaction Monitoring
+(STM), Network Performance Monitoring and Diagnostics (NPMD) and a number of others.</p>
+</div>
+<div class="paragraph">
+<p>Gartner has a rather expanded definition of DEM:</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+Digital experience monitoring (DEM) technologies monitor the availability, performance and quality of experience an end user or
+digital agent receives as they interact with an application and the supporting infrastructure. Users can be external consumers
+of a service (such as patrons of a retail website), internal employees accessing corporate tools (such as a benefits management
+system), or a combination of both. DEM technologies seek to observe and model the behavior of users as a continuous flow of
+interactions in the form of user journeys.
+</blockquote>
+<div class="attribution">
+&#8212; Gartner
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The Gartner definition of DEM, while comprehensive, is but a bit of mouthful.  A simpler definition is:</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+DEM allows an enterprise to provide the best experience possible to both internal and external customers.
+</blockquote>
+<div class="attribution">
+&#8212; Simple
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Technical Concern</div>
+<p>In order to better support the business aspirations of DEM, I believe these two <strong>technical</strong> capabilities are necessary prerequisites:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1150,10 +1199,14 @@ and on the Collector <a href="https://opentelemetry.io/docs/collector/">here</a>
 <div class="sect3">
 <h4 id="_vendor_support_for_opentelemetry">Vendor Support for OpenTelemetry</h4>
 <div class="paragraph">
-<p>As shown below in the graphic, a 2021 GigaOm study concluded that big-name cloud players are moving to embrace OpenTelemetry quickly
-and observability vendors are likewise offering integration with OpenTelemetry tools.  The GigaOm study also reveals full adoption
-of the OpenTelemetry standards can yield <strong>significant benefits</strong> around instrumentation, as customers can deploy drop-in
-instrumentation regardless of the platform. Furthermore, <strong>portability</strong> becomes achievable as well, improving both <strong>cost savings</strong>
+<p>As shown in the graphic below, a <strong>2021 GigaOm</strong> study concluded that top tier cloud providers are moving to embrace OpenTelemetry quickly
+and observability vendors are likewise offering integration with OpenTelemetry tools, albeit, at various levels. However, it should be of
+no surprise the Gartner "<strong>visionaries</strong>" are offering the <strong>greatest level</strong> of support.</p>
+</div>
+<div class="paragraph">
+<p>The GigaOm study also reveals full adoption
+of the OpenTelemetry standards can yield <strong>significant benefits</strong> around instrumentation, as customers can deploy <strong>drop-in
+instrumentation</strong> regardless of the platform. Furthermore, <strong>portability</strong> becomes achievable as well, improving both <strong>cost savings</strong>
 and efficiency.</p>
 </div>
 <div class="imageblock text-center">
@@ -1798,16 +1851,16 @@ a transaction through and between Mule applications.</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Represents the overall set of spans in the <strong>distributed trace</strong>.  Nested (child) spans are indented appropriately at each level.</td>
+<td>Represents the <strong>overall</strong> set of spans in the <strong>distributed trace</strong>.  Nested (child) spans are indented appropriately at each level.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Represents the overall set of spans associated with the external Mule application (Mule_App_2). Nested (child) spans are
+<td>Represents the overall set of <strong>spans</strong> associated with the <strong>external Mule application</strong> (Mule_App_2). Nested (child) spans are
 indented appropriately.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Represents the overall set of spans associated with the secondary flow in Mule_App_1. Nested (child) spans are indented
+<td>Represents the overall set of <strong>spans</strong> associated with the <strong>secondary flow</strong> in Mule_App_1. Nested (child) spans are indented
 appropriately.</td>
 </tr>
 </table>
@@ -1894,6 +1947,9 @@ through external log files, a user can simply look at the trace to find faults.<
 <div class="ulist bibliography">
 <ul class="bibliography">
 <li>
+<p><a href="https://www.gartner.com/doc/reprints?id=1-27M5IT5I&amp;ct=211008&amp;st=sb">Gartner: "Market Guide for Digital Experience Monitoring"</a></p>
+</li>
+<li>
 <p><a href="https://w3c.github.io/trace-context/">wc3.org: "Trace Context Draft Recommendation"</a></p>
 </li>
 <li>
@@ -1918,6 +1974,12 @@ through external log files, a user can simply look at the trace to find faults.<
 <li>
 <p><a href="https://docs.mulesoft.com/mule-sdk/1.1/getting-started">MuleSoft: "Getting Started with Mule SDK for Java"</a></p>
 </li>
+<li>
+<p><a href="https://gigaom.com/report/gigaom-radar-for-application-performance-monitoring-apm/">GigaOm: "Radar for APM - 2021"</a></p>
+</li>
+<li>
+<p><a href="https://www.gartner.com/doc/reprints?id=1-25S5P19L&amp;ct=210412&amp;st=sb">Gartner: "Magic Quadrant for Application Performance Monitoring - 2021"</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -1935,7 +1997,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.119-SNAPSHOT<br>
-Last updated 2022-03-04 17:57:44 -0600
+Last updated 2022-03-05 11:18:08 -0600
 </div>
 </div>
 </body>

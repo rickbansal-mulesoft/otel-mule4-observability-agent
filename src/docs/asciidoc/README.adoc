@@ -46,15 +46,45 @@ to take on an active role in *distributed tracing* scenarios and be insightful a
 distributed trace.  
 
 [NOTE]
-This document is, intentionally, a bit long as it contains some background details on the motivation for building
+This document is, *intentionally, a bit long* as it contains some background details on the motivation for building
 the extension as well as some design details on the extension itself.  However, if you prefer to *skip past the the "why" 
 and "what"* material (no offense taken but I did put some extra effort into generating the diagrams) and get right to the 
 *"how"*, simply go to <<The-How-Mule-OTel-Agent-id>> section of the document.
 
 == The Why on the Mule 4 OTel Agent
 
-The motivation behind developing this extension is predicated on *two primary concerns* as it 
-relates to enterprise software:
+The motivation behind developing this extension is predicated on *two primary concerns* - a *_business_* one and a 
+*_technical_* one, as it relates to the enterprise and the software they develop.
+
+.Business Concern
+At a strategic level, that is, at the *business level*, the goal is to better support the *DEM (Digital Experience Monitor)* 
+solutions enterprises are rapidly either starting to invest in or adding to their current investment, especially with the need 
+to support and enhance the hugely popular "work-from-home" experience.  
+
+DEM is not necessarily a new technology solution, rather it's a *progression and aggregation* of existing technologies such 
+Application Performance Monitoring (APM), Endpoint Monitoring (EM), Real User Monitoring (RUM), Synthetic Transaction Monitoring 
+(STM), Network Performance Monitoring and Diagnostics (NPMD) and a number of others.  
+
+Gartner has a rather expanded definition of DEM:
+
+====
+[quote, Gartner]
+Digital experience monitoring (DEM) technologies monitor the availability, performance and quality of experience an end user or 
+digital agent receives as they interact with an application and the supporting infrastructure. Users can be external consumers 
+of a service (such as patrons of a retail website), internal employees accessing corporate tools (such as a benefits management 
+system), or a combination of both. DEM technologies seek to observe and model the behavior of users as a continuous flow of 
+interactions in the form of user journeys.
+====
+
+The Gartner definition of DEM, while comprehensive, is but a bit of mouthful.  A simpler definition is:
+
+====
+[quote, Simple]
+DEM allows an enterprise to provide the best experience possible to both internal and external customers.
+====
+ 
+.Technical Concern 
+In order to better support the business aspirations of DEM, I believe these two *technical* capabilities are necessary prerequisites:
 
 * Composability
 * Observability
@@ -308,10 +338,13 @@ You can find more details on the API and SDK https://opentelemetry.io/docs/refer
 and on the Collector https://opentelemetry.io/docs/collector/[here].
 
 ==== Vendor Support for OpenTelemetry
-As shown below in the graphic, a 2021 GigaOm study concluded that big-name cloud players are moving to embrace OpenTelemetry quickly 
-and observability vendors are likewise offering integration with OpenTelemetry tools.  The GigaOm study also reveals full adoption 
-of the OpenTelemetry standards can yield *significant benefits* around instrumentation, as customers can deploy drop-in 
-instrumentation regardless of the platform. Furthermore, *portability* becomes achievable as well, improving both *cost savings* 
+As shown in the graphic below, a *2021 GigaOm* study concluded that top tier cloud providers are moving to embrace OpenTelemetry quickly 
+and observability vendors are likewise offering integration with OpenTelemetry tools, albeit, at various levels. However, it should be of
+no surprise the Gartner "*visionaries*" are offering the *greatest level* of support.  
+
+The GigaOm study also reveals full adoption 
+of the OpenTelemetry standards can yield *significant benefits* around instrumentation, as customers can deploy *drop-in 
+instrumentation* regardless of the platform. Furthermore, *portability* becomes achievable as well, improving both *cost savings* 
 and efficiency.
 
 image::GigaOm-Gartner-MQ-APM-2021.png[900, 900, title="Vendor Support for OpenTelemetry - 2021", align="center"]
@@ -636,10 +669,10 @@ image::dynatrace-distributed-span.png[title="Dynatrace - Complete Distributed Tr
 As you can see in the graph above, the Agent generates spans in a manner which is *hierarchically consistent* with the progression of
 a transaction through and between Mule applications.
 
-<1> Represents the overall set of spans in the *distributed trace*.  Nested (child) spans are indented appropriately at each level.
-<2> Represents the overall set of spans associated with the external Mule application (Mule_App_2). Nested (child) spans are 
+<1> Represents the *overall* set of spans in the *distributed trace*.  Nested (child) spans are indented appropriately at each level.
+<2> Represents the overall set of *spans* associated with the *external Mule application* (Mule_App_2). Nested (child) spans are 
 indented appropriately.
-<3> Represents the overall set of spans associated with the secondary flow in Mule_App_1. Nested (child) spans are indented 
+<3> Represents the overall set of *spans* associated with the *secondary flow* in Mule_App_1. Nested (child) spans are indented 
 appropriately.
 
 ==== Root Span Summary Details
@@ -679,6 +712,7 @@ image::dynatrace-distributed-db-error-event.png[title="Dynatrace - Database Proc
 
 [bibliography]
 == References
+* https://www.gartner.com/doc/reprints?id=1-27M5IT5I&ct=211008&st=sb[Gartner: "Market Guide for Digital Experience Monitoring"]
 * {wc3-trace-context-url}[wc3.org: "Trace Context Draft Recommendation"]
 * {wc3-trace-context-url}/#dfn-distributed-traces[wc3.org: "Distributed Traces"]
 * https://opentelemetry.io/[opentelemetry.io]
@@ -688,6 +722,8 @@ image::dynatrace-distributed-db-error-event.png[title="Dynatrace - Database Proc
 * https://www.splunk.com/en_us/form/beginners-guide-to-observability.html[Splunk e-book: "A Beginner's Guide to Observability"]
 * https://docs.mulesoft.com/monitoring/[MuleSoft: "Anypoint Monitoring Overview"]
 * https://docs.mulesoft.com/mule-sdk/1.1/getting-started[MuleSoft: "Getting Started with Mule SDK for Java"]
+* https://gigaom.com/report/gigaom-radar-for-application-performance-monitoring-apm/[GigaOm: "Radar for APM - 2021"]
+* https://www.gartner.com/doc/reprints?id=1-25S5P19L&ct=210412&st=sb[Gartner: "Magic Quadrant for Application Performance Monitoring - 2021"]
 
 
 [acknowledgement]
