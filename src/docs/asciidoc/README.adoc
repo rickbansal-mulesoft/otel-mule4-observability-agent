@@ -65,7 +65,7 @@ DEM is not necessarily a new technology solution, rather it's a *progression and
 Application Performance Monitoring (APM), Endpoint Monitoring (EM), Real User Monitoring (RUM), Synthetic Transaction Monitoring 
 (STM), Network Performance Monitoring and Diagnostics (NPMD) and a number of others.  
 
-Gartner has a rather expanded definition of DEM:
+Gartner has a rather *expanded definition* of DEM:
 
 ====
 [quote, Gartner]
@@ -76,18 +76,21 @@ system), or a combination of both. DEM technologies seek to observe and model th
 interactions in the form of user journeys.
 ====
 
-The Gartner definition of DEM, while comprehensive, is but a bit of mouthful.  A simpler definition is:
+The Gartner definition of DEM, while comprehensive, is but a bit of mouthful.  A (much) *simpler definition* is:
 
 ====
 [quote, Simple]
-DEM allows an enterprise to provide the best experience possible to both internal and external customers.
+DEM allows an enterprise to provide the best experience possible to all customers.
 ====
  
 .Technical Concern 
-In order to better support the business aspirations of DEM, I believe these two *technical* capabilities are necessary prerequisites:
+In order to better support the business aspirations of DEM, I believe these two *technical* capabilities are necessary prerequisites at
+the *IT level*:
 
 * Composability
 * Observability
+
+image::DEM-evolutionary-progression.png[900, 900, title="DEM Across Composability and Observability", align="center"]
 
 === Composability
 
