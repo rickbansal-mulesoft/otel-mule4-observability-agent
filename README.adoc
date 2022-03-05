@@ -2,7 +2,7 @@
 // Document header
 Rick Bansal <rick.bansal@mulesoft.com>
 :revnumber: 1.0.119-SNAPSHOT
-:revdate: March 04, 2022
+:revdate: March 05, 2022
 :revremark: Initial Draft
 :doctype: book
 :icons: font
@@ -39,18 +39,15 @@ endif::[]
 
  
 [IMPORTANT]
-====
 This work effort is a field extension; hence, it is delivered on an "*as-is*" basis.
 Please refrain from contacting MuleSoft Support for technical support. Instead. use *GitHub 
 Issues* to provide feedback, suggest enhancements or report a bug.
 
-
-==== 
 == Links to the documentation
 
 Please refer to one of the two options below for extended documentation on this extension.
 
-=== HTML Version - Recommended
+=== HTML Version - Recommended**
 The HTML version is usually more presentation friendly and *preferred* for viewing this documentation.
 
 * {html-previewer}{html-version-of-README}[Extended Documentation in HTML format]
