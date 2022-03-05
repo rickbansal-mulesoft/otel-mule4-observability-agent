@@ -56,7 +56,7 @@ and "what"* material (no offense taken but I did put some extra effort into gene
 The motivation behind developing this extension is predicated on *two primary concerns* - a *_business_* one and a 
 *_technical_* one, as it relates to the enterprise and the software they develop.
 
-.Business Concern
+.*Business Concern*
 At a strategic level, that is, at the *business level*, the goal is to better support the *DEM (Digital Experience Monitor)* 
 solutions enterprises are rapidly either starting to invest in or adding to their current investment, especially with the need 
 to support and enhance the hugely popular "work-from-home" experience.  
@@ -83,7 +83,7 @@ The Gartner definition of DEM, while comprehensive, is but a bit of mouthful.  A
 DEM allows an enterprise to provide the best experience possible to all customers.
 ====
  
-.Technical Concern 
+.*Technical Concern*
 In order to better support the business aspirations for insightful and actionable DEM, I believe these two *technical* capabilities 
 are necessary prerequisites at the *IT level*:
 
@@ -97,7 +97,7 @@ leverages greater observability.  The next two sections will describe both conce
 
 === Composability
 
-.What exactly is composability and why does it matter?
+.*What exactly is composability and why does it matter?*
 
 Well, as you might imagine, there are plenty of 
 theoretical, complex and technical answers to this question - just Google it to get a list of the numerous publications
@@ -718,18 +718,19 @@ image::dynatrace-distributed-db-error-event.png[title="Dynatrace - Database Proc
 
 [bibliography]
 == References
-* https://www.gartner.com/doc/reprints?id=1-27M5IT5I&ct=211008&st=sb[Gartner: "Market Guide for Digital Experience Monitoring"]
-* {wc3-trace-context-url}[wc3.org: "Trace Context Draft Recommendation"]
-* {wc3-trace-context-url}/#dfn-distributed-traces[wc3.org: "Distributed Traces"]
-* https://opentelemetry.io/[opentelemetry.io]
-* https://lightstep.com/observability/[Lightstep: "Observability: A complete overview for 2021"]
 * https://www.dynatrace.com/resources/ebooks/observability-and-beyond-for-the-enterprise-cloud/[Dynatrace e-book:
 "Observability and Beyond for the Enterprise Cloud"]
-* https://www.splunk.com/en_us/form/beginners-guide-to-observability.html[Splunk e-book: "A Beginner's Guide to Observability"]
+* https://www.gartner.com/doc/reprints?id=1-27M5IT5I&ct=211008&st=sb[Gartner: "Market Guide for Digital Experience Monitoring"]
+* https://www.gartner.com/doc/reprints?id=1-25S5P19L&ct=210412&st=sb[Gartner: "Magic Quadrant for Application Performance 
+Monitoring - 2021"]
+* https://gigaom.com/report/gigaom-radar-for-application-performance-monitoring-apm/[GigaOm: "Radar for APM - 2021"]
+* https://lightstep.com/observability/[Lightstep: "Observability: A complete overview for 2021"]
 * https://docs.mulesoft.com/monitoring/[MuleSoft: "Anypoint Monitoring Overview"]
 * https://docs.mulesoft.com/mule-sdk/1.1/getting-started[MuleSoft: "Getting Started with Mule SDK for Java"]
-* https://gigaom.com/report/gigaom-radar-for-application-performance-monitoring-apm/[GigaOm: "Radar for APM - 2021"]
-* https://www.gartner.com/doc/reprints?id=1-25S5P19L&ct=210412&st=sb[Gartner: "Magic Quadrant for Application Performance Monitoring - 2021"]
+* https://opentelemetry.io/[opentelemetry.io]
+* https://www.splunk.com/en_us/form/beginners-guide-to-observability.html[Splunk e-book: "A Beginner's Guide to Observability"]
+* {wc3-trace-context-url}[wc3.org: "Trace Context Draft Recommendation"]
+* {wc3-trace-context-url}/#dfn-distributed-traces[wc3.org: "Distributed Traces"]
 
 
 [acknowledgement]
