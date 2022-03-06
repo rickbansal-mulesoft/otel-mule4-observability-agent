@@ -574,6 +574,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_trace_context">Trace Context</a></li>
 <li><a href="#_trace_context_headers">Trace Context Headers</a></li>
 <li><a href="#_traceparent_http_header_details"><code>traceparent</code> HTTP Header Details</a></li>
+<li><a href="#_tracestate_http_header_details"><code>tracestate</code> HTTP Header Details</a></li>
 </ul>
 </li>
 <li><a href="#_mulesoft_opentelemetry_otel_agent">MuleSoft OpenTelemetry (OTel) Agent</a>
@@ -1324,6 +1325,13 @@ of a client request).  The <code>parent-id</code> is <strong>automatically gener
 <div class="title">Figure 10. <code>traceparent</code> HTTP Header </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_tracestate_http_header_details"><code>tracestate</code> HTTP Header Details</h4>
+<div class="paragraph">
+<p>Since the <code>tracestate</code> header is <strong>optional</strong>, it will not be discussed any further in this document.  See
+<a href="https://w3c.github.io/trace-context/#tracestate-header">WC3: Tracestate Header</a> for additional details on the header.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_mulesoft_opentelemetry_otel_agent">MuleSoft OpenTelemetry (OTel) Agent</h3>
@@ -2016,7 +2024,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.119-SNAPSHOT<br>
-Last updated 2022-03-06 10:07:07 -0600
+Last updated 2022-03-06 10:22:48 -0600
 </div>
 </div>
 </body>

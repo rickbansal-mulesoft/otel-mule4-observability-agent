@@ -408,6 +408,10 @@ The header has *4 constituent parts*, where each part is separated by a `-`:
 
 image::traceparent-header.png[700, 700, title="`traceparent` HTTP Header ", align="center"]
 
+==== `tracestate` HTTP Header Details
+Since the `tracestate` header is *optional*, it will not be discussed any further in this document.  See 
+https://w3c.github.io/trace-context/#tracestate-header[WC3: Tracestate Header] for additional details on the header.
+
 === MuleSoft OpenTelemetry (OTel) Agent
 
 As mentioned earlier, the primary purpose of the Mule 4 OTel Agent extension is to facilitate the participation of Mule applications in 
