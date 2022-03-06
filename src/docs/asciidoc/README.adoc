@@ -487,7 +487,11 @@ image::Agent-Arch-v2.png[900, 900, title="Mule Agent Architecture", align="cente
 
 ===== Mule Trace
 
+image::MuleSoft-Trace-Causal-Hierarchy.png[title="Causal relationship between nodes in a Mule Trace", align="center"]
+
+////
 .Causal relationship between nodes in a Mule Trace
+
 [literal]
 ....
 Mule Trace:
@@ -506,6 +510,8 @@ Mule Trace:
                     [Message Processor Span E]     [Message Processor Span F]
 
 ....
+
+////
 
 Mule Trace:: A Mule Trace is simply a collection of OTel Spans structured hierarchically .  A trace has just one trace root 
 span and one or more child spans - Pipeline Spans and/or Message Processor Spans.

@@ -1457,24 +1457,11 @@ OpenTelemetry SDK exports the trace data using the OpenTelemetry wire Protocol (
 </div>
 <div class="sect4">
 <h5 id="_mule_trace">Mule Trace</h5>
-<div class="literalblock">
-<div class="title">Causal relationship between nodes in a Mule Trace</div>
+<div class="imageblock text-center">
 <div class="content">
-<pre>Mule Trace:
-
-			             [Trace Root Span A] &lt;-- (the uber pipeline span)
-                                 |
-			     +---------------+---------------+
-                 |                               |
-        [Pipeline Span B]               [Pipeline Span C] &lt;-- (Spans B, C are 'children' of A)
-                 |                               |
-                 |                               |
-    [Message Processor Span D]                   |
-                                                 |
-                                 +---------------+----------------+
-                                 |                                |
-                    [Message Processor Span E]     [Message Processor Span F]</pre>
+<img src="./Images/MuleSoft-Trace-Causal-Hierarchy.png" alt="MuleSoft Trace Causal Hierarchy">
 </div>
+<div class="title">Figure 13. Causal relationship between nodes in a Mule Trace</div>
 </div>
 <div class="dlist">
 <dl>
@@ -1510,7 +1497,7 @@ with the initial Mule Flow. In reality it is also a pipeline span.</p>
 <div class="content">
 <img src="./Images/Mule-4-OTel-Agent-Flowchart-Startup.png" alt="500" width="500">
 </div>
-<div class="title">Figure 13. Mule Agent Flowchart - Startup</div>
+<div class="title">Figure 14. Mule Agent Flowchart - Startup</div>
 </div>
 </div>
 <div class="sect5">
@@ -1519,7 +1506,7 @@ with the initial Mule Flow. In reality it is also a pipeline span.</p>
 <div class="content">
 <img src="./Images/Mule-4-OTel-Agent-Flowchart.png" alt="1000" width="1000">
 </div>
-<div class="title">Figure 14. Mule Agent Flowchart - Notification Processing</div>
+<div class="title">Figure 15. Mule Agent Flowchart - Notification Processing</div>
 </div>
 </div>
 </div>
@@ -1601,7 +1588,7 @@ prone.  It&#8217;s the preferred method, especially, if you aren&#8217;t very co
 <div class="content">
 <img src="./Images/add-to-maven-repo-via-studio.png" alt="800" width="800">
 </div>
-<div class="title">Figure 15. Add Into Maven Repo via Studio</div>
+<div class="title">Figure 16. Add Into Maven Repo via Studio</div>
 </div>
 <div class="colist arabic">
 <table>
@@ -1668,7 +1655,7 @@ Mule applications <strong>must add the agent</strong> to their configuration in 
 <div class="content">
 <img src="./Images/agent-connector-config.png" alt="800" width="800">
 </div>
-<div class="title">Figure 16. Mule Agent Configuration</div>
+<div class="title">Figure 17. Mule Agent Configuration</div>
 </div>
 <div class="colist arabic">
 <table>
@@ -1744,7 +1731,7 @@ have default headers configured in the following way:</p>
 <div class="content">
 <img src="./Images/http-requester-config.png" alt="600" width="600">
 </div>
-<div class="title">Figure 17. Mule HTTP Requester Configuration</div>
+<div class="title">Figure 18. Mule HTTP Requester Configuration</div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 3. HTTP Requester Configuration for Default Headers</caption>
@@ -1792,7 +1779,7 @@ render in a Dynatrace backend.</p>
 <div class="content">
 <img src="./Images/Demo-Distributed-App-Arch.png" alt="1200" width="1200">
 </div>
-<div class="title">Figure 18. Demo Architecture</div>
+<div class="title">Figure 19. Demo Architecture</div>
 </div>
 <div class="colist arabic">
 <table>
@@ -1851,7 +1838,7 @@ including error events and log output.
 <div class="content">
 <img src="./Images/Distributed-Mule-App-Diagram.png" alt="Distributed Mule App Diagram">
 </div>
-<div class="title">Figure 19. Demo Mule Application Diagram</div>
+<div class="title">Figure 20. Demo Mule Application Diagram</div>
 </div>
 </div>
 </div>
@@ -1867,7 +1854,7 @@ by the Mule 4 OTel Agent and visualized by observability backend.</p>
 <div class="content">
 <img src="./Images/dynatrace-distributed-span.png" alt="dynatrace distributed span">
 </div>
-<div class="title">Figure 20. Dynatrace - Complete Distributed Trace</div>
+<div class="title">Figure 21. Dynatrace - Complete Distributed Trace</div>
 </div>
 <div class="paragraph">
 <p>As you can see in the graph above, the Agent generates spans in a manner which is <strong>hierarchically consistent</strong> with the progression of
@@ -1903,7 +1890,7 @@ the protocol (HTTP or HTTPs), the URI, the remote address, etc.</p>
 <div class="content">
 <img src="./Images/dynatrace-distributed-rootspan-summary.png" alt="dynatrace distributed rootspan summary">
 </div>
-<div class="title">Figure 21. Dynatrace - Root Span Summary</div>
+<div class="title">Figure 22. Dynatrace - Root Span Summary</div>
 </div>
 <div class="colist arabic">
 <table>
@@ -1934,7 +1921,7 @@ Development,&#8230;&#8203;), hosting region, etc. for easier correlation and sea
 <div class="content">
 <img src="./Images/dynatrace-distributed-span-logger-event.png" alt="dynatrace distributed span logger event">
 </div>
-<div class="title">Figure 22. Dynatrace - Logger Processor Output Event</div>
+<div class="title">Figure 23. Dynatrace - Logger Processor Output Event</div>
 </div>
 </div>
 <div class="sect3">
@@ -1947,7 +1934,7 @@ connection type, host, port, database name and user as well operational attribut
 <div class="content">
 <img src="./Images/dynatrace-distributed-db-summary.png" alt="dynatrace distributed db summary">
 </div>
-<div class="title">Figure 23. Dynatrace - Database Processor Summary</div>
+<div class="title">Figure 24. Dynatrace - Database Processor Summary</div>
 </div>
 </div>
 <div class="sect3">
@@ -1961,7 +1948,7 @@ through external log files, a user can simply look at the trace to find faults.<
 <div class="content">
 <img src="./Images/dynatrace-distributed-db-error-event.png" alt="dynatrace distributed db error event">
 </div>
-<div class="title">Figure 24. Dynatrace - Database Processor Error Event</div>
+<div class="title">Figure 25. Dynatrace - Database Processor Error Event</div>
 </div>
 </div>
 </div>
@@ -2024,7 +2011,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.119-SNAPSHOT<br>
-Last updated 2022-03-06 10:22:48 -0600
+Last updated 2022-03-06 12:12:20 -0600
 </div>
 </div>
 </body>
