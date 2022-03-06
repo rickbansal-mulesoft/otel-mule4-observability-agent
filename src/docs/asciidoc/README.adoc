@@ -487,7 +487,10 @@ image::Agent-Arch-v2.png[900, 900, title="Mule Agent Architecture", align="cente
 
 ===== Mule Trace
 
-image::MuleSoft-Trace-Causal-Hierarchy.png[title="Causal relationship between nodes in a Mule Trace", align="center"]
+The figure below shows the causal (parent/child) relationship between nodes in a Mule Trace that crosses two separate Mule applications. 
+As can be seen, the hierarchy can become quite complex and nested.  Luckily, the OpenTelemetry SDK manages most of that complexity for us.
+
+image::MuleSoft-Trace-Causal-Hierarchy.png[title="Causal Relationship Between Nodes in a Distributed Mule Trace", align="center"]
 
 ////
 .Causal relationship between nodes in a Mule Trace

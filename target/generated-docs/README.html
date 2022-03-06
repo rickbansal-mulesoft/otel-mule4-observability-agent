@@ -1457,11 +1457,15 @@ OpenTelemetry SDK exports the trace data using the OpenTelemetry wire Protocol (
 </div>
 <div class="sect4">
 <h5 id="_mule_trace">Mule Trace</h5>
+<div class="paragraph">
+<p>The figure below shows the causal (parent/child) relationship between nodes in a Mule Trace that crosses two separate Mule applications.
+As can be seen, the hierarchy can become quite complex and nested.  Luckily, the OpenTelemetry SDK manages most of that complexity for us.</p>
+</div>
 <div class="imageblock text-center">
 <div class="content">
 <img src="./Images/MuleSoft-Trace-Causal-Hierarchy.png" alt="MuleSoft Trace Causal Hierarchy">
 </div>
-<div class="title">Figure 13. Causal relationship between nodes in a Mule Trace</div>
+<div class="title">Figure 13. Causal Relationship Between Nodes in a Distributed Mule Trace</div>
 </div>
 <div class="dlist">
 <dl>
@@ -2011,7 +2015,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.119-SNAPSHOT<br>
-Last updated 2022-03-06 12:12:20 -0600
+Last updated 2022-03-06 14:48:16 -0600
 </div>
 </div>
 </body>
