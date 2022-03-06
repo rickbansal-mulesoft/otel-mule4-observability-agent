@@ -535,7 +535,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <span id="author" class="author">Rick Bansal</span><br>
 <span id="email" class="email"><a href="mailto:rick.bansal@mulesoft.com">rick.bansal@mulesoft.com</a></span><br>
 <span id="revnumber">version 1.0.119-SNAPSHOT,</span>
-<span id="revdate">March 05, 2022</span>
+<span id="revdate">March 06, 2022</span>
 <br><span id="revremark">Initial Draft v2</span>
 </div>
 <div id="toc" class="toc2">
@@ -544,6 +544,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_introduction">Introduction</a></li>
 <li><a href="#_the_why_on_the_mule_4_otel_agent">The Why on the Mule 4 OTel Agent</a>
 <ul class="sectlevel2">
+<li><a href="#_digital_experience_monitoring">Digital Experience Monitoring</a></li>
 <li><a href="#_composability">Composability</a></li>
 <li><a href="#_composable_enterprise">Composable Enterprise</a>
 <ul class="sectlevel3">
@@ -659,22 +660,24 @@ and "what"</strong> material (no offense taken but I did put some extra effort i
 <h2 id="_the_why_on_the_mule_4_otel_agent">The Why on the Mule 4 OTel Agent</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The motivation behind developing this extension is predicated on <strong>two primary concerns</strong> - a <strong><em>business</em></strong> one and a
-<strong><em>technical</em></strong> one, as it relates to the enterprise and the software they develop.</p>
+<p>The motivation behind developing this extension is predicated on <strong>two primary concerns</strong> as it relates to the enterprise and
+the software they develop - a <strong><em>business</em></strong> concern and a <strong><em>technical</em></strong> concern.</p>
 </div>
+<div class="sect2">
+<h3 id="_digital_experience_monitoring">Digital Experience Monitoring</h3>
 <div class="paragraph">
 <div class="title"><strong>Business Concern</strong></div>
-<p>At a strategic level, that is, at the <strong>business level</strong>, the goal is to better support the <strong>DEM (Digital Experience Monitor)</strong>
-solutions enterprises are rapidly either starting to invest in or adding to their current investment, especially with the need
+<p>At a strategic level, that is, at the <strong>business level</strong>, the goal is to better champion the <strong>DEM (Digital Experience Monitor)</strong>
+strategies and solutions enterprises either currently have in place or are rapidly starting to invest in, especially with the need
 to support and enhance the hugely popular "work-from-home" experience.</p>
 </div>
 <div class="paragraph">
-<p>DEM is not necessarily a new technology solution, rather it&#8217;s a <strong>progression and aggregation</strong> of existing technologies such
+<p>DEM is not necessarily a new technology solution; rather, it&#8217;s a <strong>progression and aggregation</strong> of existing technologies such
 Application Performance Monitoring (APM), Endpoint Monitoring (EM), Real User Monitoring (RUM), Synthetic Transaction Monitoring
 (STM), Network Performance Monitoring and Diagnostics (NPMD) and a number of others.</p>
 </div>
 <div class="paragraph">
-<p>Gartner has a rather <strong>expanded definition</strong> of DEM:</p>
+<p>Gartner has a somewhat <strong>expanded definition</strong> of DEM:</p>
 </div>
 <div class="exampleblock">
 <div class="content">
@@ -693,7 +696,7 @@ interactions in the form of user journeys.
 </div>
 </div>
 <div class="paragraph">
-<p>The Gartner definition of DEM, while comprehensive, is but a bit of mouthful.  A (much) <strong>simpler definition</strong> is:</p>
+<p>The Gartner definition of DEM, while comprehensive, is a bit of a mouthful.  A (much) <strong>simpler definition</strong> is:</p>
 </div>
 <div class="exampleblock">
 <div class="content">
@@ -729,8 +732,9 @@ are necessary prerequisites at the <strong>IT level</strong>:</p>
 <div class="title">Figure 1. DEM Across Composability and Observability</div>
 </div>
 <div class="paragraph">
-<p>As depicted in the graphic above, DEM is an <strong>evolutionary progression</strong> of monitoring technology which benefits high composability and
+<p>As depicted in the graphic above, DEM is an <strong>evolutionary progression</strong> of monitoring technology which serves high composability and
 leverages greater observability.  The next two sections will describe both concepts in more detail.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_composability">Composability</h3>
@@ -866,9 +870,12 @@ with the support of companies like MuleSoft, products like the Anypoint Platform
 </div>
 <div class="sect2">
 <h3 id="_observability">Observability</h3>
+<div class="paragraph">
+<p>Wikipedia defines <strong>observability</strong> as:</p>
+</div>
 <div class="quoteblock">
 <blockquote>
-Wikipedia defines <strong>observability</strong> as a measure of how well internal states of a system can be inferred from knowledge of
+A measure of how well internal states of a system can be inferred from knowledge of
 its external outputs.  As it relates specifically to software, observability is the ability to collect <strong>data about program
 execution, internal states of modules, and communication between components</strong>.  This corpus of collected data is also referred
 to as <strong>telemetry</strong>.
@@ -1034,7 +1041,7 @@ their telemetry.</p>
 <p>I state "<em>struggled in the past</em>" because many APM vendors are now starting to embrace and support open source projects like
 <a href="https://opentelemetry.io/docs/reference/specification/overview/">OpenTelemetry</a> for vendor-agnostic instrumentation agent
 implementations and standards such as <a href="https://w3c.github.io/trace-context//">W3C Trace Context</a> for context propagation
-to help them fill in the "holes".</p>
+to help them fill in the "holes".  See <a href="#vendor-support-for-otel">Vendor Support for OpenTelemetry - 2021</a> below.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1080,7 +1087,7 @@ extension&#8217;s architecture.</p>
 <h3 id="_opentelemetry_otel">OpenTelemetry (OTel)</h3>
 <div class="quoteblock">
 <blockquote>
-OpenTelemetry <strong>is a set</strong> of APIs, SDKs, tooling and integrations that are designed for the creation and management
+OpenTelemetry <strong>is a set of APIs, SDKs, tooling and integrations</strong> that are designed for the creation and management
 of <strong>telemetry data</strong> such as traces, metrics, and logs. The project provides a <strong>vendor-agnostic</strong> implementation that
 can be configured to send telemetry data to the backend(s) of your choice.
 </blockquote>
@@ -1096,7 +1103,7 @@ can be configured to send telemetry data to the backend(s) of your choice.
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-OpenTelemetry <strong>is not</strong> an observability back-end.  Instead, it supports exporting data to a variety of open-source
+OpenTelemetry <strong>is not an observability back-end</strong>.  Instead, it supports exporting data to a variety of open-source
 (e.g., Jaeger, Prometheus, etc.) and commercial back-ends (e.g., Dynatrace, New Relic, Grafana, etc.).
 </td>
 </tr>
@@ -1220,7 +1227,7 @@ of the OpenTelemetry standards can yield <strong>significant benefits</strong> a
 instrumentation</strong> regardless of the platform. Furthermore, <strong>portability</strong> becomes achievable as well, improving both <strong>cost savings</strong>
 and efficiency.</p>
 </div>
-<div class="imageblock text-center">
+<div id="vendor-support-for-otel" class="imageblock text-center">
 <div class="content">
 <img src="./Images/GigaOm-Gartner-MQ-APM-2021.png" alt="900" width="900">
 </div>
@@ -2009,7 +2016,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.119-SNAPSHOT<br>
-Last updated 2022-03-05 14:20:50 -0600
+Last updated 2022-03-06 10:07:07 -0600
 </div>
 </div>
 </body>

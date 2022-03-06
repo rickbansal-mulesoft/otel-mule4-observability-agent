@@ -53,19 +53,21 @@ and "what"* material (no offense taken but I did put some extra effort into gene
 
 == The Why on the Mule 4 OTel Agent
 
-The motivation behind developing this extension is predicated on *two primary concerns* - a *_business_* one and a 
-*_technical_* one, as it relates to the enterprise and the software they develop.
+The motivation behind developing this extension is predicated on *two primary concerns* as it relates to the enterprise and 
+the software they develop - a *_business_* concern and a *_technical_* concern.
+
+=== Digital Experience Monitoring
 
 .*Business Concern*
-At a strategic level, that is, at the *business level*, the goal is to better support the *DEM (Digital Experience Monitor)* 
-solutions enterprises are rapidly either starting to invest in or adding to their current investment, especially with the need 
+At a strategic level, that is, at the *business level*, the goal is to better champion the *DEM (Digital Experience Monitor)* 
+strategies and solutions enterprises either currently have in place or are rapidly starting to invest in, especially with the need 
 to support and enhance the hugely popular "work-from-home" experience.  
 
-DEM is not necessarily a new technology solution, rather it's a *progression and aggregation* of existing technologies such 
+DEM is not necessarily a new technology solution; rather, it's a *progression and aggregation* of existing technologies such 
 Application Performance Monitoring (APM), Endpoint Monitoring (EM), Real User Monitoring (RUM), Synthetic Transaction Monitoring 
 (STM), Network Performance Monitoring and Diagnostics (NPMD) and a number of others.  
 
-Gartner has a rather *expanded definition* of DEM:
+Gartner has a somewhat *expanded definition* of DEM:
 
 ====
 [quote, Gartner]
@@ -76,7 +78,7 @@ system), or a combination of both. DEM technologies seek to observe and model th
 interactions in the form of user journeys.
 ====
 
-The Gartner definition of DEM, while comprehensive, is but a bit of mouthful.  A (much) *simpler definition* is:
+The Gartner definition of DEM, while comprehensive, is a bit of a mouthful.  A (much) *simpler definition* is:
 
 ====
 [quote, Simple]
@@ -92,7 +94,7 @@ are necessary prerequisites at the *IT level*:
 
 image::DEM-evolutionary-progression.png[800, 800, title="DEM Across Composability and Observability", align="center"]
 
-As depicted in the graphic above, DEM is an *evolutionary progression* of monitoring technology which benefits high composability and 
+As depicted in the graphic above, DEM is an *evolutionary progression* of monitoring technology which serves high composability and 
 leverages greater observability.  The next two sections will describe both concepts in more detail.
 
 === Composability
@@ -163,8 +165,11 @@ image::API-Led-1.png[title="API Led to Help Solve for Composability", align="cen
 
 === Observability
 
+
+Wikipedia defines *observability* as:
+
 [quote]
-Wikipedia defines *observability* as a measure of how well internal states of a system can be inferred from knowledge of 
+A measure of how well internal states of a system can be inferred from knowledge of 
 its external outputs.  As it relates specifically to software, observability is the ability to collect *data about program 
 execution, internal states of modules, and communication between components*.  This corpus of collected data is also referred 
 to as *telemetry*.
@@ -256,7 +261,7 @@ their telemetry.
 I state "_struggled in the past_" because many APM vendors are now starting to embrace and support open source projects like 
 https://opentelemetry.io/docs/reference/specification/overview/[OpenTelemetry] for vendor-agnostic instrumentation agent 
 implementations and standards such as {wc3-trace-context-url}/[W3C Trace Context] for context propagation 
-to help them fill in the "holes".
+to help them fill in the "holes".  See <<vendor-support-for-otel>> below.
 
 ==== So what do composability and observability have to do with each other?  
 
@@ -287,11 +292,11 @@ extension's architecture.
 === OpenTelemetry (OTel)
 
 [quote, OpenTelemetry, 'https://opentelemetry.io']
-OpenTelemetry *is a set* of APIs, SDKs, tooling and integrations that are designed for the creation and management 
+OpenTelemetry *is a set of APIs, SDKs, tooling and integrations* that are designed for the creation and management 
 of *telemetry data* such as traces, metrics, and logs. The project provides a *vendor-agnostic* implementation that 
 can be configured to send telemetry data to the backend(s) of your choice.
 
-IMPORTANT: OpenTelemetry *is not* an observability back-end.  Instead, it supports exporting data to a variety of open-source 
+IMPORTANT: OpenTelemetry *is not an observability back-end*.  Instead, it supports exporting data to a variety of open-source 
 (e.g., Jaeger, Prometheus, etc.) and commercial back-ends (e.g., Dynatrace, New Relic, Grafana, etc.). 
 
 As noted above, OpenTelemetry is a *framework* which provides a single, vendor-agnostic solution with the purpose 
@@ -353,6 +358,7 @@ of the OpenTelemetry standards can yield *significant benefits* around instrumen
 instrumentation* regardless of the platform. Furthermore, *portability* becomes achievable as well, improving both *cost savings* 
 and efficiency.
 
+[#vendor-support-for-otel]
 image::GigaOm-Gartner-MQ-APM-2021.png[900, 900, title="Vendor Support for OpenTelemetry - 2021", align="center"]
 
 === WC3 Trace Context
