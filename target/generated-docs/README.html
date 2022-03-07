@@ -1355,10 +1355,10 @@ configuration file.</p>
         <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MuleMessageProcessorNotificationListener</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
 
 <span style="color:#070;font-weight:bold">&lt;notifications&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;notification</span> <span style="color:#b48">event</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">PIPELINE-MESSAGE</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;notification</span> <span style="color:#b48">event</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">MESSAGE-PROCESSOR</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;notification-listener</span> <span style="color:#b48">ref</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">_muleMessageProcessorNotificationListener</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;notification-listener</span> <span style="color:#b48">ref</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">_mulePipelinNotificationListener</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;notification</span> <span style="color:#b48">event</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">PIPELINE-MESSAGE</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;notification</span> <span style="color:#b48">event</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">MESSAGE-PROCESSOR</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;notification-listener</span> <span style="color:#b48">ref</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">_muleMessageProcessorNotificationListener</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;notification-listener</span> <span style="color:#b48">ref</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">_mulePipelinNotificationListener</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">/&gt;</span>
 <span style="color:#070;font-weight:bold">&lt;/notifications&gt;</span></pre></td>
 </tr></table></code></pre>
 </div>
@@ -1590,10 +1590,10 @@ prone.  It&#8217;s the preferred method, especially, if you aren&#8217;t very co
 6
 </pre></td>
   <td class="code"><pre><span style="color:#070;font-weight:bold">&lt;dependency&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;groupId&gt;</span>org.mulesoft.extensions.rickbansal.otel<span style="color:#070;font-weight:bold">&lt;/groupId&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;artifactId&gt;</span>otel-mule4-observability-agent<span style="color:#070;font-weight:bold">&lt;/artifactId&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;version&gt;</span>1.0.92-SNAPSHOT<span style="color:#070;font-weight:bold">&lt;/version&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
-        <span style="color:#070;font-weight:bold">&lt;classifier&gt;</span>mule-plugin<span style="color:#070;font-weight:bold">&lt;/classifier&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;groupId&gt;</span>org.mulesoft.extensions.rickbansal.otel<span style="color:#070;font-weight:bold">&lt;/groupId&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;artifactId&gt;</span>otel-mule4-observability-agent<span style="color:#070;font-weight:bold">&lt;/artifactId&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;version&gt;</span>1.0.92-SNAPSHOT<span style="color:#070;font-weight:bold">&lt;/version&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span style="color:#070;font-weight:bold">&lt;classifier&gt;</span>mule-plugin<span style="color:#070;font-weight:bold">&lt;/classifier&gt;</span>
 <span style="color:#070;font-weight:bold">&lt;/dependency&gt;</span></pre></td>
 </tr></table></code></pre>
 </div>
@@ -1742,11 +1742,11 @@ have default headers configured in the following way:</p>
 7
 </pre></td>
   <td class="code"><pre><span style="color:#070;font-weight:bold">&lt;http:request-config</span> <span style="color:#b48">name</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">HTTP_Request_configuration</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">doc:name</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">HTTP Request configuration</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">doc:id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">7c863500-0642-4e9d-b759-5e317225e015</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">sendCorrelationId</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">NEVER</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;http:request-connection</span> <span style="color:#b48">host</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">mule-hello-world-api.us-e1.cloudhub.io</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
-        <span style="color:#070;font-weight:bold">&lt;http:default-headers</span> <span style="color:#070;font-weight:bold">&gt;</span>
-                <span style="color:#070;font-weight:bold">&lt;http:default-header</span> <span style="color:#b48">key</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">traceparent</span><span style="color:#710">'</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
-                <span style="color:#070;font-weight:bold">&lt;http:default-header</span> <span style="color:#b48">key</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">tracestate</span><span style="color:#710">'</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">#[vars.OTEL_TRACE_CONTEXT.tracestate default '' as String]</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>   <i class="conum" data-value="2"></i><b>(2)</b>
-        <span style="color:#070;font-weight:bold">&lt;/http:default-headers&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;http:request-connection</span> <span style="color:#b48">host</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">mule-hello-world-api.us-e1.cloudhub.io</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;http:default-headers</span> <span style="color:#070;font-weight:bold">&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;http:default-header</span> <span style="color:#b48">key</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">traceparent</span><span style="color:#710">'</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+        <span style="color:#070;font-weight:bold">&lt;http:default-header</span> <span style="color:#b48">key</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">tracestate</span><span style="color:#710">'</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">#[vars.OTEL_TRACE_CONTEXT.tracestate default '' as String]</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>   <i class="conum" data-value="2"></i><b>(2)</b>
+    <span style="color:#070;font-weight:bold">&lt;/http:default-headers&gt;</span>
 <span style="color:#070;font-weight:bold">&lt;/http:request-config&gt;</span></pre></td>
 </tr></table></code></pre>
 </div>
@@ -1996,7 +1996,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.119-SNAPSHOT<br>
-Last updated 2022-03-07 08:12:07 -0600
+Last updated 2022-03-07 08:56:18 -0600
 </div>
 </div>
 </body>
