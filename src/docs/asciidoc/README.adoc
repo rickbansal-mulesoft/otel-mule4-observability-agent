@@ -9,8 +9,8 @@ Rick Bansal <rick.bansal@mulesoft.com>
 :toc: left
 :toclevels: 3
 :imagesdir: ./Images
-:source-highlighter: coderay
 :keywords: Mule, MuleSoft, Observability, OpenTelemetry, OTel, Tracing, Instrumentation, Distributed
+
 
 // The following pass through will align the images and their titles
 ifndef::env-github[]
@@ -441,19 +441,40 @@ configuration file.
 .Example of subscribing to notifications programmatically
 [source%nowrap%linenums, java]
 ----
-notificationListenerRegistry.registerListener(new MuleMessageProcessorNotificationListener(otelMuleNotificationHandler));
+import org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MuleMessageProcessorNotificationListener;
+import org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MulePipelineNotificationListener;
+import org.mule.runtime.api.notification.NotificationListenerRegistry;
+import javax.inject.Inject;
 
-notificationListenerRegistry.registerListener(new MulePipelineNotificationListener(otelMuleNotificationHandler));
+public class RegisterNotificationListeners
+{
+    @Inject
+    NotificationListenerRegistry notificationListenerRegistry;
+    
+    RegisterNotificationListeners()
+    {
+        notificationListenerRegistry.registerListener(new MuleMessageProcessorNotificationListener());
+        notificationListenerRegistry.registerListener(new MulePipelineNotificationListener());
+    }
+}
 ----
 
 .Example of subscribing to notifications using the `<notification>` element
-[source, xml]
+[source%nowrap%linenums, xml]
 ----
+<object doc:name="Object"
+        name="_mulePipelinNotificationListener"
+        class="org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MulePipelineNotificationListener" />
+			
+<object doc:name="Object"
+        name="_muleMessageProcessorNotificationListener"
+        class="org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MuleMessageProcessorNotificationListener" />
+		    
 <notifications>
 	<notification event="PIPELINE-MESSAGE"/>
 	<notification event="MESSAGE-PROCESSOR"/>
 	<notification-listener ref="_muleMessageProcessorNotificationListener"/>
-	<notification-listener ref="_muleFlowNotificationListener"/>
+	<notification-listener ref="_mulePipelinNotificationListener"/>
 </notifications>
 ----
 
@@ -582,7 +603,7 @@ image::add-to-maven-repo-via-studio.png[800, 800, title="Add Into Maven Repo via
 ==== Add Dependency to `pom.xml` file
 
 Add the following snippet into your Mule project `pom.xml` file in the `<dependencies>` section:
-[source, xml]
+[source%nowrap%linenums, xml]
 ----
 <dependency>
 	<groupId>org.mulesoft.extensions.rickbansal.otel</groupId>
@@ -620,7 +641,7 @@ The agent will automatically *extract* the trace headers from the incoming HTTP 
 an event *variable* named: `OTEL_TRACE_CONTEXT` of type:  `Map<String, String>`, where `Map<String, String>` contains the 
 following:
 
-.`OTEL_TRACE_CONTEXT` Map
+.`OTEL_TRACE_CONTEXT` <key, value> Map
 |===
 | *Key*          | *Value*
 | `traceparent`  | `[traceparent value]`
@@ -643,13 +664,13 @@ image::http-requester-config.png[600, 600, title="Mule HTTP Requester Configurat
 
 
 .Mule configuration xml for setting default headers in the HTTP Requester Configuration
-[source%nowrap, xml]
+[source%nowrap%linenums, xml]
 ----
 <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="7c863500-0642-4e9d-b759-5e317225e015" sendCorrelationId="NEVER">
 	<http:request-connection host="mule-hello-world-api.us-e1.cloudhub.io" />
 	<http:default-headers >
-		<http:default-header key='traceparent' value="#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]" />
-		<http:default-header key='tracestate' value="#[vars.OTEL_TRACE_CONTEXT.tracestate default '' as String]" />
+		<http:default-header key='traceparent' value="#[vars.OTEL_TRACE_CONTEXT.traceparent default '' as String]" /> <1>
+		<http:default-header key='tracestate' value="#[vars.OTEL_TRACE_CONTEXT.tracestate default '' as String]" />   <2>
 	</http:default-headers>
 </http:request-config>
 ----

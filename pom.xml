@@ -65,6 +65,7 @@
 								<revnumber>${project.version}</revnumber>
 								<revdate>${maven.build.timestamp}</revdate>
 								<source-highlighter>coderay</source-highlighter>
+								<coderay-css>style</coderay-css>
 							</attributes>
 						</configuration>
 					</execution>
