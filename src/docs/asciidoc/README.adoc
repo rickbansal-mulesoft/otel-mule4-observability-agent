@@ -299,7 +299,8 @@ below in the diagram, include:
 image::observability-not-just-for-cloud-native.png[800, 800, title="Observability for Traditional Integration Patterns", align="center"]
 
 Furthermore, newer API integrations patterns such as GraphQL often implement *complicated data aggregation* patterns requiring data 
-from multiple, disparate data sources, as depicted below.  These types of patterns will also be served well from greater observability.
+from multiple, disparate data sources - Databases, SaaS applications, custom APIs, etc., as depicted below.  These types of patterns will 
+also be served well from greater observability.
 
 image::observability-datagraph.png[600, 600, title="Observability for Complicated Data Aggregation Patterns", align="center"]
 
