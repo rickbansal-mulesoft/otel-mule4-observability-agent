@@ -282,6 +282,27 @@ part of an enterprise's overall observability solution.
 
 image::Solving-for-observability.png[600, 600, title="Observability = Anypoint Monitoring + Otel Mule 4 Agent", align="center"]
 
+=== Observability is NOT Just For Cloud-Native Applications
+
+While there is a great emphasis on observability with regard to cloud-native applications, there are a whole host of legacy applications,
+using *traditional integration patterns* which will also benefit tremendously from greater observability.  Some of these patterns, shown
+below in the diagram, include:
+
+* Batch/ETL
+* File Transfer
+* B2B/EDI
+* P2P APIs
+* Pub/Sub
+* DB-to-DB
+* ...
+
+image::observability-not-just-for-cloud-native.png[800, 800, title="Observability for Traditional Integration Patterns", align="center"]
+
+Furthermore, newer API integrations patterns such as GraphQL often implement *complicated data aggregation* patterns requiring data 
+from multiple, disparate data sources, as depicted below.  These types of patterns will also be served well from greater observability.
+
+image::observability-datagraph.png[600, 600, title="Observability for Complicated Data Aggregation Patterns", align="center"]
+
 
 == The What on the Mule 4 OTel Agent
 
