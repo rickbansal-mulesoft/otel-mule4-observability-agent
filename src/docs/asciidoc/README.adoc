@@ -243,7 +243,7 @@ Generation of a distributed trace is accomplished by tagging the transaction wit
 through the chain of systems involved in the transaction.  This process is also referred to as *trace context propagation*.
 
 
-Traces are a critical part of observability, as they provide context for other telemetry. For example, traces can help define 
+Traces are a critical part of observability, as they *provide context for other telemetry*. For example, traces can help define 
 which metrics would be most valuable in a given situation, or which logs are relevant to a particular issue.
 
 image::Distributed-Trace-Example.png[1000, 1000, title="Example of a Distributed Trace", align="center"]
@@ -608,11 +608,11 @@ IMPORTANT: Using Anypoint Studio is the recommended method for installing the ex
                           -Dclassifier=mule-plugin \
                           -Dversion=1.0.92-SNAPSHOT <1> 
 
-<1> The version could be different based up when you read this document and which version was downloaded.  Please make sure the version 
-element corresponds to the version you installed into your Maven repository.
+<1> The version could be different based upon when you read this document and which version was downloaded.  Please make sure the version 
+property corresponds to the version you downloaded.
 
 
-===== Add via Anypoint Studio - Preferred Method
+===== Add via Anypoint Studio - Preferred Method**
 
 Using Anypoint Studio to install the extension into your local Maven repository is simple, straight forward and less error
 prone.  It's the preferred method, especially, if you aren't very comfortable using Maven directly.
@@ -635,7 +635,7 @@ Add the following snippet into your Mule project `pom.xml` file in the `<depende
 	<classifier>mule-plugin</classifier>
 </dependency>
 ----
-<1> The version could be different based up when you read this document and which version was downloaded.  Please make sure the version 
+<1> The version could be different based upon when you read this document and which version was downloaded.  Please make sure the version 
 element corresponds to the version you installed into your Maven repository.
 
 === Agent Configuration

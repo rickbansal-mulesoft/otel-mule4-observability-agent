@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 public class MuleSoftTraceStore
 {
+	@SuppressWarnings("unused")
 	private static Logger logger = LoggerFactory.getLogger(MuleSoftTraceStore.class);
 
 	//------------------------------------------------------------------------

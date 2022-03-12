@@ -38,3 +38,4 @@ replay_pid*
 **/._.DS_Store
 
 *.deprecated
+/target/

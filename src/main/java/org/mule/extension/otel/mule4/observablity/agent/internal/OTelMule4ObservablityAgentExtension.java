@@ -1,10 +1,7 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal;
 
 import org.mule.runtime.extension.api.annotation.Extension;
-import org.mule.runtime.extension.api.annotation.SubTypeMapping;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.OTelMule4ObservablityAgentConfiguration;
-import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig;
-import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig;
 import org.mule.runtime.extension.api.annotation.Configurations;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 

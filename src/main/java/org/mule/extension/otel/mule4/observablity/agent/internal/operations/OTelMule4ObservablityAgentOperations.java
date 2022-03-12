@@ -2,14 +2,12 @@ package org.mule.extension.otel.mule4.observablity.agent.internal.operations;
 
 import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
 
-import java.util.List;
 import java.util.Map;
 
 import org.mule.runtime.extension.api.annotation.param.MediaType;
 import org.apache.commons.lang3.StringUtils;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.OTelMule4ObservablityAgentConfiguration;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig;
-import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.Attribute;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.OTelResourceConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
 import org.mule.runtime.extension.api.annotation.param.Config;

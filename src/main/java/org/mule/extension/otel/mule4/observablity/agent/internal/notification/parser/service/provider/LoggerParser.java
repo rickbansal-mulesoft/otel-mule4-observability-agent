@@ -14,10 +14,11 @@ import io.opentelemetry.api.trace.Span;
 
 public class LoggerParser extends BaseNotificationParser
 {
+	@SuppressWarnings("unused")
 	private static Logger logger = LoggerFactory.getLogger(LoggerParser.class);
 
 	// --------------------------------------------------------------------------------------------
-	// Verifiy if this Parser can handle this notification
+	// Verify if this Parser can handle this notification
 	// --------------------------------------------------------------------------------------------	
 	@Override
 	public boolean canParse(EnrichedServerNotification notification)

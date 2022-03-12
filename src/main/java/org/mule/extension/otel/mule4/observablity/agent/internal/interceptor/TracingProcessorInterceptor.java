@@ -1,8 +1,6 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.interceptor;
 
 import org.mule.extension.http.api.request.builder.HttpRequesterRequestBuilder;
-import org.mule.extension.http.internal.request.HttpRequesterConfig;
-import org.mule.extension.http.internal.request.client.HttpExtensionClient;
 import org.mule.extension.otel.mule4.observablity.agent.internal.context.propagation.OTelContextPropagator;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.api.component.location.ComponentLocation;
