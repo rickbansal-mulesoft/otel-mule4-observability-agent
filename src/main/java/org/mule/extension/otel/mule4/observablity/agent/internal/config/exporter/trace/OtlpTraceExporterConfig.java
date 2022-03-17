@@ -40,10 +40,28 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 	private OtlpExporterCompressionType compression;
 
 	@Parameter
-	@DisplayName("Export Timeout")
-	@Optional(defaultValue = "10s")
-	@Summary("Maximum time the OTLP exporter will wait for each batch export.")
-	private String timeout;
+	@DisplayName("Max Queue Size")
+	@Optional(defaultValue = "2048")
+	@Summary("The maximum number of spans in the waiting queue. Any new spans are dropped once the queue is full.")
+	private String maxQueueSize;
+	
+	@Parameter
+	@DisplayName("Max Batch Export Size")
+	@Optional(defaultValue = "512")
+	@Summary("The maximum number of spans to export in a single batch.")
+	private String maxBatchExportSize;
+	
+	@Parameter
+	@DisplayName("Batch Export Delay Interval (millisec)")
+	@Optional(defaultValue = "5000")
+	@Summary("The delay interval in milliseconds between two consecutive batch exports.")
+	private String batchExportDelayInterval;
+	
+	@Parameter
+	@DisplayName("Batch Export Timeout (millsec)")
+	@Optional(defaultValue = "30000")
+	@Summary("Maximum time (milliseconds) the OTLP exporter will wait for a batch to export before cancelling the export.")
+	private String exportTimeout;
 	
 	@Parameter
 	@DisplayName("Trace Headers")
@@ -70,9 +88,9 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 		return compression;
 	}
 	
-	public String getTimeout()
+	public String getExportTimeout()
 	{
-		return timeout;
+		return exportTimeout;
 	}
 
 	public String getTraceCollectorEndpoint()
@@ -80,14 +98,33 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 		return traceCollectorEndpoint;
 	}
 
+	public String getMaxQueueSize()
+	{
+		return maxQueueSize;
+	}
+	
+	public String getMaxBatchExportSize()
+	{
+		return maxBatchExportSize;
+	}
+	
+	public String getBatchExportDelayInterval()
+	{
+		return batchExportDelayInterval;
+	}
+	
 	public Map<String, String> getProperties()
 	{
 		Map<String, String> config = new HashMap<>();
 		
 		config.put("otel.traces.exporter", "otlp");
 		config.put("otel.exporter.otlp.protocol", transportProtocol.getProtocolType());
-		config.put("otel.exporter.otlp.traces.endpoint", traceCollectorEndpoint);
+		config.put("otel.exporter.otlp.traces.endpoint", getTraceCollectorEndpoint());
 		config.put("otel.exporter.otlp.traces.compression", compression.getCompressionType());
+		config.put("otel.bsp.schedule.delay", getBatchExportDelayInterval());
+		config.put("otel.bsp.max.queue.size", getMaxQueueSize());
+		config.put("tel.bsp.max.export.batch.size", getMaxBatchExportSize());
+		config.put("otel.bsp.export.timeout", getExportTimeout());
 		config.put("otel.exporter.otlp.traces.headers", KeyValuePair.commaSeparatedList(getHeaders()));
 		
 		return Collections.unmodifiableMap(config);

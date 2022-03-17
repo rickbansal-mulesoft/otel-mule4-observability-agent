@@ -2228,12 +2228,39 @@ Default configuration
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Export Timeout</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Max Queue Size</p></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>String</p>
 </div></div></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Maximum time the OTLP exporter will wait for each batch export.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">10s</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">The maximum number of spans in the waiting queue. Any new spans are dropped once the queue is full.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">2048</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Max Batch Export Size</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">The maximum number of spans to export in a single batch.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">512</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Batch Export Delay Interval (millisec)</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">The delay interval in milliseconds between two consecutive batch exports.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">5000</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Batch Export Timeout (millsec)</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Maximum time (milliseconds) the OTLP exporter will wait for a batch to export before cancelling the export.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">30000</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>

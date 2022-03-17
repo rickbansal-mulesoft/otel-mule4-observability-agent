@@ -22,7 +22,16 @@
                 <parameter name="compression">
                     <description><![CDATA[]]></description>
                 </parameter>
-                <parameter name="timeout">
+                <parameter name="maxQueueSize">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="maxBatchExportSize">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="batchExportDelayInterval">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="exportTimeout">
                     <description><![CDATA[]]></description>
                 </parameter>
                 <parameter name="headers">

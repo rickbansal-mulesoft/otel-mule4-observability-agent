@@ -43,7 +43,10 @@ Default configuration
 
 ** NONE
 ** GZIP |  |  +++NONE+++ | {nbsp}
-| Export Timeout a| String |  +++Maximum time the OTLP exporter will wait for each batch export.+++ |  +++10s+++ | {nbsp}
+| Max Queue Size a| String |  +++The maximum number of spans in the waiting queue. Any new spans are dropped once the queue is full.+++ |  +++2048+++ | {nbsp}
+| Max Batch Export Size a| String |  +++The maximum number of spans to export in a single batch.+++ |  +++512+++ | {nbsp}
+| Batch Export Delay Interval (millisec) a| String |  +++The delay interval in milliseconds between two consecutive batch exports.+++ |  +++5000+++ | {nbsp}
+| Batch Export Timeout (millsec) a| String |  +++Maximum time (milliseconds) the OTLP exporter will wait for a batch to export before cancelling the export.+++ |  +++30000+++ | {nbsp}
 | Trace Headers a| Array of <<header>> |  +++Key-value pairs separated by commas to pass as request headers on an OTLP trace.+++ |  | {nbsp}
 | Generate Message Processor Spans a| Boolean |  +++Generate Message Processor spans and them to the trace+++ |  +++true+++ | {nbsp}
 | Message Processor Span Bypass a| Array of <<MuleComponent>> |  +++List of Message Processors to bypass when generating Message Processor spans.+++ |  | {nbsp}

@@ -1,14 +1,14 @@
 {
   "name": "OpenTelemetry Mule 4 Observablity Agent",
   "description": "This is the main class of an extension, is the entry point from which configurations, connection providers, operations and sources are going to be declared. \u003cp\u003e",
-  "version": "1.0.119-SNAPSHOT",
+  "version": "1.0.120-SNAPSHOT",
   "vendor": "MuleSoft",
   "category": "COMMUNITY",
   "xmlDsl": {
     "prefix": "otel-mule4-observablity-agent",
     "namespace": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent",
     "schemaLocation": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent/current/mule-otel-mule4-observablity-agent.xsd",
-    "schemaVersion": "1.0.119-SNAPSHOT",
+    "schemaVersion": "1.0.120-SNAPSHOT",
     "xsdFileName": "mule-otel-mule4-observablity-agent.xsd"
   },
   "resources": [],
@@ -126,7 +126,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 10,
+                "order": 13,
                 "tabName": "Advanced"
               },
               "allowedStereotypeModels": [],
@@ -376,7 +376,7 @@
               "required": false,
               "isConfigOverride": false,
               "expressionSupport": "SUPPORTED",
-              "defaultValue": "10s",
+              "defaultValue": "2048",
               "role": "BEHAVIOUR",
               "dslConfiguration": {
                 "allowsInlineDefinition": true,
@@ -390,10 +390,103 @@
                 "order": 6
               },
               "allowedStereotypeModels": [],
-              "name": "timeout",
+              "name": "maxQueueSize",
               "displayModel": {
-                "displayName": "Export Timeout",
-                "summary": "Maximum time the OTLP exporter will wait for each batch export."
+                "displayName": "Max Queue Size",
+                "summary": "The maximum number of spans in the waiting queue. Any new spans are dropped once the queue is full."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "512",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 7
+              },
+              "allowedStereotypeModels": [],
+              "name": "maxBatchExportSize",
+              "displayModel": {
+                "displayName": "Max Batch Export Size",
+                "summary": "The maximum number of spans to export in a single batch."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "5000",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 8
+              },
+              "allowedStereotypeModels": [],
+              "name": "batchExportDelayInterval",
+              "displayModel": {
+                "displayName": "Batch Export Delay Interval (millisec)",
+                "summary": "The delay interval in milliseconds between two consecutive batch exports."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "30000",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 9
+              },
+              "allowedStereotypeModels": [],
+              "name": "exportTimeout",
+              "displayModel": {
+                "displayName": "Batch Export Timeout (millsec)",
+                "summary": "Maximum time (milliseconds) the OTLP exporter will wait for a batch to export before cancelling the export."
               },
               "description": "",
               "modelProperties": {}
@@ -438,7 +531,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 7
+                "order": 10
               },
               "allowedStereotypeModels": [],
               "name": "headers",
@@ -488,7 +581,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 8
+                "order": 11
               },
               "allowedStereotypeModels": [],
               "name": "generateMessageProcessorsSpans",
@@ -539,7 +632,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 9
+                "order": 12
               },
               "allowedStereotypeModels": [],
               "name": "bypassComponents",
