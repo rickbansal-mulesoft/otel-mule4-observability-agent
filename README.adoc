@@ -64,3 +64,6 @@ use this link.
 
 The latest version of the extension, `otel-mule4-observability-agent-{revnumber}-mule-plugin.jar` can be downloaded from link:{extension-jar-filepath}[here].
 
+== Backends Tested Against
+
+include::backendsTested.adoc[]

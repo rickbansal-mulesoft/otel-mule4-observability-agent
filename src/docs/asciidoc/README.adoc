@@ -779,6 +779,11 @@ through external log files, a user can simply look at the trace to find faults.
 
 image::dynatrace-distributed-db-error-event.png[title="Dynatrace - Database Processor Error Event", align="center"]
 
+== Backends Tested Against
+
+include::../../../backendsTested.adoc[]
+
+
 [bibliography]
 == References
 * https://www.dynatrace.com/resources/ebooks/observability-and-beyond-for-the-enterprise-cloud/[Dynatrace e-book:

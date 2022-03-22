@@ -527,6 +527,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
+<li><a href="#_backends_tested_against">Backends Tested Against</a></li>
 <li><a href="#_references">References</a></li>
 <li><a href="#_acknowledgement">Acknowledgement</a></li>
 </ul>
@@ -1991,6 +1992,44 @@ through external log files, a user can simply look at the trace to find faults.<
 </div>
 </div>
 <div class="sect1">
+<h2 id="_backends_tested_against">Backends Tested Against</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is a list of the various backends the extension has been tested with so far:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Tested Backends</caption>
+<colgroup>
+<col style="width: 45%;">
+<col style="width: 25%;">
+<col style="width: 30%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Backend</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Export Protocol</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Note</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dynatrace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OTLP/HTTP_PROTOBUF</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Grafana Labs Tempo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OTLP/HTTP_PROTOBUF</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ELK Stack v7.14.2 (Elasticsearch, Kibana, APM Server)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OTLP/gRPC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP_PROTOBUF currently not supported by Elastic</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_references">References</h2>
 <div class="sectionbody">
 <div class="ulist bibliography">
@@ -2047,7 +2086,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.121-SNAPSHOT<br>
-Last updated 2022-03-12 10:24:49 -0600
+Last updated 2022-03-22 12:15:54 -0500
 </div>
 </div>
 </body>
