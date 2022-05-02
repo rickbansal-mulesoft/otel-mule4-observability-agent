@@ -3,7 +3,7 @@
 Rick Bansal <rick.bansal@mulesoft.com>
 :revnumber:
 :revdate:
-:revremark: Initial Draft v2
+:revremark: Version 1
 :doctype: book
 :icons: font
 :toc: left
@@ -647,13 +647,15 @@ IMPORTANT: Mule applications *must add the agent* to their configuration in orde
 image::agent-connector-config.png[800, 800, title="Mule Agent Configuration", align="center"]
 
 <1> Add an OpenTelemetry Mule 4 Observability Configuration to the Mule project.
-<2> Provide a *service name* - usually the application name
-<3> Configure *Collector Endpoint* for trace data - must be the entire URL, including the scheme (HTTP/S) and port
-<4> Configure OTLP *Transport Protocol*  - the following transports are supported:  `GRPC`, `HTTP_JSON` and `HTTP_PROTOBUF`
-<5> Add any necessary vendor-specific headers (e.g., `Authorization` header with `API Token` key for authentication)
-<6> Optionally disable generating span data for all Message Processors - default behavior is generate span data for all
+<2> *Enable/Disable* tracing at the application level.  If disabled, no traces will be generated or exported.
+<3> Provide a *service name* - usually the application name.
+<4> Configure *Collector Endpoint* for trace data - must be the entire URL, including the scheme (HTTP/S) and port.
+<5> Configure OTLP *Transport Protocol*  - the following transports are supported:  `GRPC`, `HTTP_JSON` and `HTTP_PROTOBUF`.
+<6> Various configuration parameters to control trace/span batch export rate.
+<7> Add any necessary vendor-specific headers (e.g., `Authorization` header with `API Token` key for authentication)
+<8> Optionally disable generating span data for all Message Processors - default behavior is generate span data for all
 Message Processors.
-<7> Or mute individual Message Processor(s) from generating span data (this maybe helpful in eliminating "noise" from the trace
+<9> Or mute individual Message Processor(s) from generating span data (this maybe helpful in eliminating "noise" from the trace
 and let you more effectively focus in on Message Processors(s) of concern).
 
 === Trace Context Propagation

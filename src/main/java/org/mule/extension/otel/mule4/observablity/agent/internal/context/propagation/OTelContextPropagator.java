@@ -42,7 +42,7 @@ public class OTelContextPropagator
 	 * it with the current Context. The returned Context should contain the aggregated data.
 	 * 
 	 * @param <T>
-	 * @param carrier - container which holds the propagation keys to be exracted.
+	 * @param carrier - container which holds the propagation keys to be extracted.
 	 * @param textMapGetter - invoked for each propagation key to be retrieved
 	 * @return Context - Merged data from the carrier and the current Context
 	 * @throws ConnectionException
@@ -66,7 +66,7 @@ public class OTelContextPropagator
 	}
 
 	/**
-	 * Get the Context for a particual trace and store the information into a Map.
+	 * Get the Context for a particular trace and store the information into a Map.
 	 * @param traceId
 	 * @return a simple Map with the Context data for the trace with id <code>traceId</code>
 	 * @throws ConnectionException

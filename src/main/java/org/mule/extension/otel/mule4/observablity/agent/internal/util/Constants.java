@@ -11,8 +11,10 @@ import java.util.List;
  */
 public class Constants
 {
+	public static final String PROCESSOR_INTERCEPTOR_ENABLE 	= "mule.otel.processor.interceptor.enable";
 	public static final String TRACE_TRANSACTION_ID 			= "TRACE_TRANSACTION_ID";
 	public static final String TRACE_CONTEXT_MAP_KEY 			= "OTEL_TRACE_CONTEXT";	
+	public static final String LOGGER_OUTPUT_KEY 			    = "__LOGGER_OUTPUT_KEY__";	
 	
 	public static final String HTTP_REQUEST_BUILDER 			= "_HTTP_REQUEST_BUILDER";	
 

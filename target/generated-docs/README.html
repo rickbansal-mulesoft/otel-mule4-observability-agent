@@ -445,8 +445,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">Rick Bansal</span><br>
 <span id="email" class="email"><a href="mailto:rick.bansal@mulesoft.com">rick.bansal@mulesoft.com</a></span><br>
-<span id="revnumber">version 1.0.121-SNAPSHOT,</span>
-<span id="revdate">March 22, 2022</span>
+<span id="revnumber">version 1.0.1,</span>
+<span id="revdate">May 02, 2022</span>
 <br><span id="revremark">Initial Draft v2</span>
 </div>
 <div id="toc" class="toc2">
@@ -1542,8 +1542,8 @@ with the initial Mule Flow. In reality it is also a pipeline span.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Download the latest version, <code>otel-mule4-observability-agent-1.0.121-SNAPSHOT-mule-plugin.jar</code>, of the extension from
-<a href="https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-1.0.121-SNAPSHOT-mule-plugin.jar">here</a></p>
+<p>Download the latest version, <code>otel-mule4-observability-agent-1.0.1-mule-plugin.jar</code>, of the extension from
+<a href="https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-1.0.1-mule-plugin.jar">here</a></p>
 </li>
 </ul>
 </div>
@@ -1692,27 +1692,35 @@ Mule applications <strong>must add the agent</strong> to their configuration in 
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Provide a <strong>service name</strong> - usually the application name</td>
+<td><strong>Enable/Disable</strong> tracing at the application level.  If disabled, no traces will be generated or exported.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Configure <strong>Collector Endpoint</strong> for trace data - must be the entire URL, including the scheme (HTTP/S) and port</td>
+<td>Provide a <strong>service name</strong> - usually the application name.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Configure OTLP <strong>Transport Protocol</strong>  - the following transports are supported:  <code>GRPC</code>, <code>HTTP_JSON</code> and <code>HTTP_PROTOBUF</code></td>
+<td>Configure <strong>Collector Endpoint</strong> for trace data - must be the entire URL, including the scheme (HTTP/S) and port.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Add any necessary vendor-specific headers (e.g., <code>Authorization</code> header with <code>API Token</code> key for authentication)</td>
+<td>Configure OTLP <strong>Transport Protocol</strong>  - the following transports are supported:  <code>GRPC</code>, <code>HTTP_JSON</code> and <code>HTTP_PROTOBUF</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Various configuration parameters to control trace/span batch export rate.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Add any necessary vendor-specific headers (e.g., <code>Authorization</code> header with <code>API Token</code> key for authentication)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
 <td>Optionally disable generating span data for all Message Processors - default behavior is generate span data for all
 Message Processors.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>Or mute individual Message Processor(s) from generating span data (this maybe helpful in eliminating "noise" from the trace
 and let you more effectively focus in on Message Processors(s) of concern).</td>
 </tr>
@@ -2085,8 +2093,8 @@ in the development of this extension as well as their ongoing support.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.121-SNAPSHOT<br>
-Last updated 2022-03-22 12:15:54 -0500
+Version 1.0.1<br>
+Last updated 2022-05-02 10:55:28 -0500
 </div>
 </div>
 </body>

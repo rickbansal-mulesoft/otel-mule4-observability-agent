@@ -39,9 +39,7 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 {
 	private static Logger logger = LoggerFactory.getLogger(TracingProcessorInterceptorFactory.class);
 
-	public static final String MULE_OTEL_INTERCEPTOR_PROCESSOR_ENABLE = "mule.otel.interceptor.processor.enable";
-	
-	private final boolean interceptorEnabled = Boolean.parseBoolean(System.getProperty(MULE_OTEL_INTERCEPTOR_PROCESSOR_ENABLE, "true"));
+	private  boolean interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true"));
 
 	public TracingProcessorInterceptorFactory()
 	{
@@ -63,6 +61,8 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 	@Override
 	public boolean intercept(ComponentLocation location)
 	{
+		interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true"));
+		
 		if (!interceptorEnabled)
 			return false;
 		

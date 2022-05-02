@@ -1,14 +1,14 @@
 {
   "name": "OpenTelemetry Mule 4 Observablity Agent",
   "description": "This is the main class of an extension, is the entry point from which configurations, connection providers, operations and sources are going to be declared. \u003cp\u003e",
-  "version": "1.0.121-SNAPSHOT",
+  "version": "1.0.1",
   "vendor": "MuleSoft",
   "category": "COMMUNITY",
   "xmlDsl": {
     "prefix": "otel-mule4-observablity-agent",
     "namespace": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent",
     "schemaLocation": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent/current/mule-otel-mule4-observablity-agent.xsd",
-    "schemaVersion": "1.0.121-SNAPSHOT",
+    "schemaVersion": "1.0.1",
     "xsdFileName": "mule-otel-mule4-observablity-agent.xsd"
   },
   "resources": [],
@@ -30,6 +30,41 @@
       "parameterGroupModels": [
         {
           "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Boolean",
+                "annotations": {
+                  "typeId": "boolean"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "false",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "name": "disableAllTracing",
+              "displayModel": {
+                "displayName": "DISABLE all Tracing",
+                "summary": "Enable/Disable all tracing in this application.  If disabled, all other configuration details will be ignored."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
             {
               "type": {
                 "format": "java",
@@ -126,7 +161,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 13,
+                "order": 2,
                 "tabName": "Advanced"
               },
               "allowedStereotypeModels": [],
@@ -151,7 +186,7 @@
             "password": false,
             "text": false,
             "query": false,
-            "order": 0
+            "order": 1
           },
           "showInDsl": false,
           "name": "General",
@@ -168,7 +203,7 @@
               "hasDynamicType": false,
               "required": true,
               "isConfigOverride": false,
-              "expressionSupport": "NOT_SUPPORTED",
+              "expressionSupport": "SUPPORTED",
               "role": "BEHAVIOUR",
               "dslConfiguration": {
                 "allowsInlineDefinition": true,
@@ -179,7 +214,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 1
+                "order": 3
               },
               "allowedStereotypeModels": [],
               "name": "serviceName",
@@ -229,7 +264,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 2
+                "order": 4
               },
               "allowedStereotypeModels": [],
               "name": "resourceAttributes",
@@ -245,7 +280,7 @@
             "password": false,
             "text": false,
             "query": false,
-            "order": 1,
+            "order": 2,
             "tabName": "General"
           },
           "showInDsl": false,
@@ -274,7 +309,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 3
+                "order": 5
               },
               "allowedStereotypeModels": [],
               "name": "traceCollectorEndpoint",
@@ -317,7 +352,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 4
+                "order": 6
               },
               "allowedStereotypeModels": [],
               "name": "transportProtocol",
@@ -357,7 +392,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 5
+                "order": 7
               },
               "allowedStereotypeModels": [],
               "name": "compression",
@@ -387,7 +422,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 6
+                "order": 8
               },
               "allowedStereotypeModels": [],
               "name": "maxQueueSize",
@@ -418,7 +453,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 7
+                "order": 9
               },
               "allowedStereotypeModels": [],
               "name": "maxBatchExportSize",
@@ -449,7 +484,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 8
+                "order": 10
               },
               "allowedStereotypeModels": [],
               "name": "batchExportDelayInterval",
@@ -480,7 +515,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 9
+                "order": 11
               },
               "allowedStereotypeModels": [],
               "name": "exportTimeout",
@@ -531,7 +566,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 10
+                "order": 12
               },
               "allowedStereotypeModels": [],
               "name": "headers",
@@ -548,7 +583,7 @@
             "password": false,
             "text": false,
             "query": false,
-            "order": 2,
+            "order": 3,
             "tabName": "General"
           },
           "showInDsl": false,
@@ -581,7 +616,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 11
+                "order": 13
               },
               "allowedStereotypeModels": [],
               "name": "generateMessageProcessorsSpans",
@@ -632,7 +667,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 12
+                "order": 14
               },
               "allowedStereotypeModels": [],
               "name": "bypassComponents",
@@ -649,7 +684,7 @@
             "password": false,
             "text": false,
             "query": false,
-            "order": 3,
+            "order": 4,
             "tabName": "General"
           },
           "showInDsl": false,

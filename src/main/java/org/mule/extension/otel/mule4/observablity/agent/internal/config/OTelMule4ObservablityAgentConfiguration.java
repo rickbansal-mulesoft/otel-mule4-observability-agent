@@ -9,13 +9,19 @@ import org.mule.extension.otel.mule4.observablity.agent.internal.notification.OT
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MuleMessageProcessorNotificationListener;
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MulePipelineNotificationListener;
 import org.mule.extension.otel.mule4.observablity.agent.internal.operations.OTelMule4ObservablityAgentOperations;
+import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mule.runtime.api.exception.MuleException;
 import org.mule.runtime.api.lifecycle.Startable;
 import org.mule.runtime.api.notification.NotificationListenerRegistry;
@@ -44,6 +50,21 @@ import javax.inject.Inject;
 public class OTelMule4ObservablityAgentConfiguration implements Startable
 {
 
+	private static Logger logger = LoggerFactory.getLogger(OTelMule4ObservablityAgentConfiguration.class);
+	
+	@Parameter
+	@DisplayName(value = "DISABLE all Tracing")
+	@Summary("Enable/Disable all tracing in this application.  If disabled, all other configuration " +
+	         "details will be ignored.")
+	@Optional (defaultValue = "false")
+	@Placement(order = 1)
+	private boolean disableAllTracing;
+	
+	public boolean getdisableAllTracing()
+	{
+		return this.disableAllTracing;
+	}
+	
 	//------------------------------------------------------------------------------
 	//	This Parameter Group stores the configuration details that are common to
 	//	an OpenTelemetry Resource.  An OpenTelemetry Resource is an immutable 
@@ -58,7 +79,7 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	 * @see OTelResourceConfig
 	 */
 	@ParameterGroup(name = "Resource")
-	@Placement(order = 1)
+	@Placement(order = 2)
 	@Summary("Open Telemetry Resource Configuration. An OpenTelemetry Resource is an " +
 			 "immutable representation of the entity producing telemetry specified as " +
 			 " a set of attributes.")
@@ -91,8 +112,8 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	 */
 	@ParameterGroup(name = "OTLP Trace Exporter")
 	@Summary("OpenTelemetry Protocol Trace Exporter Configuration.  <b>Note:  System or Environment Variables will BE overriden by this configuration.</b>")
-	@Placement(order = 2)
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
+	@Placement(order = 3)
+	//@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private OtlpTraceExporterConfig traceExporter;
 
 	public  OtlpTraceExporterConfig getTraceExporter() 
@@ -102,8 +123,8 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	
 	@ParameterGroup(name = "Span Generation")
 	@Summary("Select if Message Processors spans should be added to the trace in general.  You can bypass certain Message Processors by adding them to list below.")
-	@Placement(order = 3)
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
+	@Placement(order = 4)
+	//@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private SpanGenerationConfig spanGenerationConfig;
 
 	public  SpanGenerationConfig getSpanGenerationConfig() 
@@ -122,6 +143,18 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	@Override
 	public void start() throws MuleException
 	{
+		logger.info("OTelMule4ObservablityAgentConfiguration starting");
+
+		//------------------------------------------------------------------------------
+		// Skip the startup if tracing is disabled
+		//------------------------------------------------------------------------------
+		if (this.getdisableAllTracing())
+		{
+			System.setProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "false");
+			logger.info("All Tracing is DISABLED");
+			return;
+		}
+		
 		//------------------------------------------------------------------------------
 		// 	Based on observations from our partner, this phase is too early to initiate
 		//	the configuration and initialization of the OpenTelemetry SDK. It fails with 

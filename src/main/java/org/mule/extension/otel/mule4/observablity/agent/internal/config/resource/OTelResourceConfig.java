@@ -28,7 +28,7 @@ public class OTelResourceConfig
 
 	@Parameter
 	@Summary("Logical (unique) name for this application (e.g., shoppingcart, productAPI, ...).")
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
+	//@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private String serviceName;
 
 	public String getServiceName()

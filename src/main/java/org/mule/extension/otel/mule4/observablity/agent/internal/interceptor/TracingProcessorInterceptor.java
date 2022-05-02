@@ -49,6 +49,8 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 			//	doesn't seem to be working. The inserted headers display in the RequestBuilder's header
 			//	list but they are not being honored in the outgoing HTTP Request.
 			// ----------------------------------------------------------------------------------------
+			
+			/*
 			Map<String, String> traceContextMap = TypedValue.unwrap(event.getVariables()
 					                                                     .get(Constants.TRACE_CONTEXT_MAP_KEY));
 			
@@ -62,9 +64,10 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 			HttpRequesterRequestBuilder httpRequestBuilder = (HttpRequesterRequestBuilder) processorParameterValue.resolveValue();
 			
 			httpRequestBuilder.setHeaders(headers);
-			//event.addVariable(ObservabilitySemantics.HTTP_REQUEST_BUILDER, httpRequestBuilder);
+			//event.addVariable(Constants.HTTP_REQUEST_BUILDER, httpRequestBuilder);
 			
 			logger.debug("before::Intercepted a HTTP Request processor");
+			*/
 		}	
 	}
 
@@ -81,15 +84,18 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 			try
 			{
 				// ------------------------------------------------------------------------------------
-				//	Extract and resolve the Logger output.  Insert the resloved output into the Event 
+				//	Extract and resolve the Logger output.  Insert the resolved output into the Event 
 				//	Message.  This message will be picked up by the End Processor Notification handler, 
 				//	extracted and then added as a Span Event.
 				// ------------------------------------------------------------------------------------
 				String message = (String) processorParameterValue.resolveValue().toString();
+				event.addVariable(Constants.LOGGER_OUTPUT_KEY, message, DataType.JSON_STRING);
 				
+				/*
 				TypedValue<String> tv = new TypedValue<>(message, DataType.JSON_STRING);
 				Message eventMessage = Message.builder().payload(tv).build();
 				event.message(eventMessage);
+				*/
 				
 				logger.debug("around::Intercepted a logger message resolved: " + message);
 			}
@@ -124,7 +130,7 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 			catch (Exception e)
 			{
 				// do nothing for now
-				logger.debug("around::Intercepte http requester message resolved with error: " + e.getMessage());
+				logger.debug("around::Intercepted http requester message resolved with error: " + e.getMessage());
 			}
 		}
 		*/

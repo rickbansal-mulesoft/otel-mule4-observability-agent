@@ -3,6 +3,7 @@ package org.mule.extension.otel.mule4.observablity.agent.internal.notification.p
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.trace.MuleSoftTraceStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.NotificationParserUtils;
+import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.notification.EnrichedServerNotification;
 
 import org.slf4j.Logger;
@@ -44,7 +45,8 @@ public class LoggerParser extends BaseNotificationParser
 	// --------------------------------------------------------------------------------------------
 	private void addLoggerEventsToSpan(EnrichedServerNotification notification, MuleSoftTraceStore traceStore)
 	{
-		String loggerOutput  = NotificationParserUtils.getMessage(notification);
+		//String loggerOutput  = NotificationParserUtils.getMessage(notification);
+		String loggerOutput  = TypedValue.unwrap(notification.getEvent().getVariables().get(Constants.LOGGER_OUTPUT_KEY));
 		
 		Span span = traceStore.getMessageProcessorSpan(NotificationParserUtils.getMuleSoftTraceId(notification), 
 				                                       NotificationParserUtils.getFlowId(notification), 
