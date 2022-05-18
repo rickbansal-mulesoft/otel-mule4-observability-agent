@@ -39,8 +39,10 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 {
 	private static Logger logger = LoggerFactory.getLogger(TracingProcessorInterceptorFactory.class);
 
-	private  boolean interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true"));
-
+	//private  boolean interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true"));
+	//private  boolean interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "false"));
+	private  boolean interceptorEnabled;
+	
 	public TracingProcessorInterceptorFactory()
 	{
 		logger.info("TracingProcessorInterceptorFactory created");
@@ -61,7 +63,8 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 	@Override
 	public boolean intercept(ComponentLocation location)
 	{
-		interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true"));
+		//interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true"));
+		interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "false"));
 		
 		if (!interceptorEnabled)
 			return false;

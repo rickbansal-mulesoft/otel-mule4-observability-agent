@@ -41,6 +41,16 @@ public class BaseNotificationParser implements NotificationParser
 			                                     MuleConnectorConfigStore muleConnectorConfigStore, 
 			                                     SpanBuilder spanBuilder)
 	{
+		try
+		{			
+			spanBuilder.setAttribute(Constants.MULE_TRACE_ID_ATTRIBUTE, 
+	                                 NotificationParserUtils.getMuleSoftTraceId(notification));
+		} 
+		catch (Exception e)
+		{
+			logger.debug(e.getMessage());
+		}
+		
 		return spanBuilder;
 	}
 
@@ -71,6 +81,9 @@ public class BaseNotificationParser implements NotificationParser
 			
 			spanBuilder.setAttribute(Constants.DOC_NAME_ATTRIBUTE, 
 					                 NotificationParserUtils.getDocName(notification));
+			
+			spanBuilder.setAttribute(Constants.MULE_TRACE_ID_ATTRIBUTE, 
+	                                 NotificationParserUtils.getMuleSoftTraceId(notification));
 		} 
 		catch (Exception e)
 		{

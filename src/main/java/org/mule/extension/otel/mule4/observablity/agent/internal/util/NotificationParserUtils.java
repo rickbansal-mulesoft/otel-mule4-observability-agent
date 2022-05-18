@@ -96,7 +96,19 @@ public class NotificationParserUtils
 	 */
 	public static String getFlowId(EnrichedServerNotification notification)
 	{
-		return "_" + notification.getComponent().getLocation().getRootContainerName();
+
+		String flowId = "_" + notification.getComponent().getLocation().getRootContainerName();
+		
+		//
+		// Check if this notification is related to a message processor in a sub-flow
+		//
+		String rcn = getComponentAnnotation("{http://www.mulesoft.org/schema/mule/parser-metadata}ROOT_CONTAINER_NAME", notification);
+		
+		if (rcn != null)
+			flowId = "_" + rcn;
+		
+		//return "_" + notification.getComponent().getLocation().getRootContainerName();
+		return flowId;
 	}
 	
 	public static String getServerId(EnrichedServerNotification notification)

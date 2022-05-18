@@ -154,6 +154,10 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 			logger.info("All Tracing is DISABLED");
 			return;
 		}
+		else
+		{
+			System.setProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true");
+		}
 		
 		//------------------------------------------------------------------------------
 		// 	Based on observations from our partner, this phase is too early to initiate
