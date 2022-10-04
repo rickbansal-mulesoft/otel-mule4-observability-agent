@@ -1733,7 +1733,7 @@ and let you more effectively focus in on Message Processors(s) of concern).</td>
 <div class="sect3">
 <h4 id="_agent_configuration_with_certificate">Agent Configuration with certificate</h4>
 <div class="paragraph">
-<p>This new Mule custom module of Open Telemetry also supports the OLTP endpoint with a self-signed certificate by adding Truststore into the configuration. Below are the steps for configuring it:</p>
+<p>This new Mule custom module of Open Telemetry also supports the OLTP endpoint with a self-signed certificate by adding Truststore into the configuration. The truststore file should contain one or more X.509 certificates in PEM format. Below are the steps for configuring it:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
@@ -1749,7 +1749,7 @@ and let you more effectively focus in on Message Processors(s) of concern).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Truststore file location that will load to Mule Application Classpath.</td>
+<td>Truststore file (X.509 certificates in PEM format) location that will load to Mule Application Classpath.</td>
 </tr>
 </table>
 </div>
@@ -2122,7 +2122,7 @@ in the development of this extension as well as their ongoing support.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.3<br>
-Last updated 2022-10-04 17:09:43 +0800
+Last updated 2022-10-04 17:25:22 +0800
 </div>
 </div>
 </body>
