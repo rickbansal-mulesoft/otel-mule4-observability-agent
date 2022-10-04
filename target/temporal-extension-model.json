@@ -1,14 +1,14 @@
 {
   "name": "OpenTelemetry Mule 4 Observablity Agent",
   "description": "This is the main class of an extension, is the entry point from which configurations, connection providers, operations and sources are going to be declared. \u003cp\u003e",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "vendor": "MuleSoft",
   "category": "COMMUNITY",
   "xmlDsl": {
     "prefix": "otel-mule4-observablity-agent",
     "namespace": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent",
     "schemaLocation": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent/current/mule-otel-mule4-observablity-agent.xsd",
-    "schemaVersion": "1.0.2",
+    "schemaVersion": "1.0.3",
     "xsdFileName": "mule-otel-mule4-observablity-agent.xsd"
   },
   "resources": [],
@@ -324,6 +324,38 @@
             {
               "type": {
                 "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 6
+              },
+              "allowedStereotypeModels": [],
+              "name": "certificate",
+              "displayModel": {
+                "displayName": "Endpoint Certificate",
+                "summary": "The path to the file containing trusted certificates to use when verifying an OTLP trace server\u0027s TLS credentials. The file should contain one or more X.509 certificates in PEM format.",
+                "example": "mycert.pem"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
                 "type": "String",
                 "annotations": {
                   "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterTransportProtocolType",
@@ -352,7 +384,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 6
+                "order": 7
               },
               "allowedStereotypeModels": [],
               "name": "transportProtocol",
@@ -392,7 +424,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 7
+                "order": 8
               },
               "allowedStereotypeModels": [],
               "name": "compression",
@@ -422,7 +454,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 8
+                "order": 9
               },
               "allowedStereotypeModels": [],
               "name": "maxQueueSize",
@@ -453,7 +485,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 9
+                "order": 10
               },
               "allowedStereotypeModels": [],
               "name": "maxBatchExportSize",
@@ -484,7 +516,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 10
+                "order": 11
               },
               "allowedStereotypeModels": [],
               "name": "batchExportDelayInterval",
@@ -515,7 +547,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 11
+                "order": 12
               },
               "allowedStereotypeModels": [],
               "name": "exportTimeout",
@@ -566,7 +598,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 12
+                "order": 13
               },
               "allowedStereotypeModels": [],
               "name": "headers",
@@ -616,7 +648,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 13
+                "order": 14
               },
               "allowedStereotypeModels": [],
               "name": "generateMessageProcessorsSpans",
@@ -667,7 +699,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 14
+                "order": 15
               },
               "allowedStereotypeModels": [],
               "name": "bypassComponents",

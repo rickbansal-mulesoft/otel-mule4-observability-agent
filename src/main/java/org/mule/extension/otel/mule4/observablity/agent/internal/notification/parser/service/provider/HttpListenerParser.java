@@ -90,8 +90,11 @@ public class HttpListenerParser extends BaseNotificationParser
 			spanBuilder.setAttribute("method", httpRequestAttributes.getMethod());
 			spanBuilder.setAttribute("remote.address", httpRequestAttributes.getRemoteAddress());
 			spanBuilder.setAttribute("request.path", httpRequestAttributes.getRequestPath());
-			spanBuilder.setAttribute("user.agent", httpRequestAttributes.getHeaders().get("user-agent"));
-			spanBuilder.setAttribute("host", httpRequestAttributes.getHeaders().get("host"));
+			// spanBuilder.setAttribute("user.agent", httpRequestAttributes.getHeaders().get("user-agent"));
+			// spanBuilder.setAttribute("host", httpRequestAttributes.getHeaders().get("host"));
+
+			//additional annotation data from all HTTP Headers from the incoming HTTP Request
+			httpRequestAttributes.getHeaders().forEach((key, collection) -> {spanBuilder.setAttribute("headers."+key,collection);});
 		}
 		catch (Exception e)
 		{

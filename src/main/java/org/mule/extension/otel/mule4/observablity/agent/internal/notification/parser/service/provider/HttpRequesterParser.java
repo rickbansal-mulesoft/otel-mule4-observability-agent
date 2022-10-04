@@ -105,6 +105,10 @@ public class HttpRequesterParser extends BaseNotificationParser
 			span.setAttribute("response.reason.phrase", responseAttributes.getReasonPhrase());
 			span.setAttribute("response.content.length", responseHeaders.get("content-length"));
 			span.setAttribute("response.date", responseHeaders.get("date"));
+
+			//additional annotation data from the mule event of HTTP Response
+
+			responseAttributes.getHeaders().forEach((key, collection) -> {span.setAttribute("response.headers."+key,collection);});
 		}
 		catch (Exception e)
 		{

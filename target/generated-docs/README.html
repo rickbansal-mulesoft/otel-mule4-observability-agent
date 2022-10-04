@@ -445,8 +445,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">Rick Bansal</span><br>
 <span id="email" class="email"><a href="mailto:rick.bansal@mulesoft.com">rick.bansal@mulesoft.com</a></span><br>
-<span id="revnumber">version 1.0.2,</span>
-<span id="revdate">May 18, 2022</span>
+<span id="revnumber">version 1.0.3,</span>
+<span id="revdate">October 04, 2022</span>
 <br><span id="revremark">Initial Draft v3</span>
 </div>
 <div id="toc" class="toc2">
@@ -508,7 +508,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_add_dependency_to_pom_xml_file">Add Dependency to <code>pom.xml</code> file</a></li>
 </ul>
 </li>
-<li><a href="#_agent_configuration">Agent Configuration</a></li>
+<li><a href="#_agent_configuration">Agent Configuration</a>
+<ul class="sectlevel3">
+<li><a href="#_agent_configuration_with_certificate">Agent Configuration with certificate</a></li>
+</ul>
+</li>
 <li><a href="#_trace_context_propagation">Trace Context Propagation</a></li>
 <li><a href="#_demo_scenario">Demo Scenario</a>
 <ul class="sectlevel3">
@@ -1542,8 +1546,8 @@ with the initial Mule Flow. In reality it is also a pipeline span.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Download the latest version, <code>otel-mule4-observability-agent-1.0.2-mule-plugin.jar</code>, of the extension from
-<a href="https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-1.0.2-mule-plugin.jar">here</a></p>
+<p>Download the latest version, <code>otel-mule4-observability-agent-1.0.3-mule-plugin.jar</code>, of the extension from
+<a href="https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-1.0.3-mule-plugin.jar">here</a></p>
 </li>
 </ul>
 </div>
@@ -1644,7 +1648,7 @@ prone.  It&#8217;s the preferred method, especially, if you aren&#8217;t very co
   <td class="code"><pre><span style="color:#070;font-weight:bold">&lt;dependency&gt;</span>
     <span style="color:#070;font-weight:bold">&lt;groupId&gt;</span>org.mulesoft.extensions.rb.otel<span style="color:#070;font-weight:bold">&lt;/groupId&gt;</span>
     <span style="color:#070;font-weight:bold">&lt;artifactId&gt;</span>otel-mule4-observability-agent<span style="color:#070;font-weight:bold">&lt;/artifactId&gt;</span>
-    <span style="color:#070;font-weight:bold">&lt;version&gt;</span>1.0.92-SNAPSHOT<span style="color:#070;font-weight:bold">&lt;/version&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span style="color:#070;font-weight:bold">&lt;version&gt;</span>1.0.3<span style="color:#070;font-weight:bold">&lt;/version&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
     <span style="color:#070;font-weight:bold">&lt;classifier&gt;</span>mule-plugin<span style="color:#070;font-weight:bold">&lt;/classifier&gt;</span>
 <span style="color:#070;font-weight:bold">&lt;/dependency&gt;</span></pre></td>
 </tr></table></code></pre>
@@ -1726,6 +1730,30 @@ and let you more effectively focus in on Message Processors(s) of concern).</td>
 </tr>
 </table>
 </div>
+<div class="sect3">
+<h4 id="_agent_configuration_with_certificate">Agent Configuration with certificate</h4>
+<div class="paragraph">
+<p>This new Mule custom module of Open Telemetry also supports the OLTP endpoint with a self-signed certificate by adding Truststore into the configuration. Below are the steps for configuring it:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/agent-connector-config-with-certificate.png" alt="800" width="800">
+</div>
+<div class="title">Figure 20. Mule Agent Configuration with certificate</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Put the location of the Truststore file from Mule Application Classpath.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Truststore file location that will load to Mule Application Classpath.</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_trace_context_propagation">Trace Context Propagation</h3>
@@ -1766,7 +1794,7 @@ have default headers configured in the following way:</p>
 <div class="content">
 <img src="./Images/http-requester-config.png" alt="600" width="600">
 </div>
-<div class="title">Figure 20. Mule HTTP Requester Configuration</div>
+<div class="title">Figure 21. Mule HTTP Requester Configuration</div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 3. HTTP Requester Configuration for Default Headers</caption>
@@ -1824,7 +1852,7 @@ render in a Dynatrace backend.</p>
 <div class="content">
 <img src="./Images/Demo-Distributed-App-Arch.png" alt="1200" width="1200">
 </div>
-<div class="title">Figure 21. Demo Architecture</div>
+<div class="title">Figure 22. Demo Architecture</div>
 </div>
 <div class="colist arabic">
 <table>
@@ -1883,7 +1911,7 @@ including error events and log output.
 <div class="content">
 <img src="./Images/Distributed-Mule-App-Diagram.png" alt="Distributed Mule App Diagram">
 </div>
-<div class="title">Figure 22. Demo Mule Application Diagram</div>
+<div class="title">Figure 23. Demo Mule Application Diagram</div>
 </div>
 </div>
 </div>
@@ -1899,7 +1927,7 @@ by the Mule 4 OTel Agent and visualized by observability backend.</p>
 <div class="content">
 <img src="./Images/dynatrace-distributed-span.png" alt="dynatrace distributed span">
 </div>
-<div class="title">Figure 23. Dynatrace - Complete Distributed Trace</div>
+<div class="title">Figure 24. Dynatrace - Complete Distributed Trace</div>
 </div>
 <div class="paragraph">
 <p>As you can see in the graph above, the Agent generates spans in a manner which is <strong>hierarchically consistent</strong> with the progression of
@@ -1935,7 +1963,7 @@ the protocol (HTTP or HTTPs), the URI, the remote address, etc.</p>
 <div class="content">
 <img src="./Images/dynatrace-distributed-rootspan-summary.png" alt="dynatrace distributed rootspan summary">
 </div>
-<div class="title">Figure 24. Dynatrace - Root Span Summary</div>
+<div class="title">Figure 25. Dynatrace - Root Span Summary</div>
 </div>
 <div class="colist arabic">
 <table>
@@ -1966,7 +1994,7 @@ Development,&#8230;&#8203;), hosting region, etc. for easier correlation and sea
 <div class="content">
 <img src="./Images/dynatrace-distributed-span-logger-event.png" alt="dynatrace distributed span logger event">
 </div>
-<div class="title">Figure 25. Dynatrace - Logger Processor Output Event</div>
+<div class="title">Figure 26. Dynatrace - Logger Processor Output Event</div>
 </div>
 </div>
 <div class="sect3">
@@ -1979,7 +2007,7 @@ connection type, host, port, database name and user as well operational attribut
 <div class="content">
 <img src="./Images/dynatrace-distributed-db-summary.png" alt="dynatrace distributed db summary">
 </div>
-<div class="title">Figure 26. Dynatrace - Database Processor Summary</div>
+<div class="title">Figure 27. Dynatrace - Database Processor Summary</div>
 </div>
 </div>
 <div class="sect3">
@@ -1993,7 +2021,7 @@ through external log files, a user can simply look at the trace to find faults.<
 <div class="content">
 <img src="./Images/dynatrace-distributed-db-error-event.png" alt="dynatrace distributed db error event">
 </div>
-<div class="title">Figure 27. Dynatrace - Database Processor Error Event</div>
+<div class="title">Figure 28. Dynatrace - Database Processor Error Event</div>
 </div>
 </div>
 </div>
@@ -2093,8 +2121,8 @@ in the development of this extension as well as their ongoing support.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.2<br>
-Last updated 2022-05-02 13:40:10 -0600
+Version 1.0.3<br>
+Last updated 2022-10-04 17:09:43 +0800
 </div>
 </div>
 </body>

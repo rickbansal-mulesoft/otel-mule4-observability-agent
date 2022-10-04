@@ -631,7 +631,7 @@ Add the following snippet into your Mule project `pom.xml` file in the `<depende
 <dependency>
 	<groupId>org.mulesoft.extensions.rb.otel</groupId>
 	<artifactId>otel-mule4-observability-agent</artifactId>
-	<version>1.0.92-SNAPSHOT</version> <1>
+	<version>1.0.3</version> <1>
 	<classifier>mule-plugin</classifier>
 </dependency>
 ----
@@ -657,6 +657,16 @@ image::agent-connector-config.png[800, 800, title="Mule Agent Configuration", al
 Message Processors.
 <9> Or mute individual Message Processor(s) from generating span data (this maybe helpful in eliminating "noise" from the trace
 and let you more effectively focus in on Message Processors(s) of concern).
+
+==== Agent Configuration with certificate
+
+This new Mule custom module of Open Telemetry also supports the OLTP endpoint with a self-signed certificate by adding Truststore into the configuration. Below are the steps for configuring it:
+
+image::agent-connector-config-with-certificate.png[800, 800, title="Mule Agent Configuration with certificate", align="center"]
+
+
+<1> Put the location of the Truststore file from Mule Application Classpath.
+<2> Truststore file location that will load to Mule Application Classpath.
 
 === Trace Context Propagation
 

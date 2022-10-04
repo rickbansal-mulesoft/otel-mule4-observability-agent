@@ -19,6 +19,9 @@
                 <parameter name="traceCollectorEndpoint">
                     <description><![CDATA[]]></description>
                 </parameter>
+                <parameter name="certificate">
+                    <description><![CDATA[]]></description>
+                </parameter>
                 <parameter name="transportProtocol">
                     <description><![CDATA[]]></description>
                 </parameter>
