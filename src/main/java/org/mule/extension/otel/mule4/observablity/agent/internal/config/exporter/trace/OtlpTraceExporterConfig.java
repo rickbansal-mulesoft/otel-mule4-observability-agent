@@ -14,6 +14,8 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Example;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //----------------------------------------------------------------------------------
 //	This class stores all of the configuration data for an OpenTelemetry Protocol 
@@ -22,12 +24,22 @@ import org.mule.runtime.extension.api.annotation.param.display.Summary;
 public class OtlpTraceExporterConfig implements OtlpExporterConfig
 {
 
+	private Logger logger = LoggerFactory.getLogger(OtlpTraceExporterConfig.class);
+
+
 	@Parameter
 	@DisplayName(value = "Trace Collector Endpoint")
 	@Summary(value = "Traget URL to which the OTLP Exporter sends traces. Must be a URL with " +
 	                 "a scheme of either http or https based on the use of TLS.")
 	@Example(value = "http://mycollector.com:4317/v1/traces")
 	private String traceCollectorEndpoint;
+
+	@Parameter
+	@DisplayName("Endpoint Certificate")
+	@Optional(defaultValue = "")
+	@Example(value = "mycert.pem")
+	@Summary("The path to the file containing trusted certificates to use when verifying an OTLP trace server's TLS credentials. The file should contain one or more X.509 certificates in PEM format.")
+	private String certificate;
 
 	@Parameter
 	@Optional(defaultValue = "HTTP_PROTOBUF")
@@ -78,6 +90,7 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 		return headers;
 	}
 	
+	
 	public OtlpExporterTransportProtocolType getTransportProtocol()
 	{
 		return transportProtocol;
@@ -97,6 +110,13 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 	{
 		return traceCollectorEndpoint;
 	}
+
+
+	public String getCertificate()
+	{
+		return certificate;
+	}
+
 
 	public String getMaxQueueSize()
 	{
@@ -126,6 +146,12 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 		config.put("tel.bsp.max.export.batch.size", getMaxBatchExportSize());
 		config.put("otel.bsp.export.timeout", getExportTimeout());
 		config.put("otel.exporter.otlp.traces.headers", KeyValuePair.commaSeparatedList(getHeaders()));
+
+		logger.debug("get certificate :" +getCertificate() + " is empty:" + getCertificate().isEmpty());
+		if(!(getCertificate().isEmpty())) {
+			logger.debug("certificate path:"+ this.getClass().getClassLoader().getResource(getCertificate()).getFile());
+			config.put("otel.exporter.otlp.traces.certificate", this.getClass().getClassLoader().getResource(getCertificate()).getPath());
+		}
 		
 		return Collections.unmodifiableMap(config);
 	}

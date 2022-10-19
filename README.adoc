@@ -1,8 +1,9 @@
 = Mule 4 OpenTelemetry (OTel) Agent Extension
 // Document header
 Rick Bansal <rick.bansal@mulesoft.com>
-:revnumber: 1.0.2
-:revdate: May 17, 2022
+Yohanes Sono <ysono@mulesoft.com>
+:revnumber: 1.0.3
+:revdate: Oct 03, 2022
 :revremark: Initial Draft
 :doctype: book
 :icons: font

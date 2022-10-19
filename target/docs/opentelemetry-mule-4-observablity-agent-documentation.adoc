@@ -35,6 +35,7 @@ Default configuration
 | Service Name a| String |  +++Logical (unique) name for this application (e.g., shoppingcart, productAPI, ...).+++ |  | *x*{nbsp}
 | Resource Attributes a| Array of <<attribute>> |  +++Optional attributes for this application defined as <key,value> pairs(e.g., service.namespace:com.mycompany, service.version:0.0.1, ...). Attributes provide context to a distributed trace which can help with correlations to proivde a clear view of what was involved when performance changes occur.+++ |  | {nbsp}
 | Trace Collector Endpoint a| String |  +++Traget URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.+++ |  | *x*{nbsp}
+| Endpoint Certificate a| String |  +++The path to the file containing trusted certificates to use when verifying an OTLP trace server's TLS credentials. The file should contain one or more X.509 certificates in PEM format.+++ |  ++++++ | {nbsp}
 | OTLP Transport Protocol a| Enumeration, one of:
 
 ** GRPC
