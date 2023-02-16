@@ -21,7 +21,7 @@ public class HttpListenerParser extends BaseNotificationParser
 	private static Logger logger = LoggerFactory.getLogger(HttpListenerParser.class);
 
 	// --------------------------------------------------------------------------------------------
-	// Verifiy if this Parser can handle this notification
+	// Verify if this Parser can handle this notification
 	// --------------------------------------------------------------------------------------------	
 	@Override
 	public boolean canParse(EnrichedServerNotification notification)
@@ -31,7 +31,7 @@ public class HttpListenerParser extends BaseNotificationParser
 		int action = Integer.parseInt(notification.getAction().getIdentifier());
 		
 		// ----------------------------------------------------------------------------------------
-		// Only prase HTTP Listener notifications which are a source/trigger to the start of a flow
+		// Only parse HTTP Listener notifications which are a source/trigger to the start of a flow
 		// ----------------------------------------------------------------------------------------
 		if ( sourceComponent.equalsIgnoreCase(Constants.HTTP_LISTENER)  && 
 			 action == PipelineMessageNotification.PROCESS_START )

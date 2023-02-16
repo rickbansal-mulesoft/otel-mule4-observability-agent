@@ -22,7 +22,7 @@ public class HttpRequesterParser extends BaseNotificationParser
 	private static Logger logger = LoggerFactory.getLogger(HttpRequesterParser.class);
 
 	// --------------------------------------------------------------------------------------------
-	// Verifiy if this Parser can handle this notification
+	// Verify if this Parser can handle this notification
 	// --------------------------------------------------------------------------------------------	
 	@Override
 	public boolean canParse(EnrichedServerNotification notification)
@@ -38,8 +38,8 @@ public class HttpRequesterParser extends BaseNotificationParser
 	// --------------------------------------------------------------------------------------------	
 	@Override
 	public SpanBuilder startProcessorNotification(EnrichedServerNotification notification,
-			                             MuleConnectorConfigStore muleConnectorConfigStore, 
-			                             SpanBuilder spanBuilder)
+			                                      MuleConnectorConfigStore muleConnectorConfigStore, 
+			                                      SpanBuilder spanBuilder)
 	{
 		super.startProcessorNotification(notification, muleConnectorConfigStore, spanBuilder);
 		
@@ -62,8 +62,8 @@ public class HttpRequesterParser extends BaseNotificationParser
 	// Annotate the span with various HTTP Requester attributes
 	// --------------------------------------------------------------------------------------------
 	private SpanBuilder addHttpRequesterAttributesToSpan(EnrichedServerNotification notification,
-                                                          MuleConnectorConfigStore muleConnectorConfigStore,
-			                                              SpanBuilder spanBuilder)
+                                                         MuleConnectorConfigStore muleConnectorConfigStore,
+			                                             SpanBuilder spanBuilder)
 	{
 		Map<String, String> requesterAttributes = NotificationParserUtils.getComponentAnnotation("{config}componentParameters", notification);
 		String configRef = requesterAttributes.get("config-ref");

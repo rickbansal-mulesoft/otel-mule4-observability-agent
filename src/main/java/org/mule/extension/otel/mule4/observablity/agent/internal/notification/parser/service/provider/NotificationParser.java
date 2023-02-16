@@ -25,10 +25,10 @@ import io.opentelemetry.api.trace.SpanBuilder;
 public interface NotificationParser
 {
 	// --------------------------------------------------------------------------------------------
-	// API to Verifiy if this Parser can handle this notification event
+	// API to Verify if this Parser can handle this notification event
 	// --------------------------------------------------------------------------------------------
 	/**
-	 * API to Verifiy if this Parser can handle this notification event
+	 * API to Verify if this Parser can handle this notification event
 	 * @param notification
 	 * @return true if it can, else false
 	 */
@@ -38,7 +38,7 @@ public interface NotificationParser
 	// API for Pipeline Start Notification Event
 	// --------------------------------------------------------------------------------------------
 	/**
-	 * API to support a pipleline start notification event
+	 * API to support a pipeline start notification event
 	 * 
 	 * @param notification - Pipeline start notification
 	 * @param muleConnectorConfigStore - Metadata store of config details for various connectors
@@ -53,7 +53,7 @@ public interface NotificationParser
 	// API for Pipeline End Notification Event
 	// --------------------------------------------------------------------------------------------
 	/**
-	 * API to support a pipleline start notification event
+	 * API to support a pipeline start notification event
 	 * 
 	 * @param notification - Pipeline end notification
 	 * @param traceStore -  Store where trace/span data is for this notification

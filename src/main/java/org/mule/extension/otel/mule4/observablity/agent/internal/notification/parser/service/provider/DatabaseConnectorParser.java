@@ -16,7 +16,7 @@ public class DatabaseConnectorParser extends BaseNotificationParser
 	private static Logger logger = LoggerFactory.getLogger(DatabaseConnectorParser.class);
 
 	// --------------------------------------------------------------------------------------------
-	// Verifiy if this Parser can handle this notification
+	// Verify if this Parser can handle this notification
 	// --------------------------------------------------------------------------------------------	
 	@Override
 	public boolean canParse(EnrichedServerNotification notification)

@@ -1,6 +1,8 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.store.config;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -59,6 +61,7 @@ public class MuleConnectorConfigStore
 	    
 	    String httpNS = Constants.HTTP_REQUESTER_URI_NS;
 	    String dbNS   = Constants.DB_URI_NS;
+	    String anypointMQNS = Constants.ANYPOINT_MQ_URI_NS;
 
 		if (muleConfiguration != null)
 		{			
@@ -141,6 +144,35 @@ public class MuleConnectorConfigStore
 							configurations.put(configName, new DbConfig(host, port, user, database, type));
 						}
 					}
+					
+                    //----------------------------------------------------------------------------
+                    //  Process all of the Anypoint MQ Configurations in the XML file
+                    //----------------------------------------------------------------------------
+                    NodeList anypointMQConfigNodesList = doc.getElementsByTagNameNS(anypointMQNS, "config");
+                    int anyppointMQConfigNodes = anypointMQConfigNodesList.getLength();
+                    
+                    for (int i = 0; i < anyppointMQConfigNodes; i++)
+                    {
+                        Node node = anypointMQConfigNodesList.item(i);
+                        
+                        if (node.getNodeType() == Node.ELEMENT_NODE)
+                        {
+                            Element e = (Element) node;
+                            String configName = e.getAttribute("name");
+                            
+                            Element e2 = (Element)e.getElementsByTagNameNS(anypointMQNS, "connection").item(0);
+                            String type = e2.getLocalName();
+                            String url = e2.getAttribute("url");
+                            String clientId = e2.getAttribute("clientId");
+                            //String user = e2.getAttribute("user");
+                            //String database = e2.getAttribute("database");
+                            
+                            //--------------------------------------------------------------------
+                            //  Create and store a DbConfig into the configuration store
+                            //--------------------------------------------------------------------                          
+                            configurations.put(configName, new AnypointMQConfig(url, clientId));
+                        }
+                    }					
 			    }
 			    catch (Exception e)
 			    {
@@ -171,10 +203,10 @@ public class MuleConnectorConfigStore
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	//	Retreive either a DB or HTTP Requester Configuration
+	//	Retrieve either a DB, Anypoint MQ or HTTP Requester Configuration
 	//------------------------------------------------------------------------------------------------
 	/**
-	 * 	Retreive either a DB or HTTP Requester Configuration
+	 * 	Retrieve either a DB or HTTP Requester Configuration
 	 * 
 	 * @param key - name of the {@code config-reg} to retrieve
 	 * 
@@ -184,6 +216,55 @@ public class MuleConnectorConfigStore
 	{
 		return (T) configurations.get(key);
 	}
+	
+	//------------------------------------------------------------------------------------------------
+    //  Nested class for storing some configuration details on the Anypoint MQ Connector.
+    //------------------------------------------------------------------------------------------------
+    public static class AnypointMQConfig
+    {
+        //private String url;
+        private String clientId;
+        private URL url;
+        
+        public AnypointMQConfig(String url, String clientId) throws MalformedURLException
+        {
+            this.url = new URL(url);
+            this.clientId = clientId;
+        }
+        
+        public String getClientId()
+        {
+            return clientId;
+        }
+        
+        public String getUrl()
+        {
+            return url.toExternalForm();
+        }
+        
+        public String getHost()
+        {
+            return url.getHost();
+        }
+        
+        public String getPort()
+        {
+            int port = url.getPort();
+            
+            return (port == -1) ? Integer.toString(url.getDefaultPort()) : Integer.toString(port);
+        }
+        
+        public String getProtocol()
+        {
+            return url.getProtocol();
+        }
+        
+        public String getPath()
+        {
+            return url.getPath();
+        }
+    }
+    
 
 	//------------------------------------------------------------------------------------------------
 	//	Nested class for storing some configuration details on the HTTP Requester.

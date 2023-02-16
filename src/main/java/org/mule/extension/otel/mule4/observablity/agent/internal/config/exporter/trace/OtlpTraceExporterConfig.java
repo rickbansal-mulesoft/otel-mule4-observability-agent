@@ -14,6 +14,9 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Example;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.net.URL;
 
 //----------------------------------------------------------------------------------
 //	This class stores all of the configuration data for an OpenTelemetry Protocol 
@@ -22,6 +25,8 @@ import org.mule.runtime.extension.api.annotation.param.display.Summary;
 public class OtlpTraceExporterConfig implements OtlpExporterConfig
 {
 
+    private Logger logger = LoggerFactory.getLogger(OtlpTraceExporterConfig.class);
+
 	@Parameter
 	@DisplayName(value = "Trace Collector Endpoint")
 	@Summary(value = "Traget URL to which the OTLP Exporter sends traces. Must be a URL with " +
@@ -29,6 +34,15 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 	@Example(value = "http://mycollector.com:4317/v1/traces")
 	private String traceCollectorEndpoint;
 
+	@Parameter
+    @DisplayName("Endpoint Certificate")
+    @Optional(defaultValue = "")
+    @Example(value = "mycert.pem")
+    @Summary("The path to the file containing trusted certificates to use when verifying an OTLP " + 
+             "trace server's TLS credentials. The file should contain one or more X.509 certificates " +
+             "in PEM format. By default the host platform's trusted root certificates are used.")
+    private String certificate;
+	
 	@Parameter
 	@Optional(defaultValue = "HTTP_PROTOBUF")
 	@DisplayName(value = "OTLP Transport Protocol")
@@ -113,6 +127,11 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 		return batchExportDelayInterval;
 	}
 	
+    public String getCertificate()
+    {
+        return certificate;
+    }
+	
 	public Map<String, String> getProperties()
 	{
 		Map<String, String> config = new HashMap<>();
@@ -123,10 +142,34 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 		config.put("otel.exporter.otlp.traces.compression", compression.getCompressionType());
 		config.put("otel.bsp.schedule.delay", getBatchExportDelayInterval());
 		config.put("otel.bsp.max.queue.size", getMaxQueueSize());
-		config.put("tel.bsp.max.export.batch.size", getMaxBatchExportSize());
+		config.put("otel.bsp.max.export.batch.size", getMaxBatchExportSize());
 		config.put("otel.bsp.export.timeout", getExportTimeout());
 		config.put("otel.exporter.otlp.traces.headers", KeyValuePair.commaSeparatedList(getHeaders()));
 		
+		logger.debug("get certificate :" + getCertificate() + " is empty:" + getCertificate().isEmpty());
+        if(!(getCertificate().isEmpty())) 
+        {            
+            Class <? extends OtlpTraceExporterConfig> clazz = this.getClass();
+            ClassLoader cl = clazz.getClassLoader();
+            URL url = cl.getResource(getCertificate());
+            String path = url.getPath();
+            
+            logger.debug("certificate path: " + path);
+
+            //config.put("otel.exporter.otlp.traces.certificate", this.getClass().getClassLoader().getResource(getCertificate()).getPath());
+            config.put("otel.exporter.otlp.traces.certificate", path);
+        }
+        
+		//
+		// Explicitly disable exports for metrics and logs. Seems like the latest version of the SDK has them 
+		// enabled by default.
+		//
+		// value = "none" to turn off 
+		// value = "otlp" to export via OTLP
+		//
+		config.put("otel.metrics.exporter", "none");
+		config.put("otel.logs.exporter", "none");
+
 		return Collections.unmodifiableMap(config);
 	}
 

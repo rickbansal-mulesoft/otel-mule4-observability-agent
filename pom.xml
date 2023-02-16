@@ -6,14 +6,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mulesoft.extensions.rb.otel</groupId>
 	<artifactId>otel-mule4-observability-agent</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.2-A</version>
 	<packaging>mule-extension</packaging>
 	<name>OpenTelemetry Mule 4 Observability Agent Extension</name>
 
 	<properties>
-		<opentelemetry.version>1.9.1</opentelemetry.version>
+		<opentelemetry.version>1.22.0</opentelemetry.version>
 		<maven.build.timestamp.format>MMMMM dd, yyyy</maven.build.timestamp.format>
-		<mule.maven.plugin.version>3.5.4</mule.maven.plugin.version>
+		<mule.maven.plugin.version>3.8.2</mule.maven.plugin.version>
 		<slf4j.version>1.7.36</slf4j.version>
 	</properties>
 
@@ -52,6 +52,7 @@
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
 				<version>2.2.2</version>
+				
 				<executions>
 					<execution>
 						<id>asciidoc-to-html</id>
@@ -71,32 +72,33 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-assembly-plugin</artifactId> -->
-<!-- 				<version>3.1.1</version> -->
-<!-- 				<configuration> -->
-<!-- 					<descriptorRefs> -->
-<!-- 						<descriptorRef>jar-with-dependencies</descriptorRef> -->
-<!-- 					</descriptorRefs> -->
-<!-- 				</configuration> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>make-assembly</id> -->
-<!-- 						<phase>package</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>single</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
-			
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-bom -->
 			<dependency>
 				<groupId>io.opentelemetry</groupId>
 				<artifactId>opentelemetry-bom</artifactId>
@@ -108,7 +110,8 @@
 	</dependencyManagement>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-bom -->
+	
+		<!-- https://mvnrepository.com/artifact/io.opentelemetry/ -->
 		<dependency>
 			<groupId>io.opentelemetry</groupId>
 			<artifactId>opentelemetry-api</artifactId>
@@ -120,12 +123,7 @@
 		</dependency>
 		<dependency>
 			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-exporter-otlp-http-trace</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
 			<artifactId>opentelemetry-exporter-otlp</artifactId>
-			<version>${opentelemetry.version}</version>
 		</dependency>
 
 		<!-- provided Mule APIs -->
@@ -141,7 +139,13 @@
 			<version>1.6.0</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
-
+		<dependency>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>anypoint-mq-connector</artifactId>
+			<version>4.0.1</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		
 		<!-- provided Apache support -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -174,8 +178,22 @@
 		</dependency>
 	</dependencies>
 
-	<!-- Add a link to this Mule repo (needed when running mvn from the command 
-		line) -->
+	<!-- Fill in this section if the extension needs to be stored in an external artifact/distribution repo -->
+	<!-- mvn clean deploy  -->
+	<distributionManagement>
+		<repository>
+			<id></id>
+			<name></name>
+			<url></url>
+		</repository>
+		<snapshotRepository>
+			<id></id>
+			<name></name>
+			<url></url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<!-- Add a link to this Mule repo (needed when running mvn from the command line) -->
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mulesoft-releases</id>

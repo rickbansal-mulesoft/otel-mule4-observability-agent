@@ -35,11 +35,11 @@ public class TracingProcessorInterceptor implements ProcessorInterceptor
 			try
 			{
 				event.addVariable(Constants.TRACE_CONTEXT_MAP_KEY, OTelContextPropagator.makeTraceContextMapFor(traceId));
-				logger.info("created TRACE_CONTEXT_MAP_KEY variable for MuleSoft traceId (correlationId): " + traceId);
+				logger.debug("created TRACE_CONTEXT_MAP_KEY variable for MuleSoft traceId (correlationId): " + traceId);
 			}
 			catch (Exception e)
 			{
-				logger.info("unable to create TRACE_CONTEXT_MAP_KEY variable.  \nError: " + e.getMessage());
+				logger.debug("unable to create TRACE_CONTEXT_MAP_KEY variable.  \nError: " + e.getMessage());
 			}
 		}
 		else if (isHttpRequestProcessor(location))

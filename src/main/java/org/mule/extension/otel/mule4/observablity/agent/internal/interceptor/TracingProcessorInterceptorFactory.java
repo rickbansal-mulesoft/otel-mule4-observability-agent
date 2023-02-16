@@ -27,7 +27,8 @@ import org.springframework.stereotype.Component;
  *				 event but before the <code>MessageProcessorNotification.MESSAGE_PROCESSOR_PRE_INVOKE</code> event. 
  *			</li>
  *		</ul>
- *		<li>An HTTP Request processor (regardless of location).</li>
+ *      <li>An HTTP Request processor (regardless of location).</li>
+ *      <li>A Logger processor (regardless of location).</li>
  *	</ul>
  * @see 
  * <a href=https://docs.mulesoft.com/mule-runtime/3.9/bootstrapping-the-registry>
@@ -39,8 +40,6 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 {
 	private static Logger logger = LoggerFactory.getLogger(TracingProcessorInterceptorFactory.class);
 
-	//private  boolean interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true"));
-	//private  boolean interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "false"));
 	private  boolean interceptorEnabled;
 	
 	public TracingProcessorInterceptorFactory()
@@ -63,7 +62,6 @@ public class TracingProcessorInterceptorFactory implements ProcessorInterceptorF
 	@Override
 	public boolean intercept(ComponentLocation location)
 	{
-		//interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true"));
 		interceptorEnabled = Boolean.parseBoolean(System.getProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "false"));
 		
 		if (!interceptorEnabled)

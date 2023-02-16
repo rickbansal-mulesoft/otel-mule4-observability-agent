@@ -66,7 +66,8 @@ public class OTelContextPropagator
 	}
 
 	/**
-	 * Get the Context for a particular trace and store the information into a Map.
+	 * Get the Context for a particular trace and store the information into a Map.  The created map
+	 * can be injected into the Mule Event via the addEvent method.
 	 * @param traceId
 	 * @return a simple Map with the Context data for the trace with id <code>traceId</code>
 	 * @throws ConnectionException

@@ -26,6 +26,9 @@ public class Constants
 	public static final String HTTP_LISTENER 					= "http:listener";	
 	public static final String HTTP_REQUESTER					= "http:request";
 
+	public static final String ANYPOINT_MQ_PUBLISH              = "anypoint-mq:publish";  
+	public static final String ANYPOINT_MQ_SUBSCRIBER           = "anypoint-mq:subscriber";
+	
 	public static final String LOGGER							= "mule:logger";
 	public static final String FLOW_REFERENCE					= "mule:flow-ref";
 	public static final String TRY_SCOPE					    = "mule:try";
@@ -46,6 +49,7 @@ public class Constants
 	
 	public static final String HTTP_REQUESTER_URI_NS 			= "http://www.mulesoft.org/schema/mule/http";
 	public static final String DB_URI_NS 						= "http://www.mulesoft.org/schema/mule/db";	
+	public static final String ANYPOINT_MQ_URI_NS               = "http://www.mulesoft.org/schema/mule/anypoint-mq";
 
 	public static final String AGENT_ARTIFACT_ID 				= "otel-mule4-observability-agent";	
 	
