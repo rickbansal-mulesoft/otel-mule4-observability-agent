@@ -103,8 +103,9 @@ public class HttpRequesterParser extends BaseNotificationParser
 	
 			span.setAttribute("response.status.code", responseAttributes.getStatusCode());
 			span.setAttribute("response.reason.phrase", responseAttributes.getReasonPhrase());
-			span.setAttribute("response.content.length", responseHeaders.get("content-length"));
-			span.setAttribute("response.date", responseHeaders.get("date"));
+			
+			responseHeaders.forEach((key, collection) -> {span.setAttribute("response.headers." + key, collection);});
+
 		}
 		catch (Exception e)
 		{

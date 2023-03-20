@@ -8,6 +8,8 @@ import org.mule.runtime.api.notification.PipelineMessageNotification;
 import org.mule.runtime.core.api.config.MuleConfiguration;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
+import org.mule.extension.otel.mule4.observablity.agent.internal.metric.MuleMetricMemoryUsage;
+import org.mule.extension.otel.mule4.observablity.agent.internal.metric.MuleMetricSystemWorkload;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.NotificationParserUtils;
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.NotificationParserService;
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider.BaseNotificationParser;
@@ -82,7 +84,13 @@ public class OTelMuleNotificationHandler
 	{
 		if (muleConnectorConfigStore == null)
 		{
-			muleConnectorConfigStore = MuleConnectorConfigStore.getInstance(getMuleConfiguration());
+		      if (otelSdkConnection == null)
+		        {
+		            otelSdkConnection = sdkConnectionSupplier.get();
+		        }
+		    
+			muleConnectorConfigStore = MuleConnectorConfigStore.getInstance(getMuleConfiguration(), 
+			                                                                otelSdkConnection.getExpressionManager().get());
 		}
 		
 		return muleConnectorConfigStore;
@@ -105,10 +113,15 @@ public class OTelMuleNotificationHandler
 				                                                                 .setStartTimestamp(startInstant);
 		
 		spanBuilder.setAttribute(Constants.START_DATETIME_ATTRIBUTE, startInstant.toString());
-				
+	       
+		spanBuilder.setAttribute(Constants.START_WORKLOAD_ATTRIBUTE, 
+		                         String.format("%.2f %%", MuleMetricSystemWorkload.getWorkloadPercent()));
+		
+	    spanBuilder.setAttribute(Constants.START_HEAP_USAGE_ATTRIBUTE, 
+                                 String.format("%.2f MB", MuleMetricMemoryUsage.getHeapMemoryUsage()/1000000.0));
+	      
 		NotificationParser notificationParser = NotificationParserService.getInstance().getParserFor(notification)
 				                                                                       .orElse(new BaseNotificationParser());
-		
 		
 		if (!traceStore.isTracePresent(NotificationParserUtils.getMuleSoftTraceId(notification)))
 		{

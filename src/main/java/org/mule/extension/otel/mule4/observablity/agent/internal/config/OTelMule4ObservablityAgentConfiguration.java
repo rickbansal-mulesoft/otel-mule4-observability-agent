@@ -1,6 +1,7 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.config;
 
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.metric.OtlpMetricExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.OTelResourceConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OTelMule4ObservablityAgentConnectionProvider;
@@ -10,8 +11,6 @@ import org.mule.extension.otel.mule4.observablity.agent.internal.notification.li
 import org.mule.extension.otel.mule4.observablity.agent.internal.notification.listener.MulePipelineNotificationListener;
 import org.mule.extension.otel.mule4.observablity.agent.internal.operations.OTelMule4ObservablityAgentOperations;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
-import org.mule.runtime.api.meta.ExpressionSupport;
-import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
 import org.mule.runtime.extension.api.annotation.param.Optional;
@@ -26,6 +25,7 @@ import org.mule.runtime.api.exception.MuleException;
 import org.mule.runtime.api.lifecycle.Startable;
 import org.mule.runtime.api.notification.NotificationListenerRegistry;
 import org.mule.runtime.core.api.config.MuleConfiguration;
+import org.mule.runtime.core.api.el.ExpressionManager;
 
 import java.util.function.Supplier;
 import javax.inject.Inject;
@@ -43,7 +43,7 @@ import javax.inject.Inject;
 /**
  * This class represents an extension configuration. Values set in this class are 
  * commonly used across multiple operations since they represent something core 
- * from the extension.
+ * to the extension.
  */
 @Operations(OTelMule4ObservablityAgentOperations.class)
 @ConnectionProviders(OTelMule4ObservablityAgentConnectionProvider.class)
@@ -53,16 +53,15 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	private static Logger logger = LoggerFactory.getLogger(OTelMule4ObservablityAgentConfiguration.class);
 	
 	@Parameter
-	@DisplayName(value = "DISABLE all Tracing")
-	@Summary("Enable/Disable all tracing in this application.  If disabled, all other configuration " +
+	@DisplayName(value = "DISABLE all Signals")
+	@Summary("Enable/Disable all tracing and metric signal gathering in this application.  If disabled, all other configuration " +
 	         "details will be ignored.")
 	@Optional (defaultValue = "false")
-	@Placement(order = 1)
-	private boolean disableAllTracing;
+	private boolean disableAllSignals;
 	
-	public boolean getdisableAllTracing()
+	public boolean getdisableAllSignals()
 	{
-		return this.disableAllTracing;
+		return this.disableAllSignals;
 	}
 	
 	//------------------------------------------------------------------------------
@@ -79,10 +78,10 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	 * @see OTelResourceConfig
 	 */
 	@ParameterGroup(name = "Resource")
-	@Placement(order = 2)
+	@Placement(order = 20)
 	@Summary("Open Telemetry Resource Configuration. An OpenTelemetry Resource is an " +
 			 "immutable representation of the entity producing telemetry specified as " +
-			 " a set of attributes.")
+			 "a set of attributes.")
 	
 	private OTelResourceConfig resource;
 
@@ -110,28 +109,35 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	 * 		OTLP Exporter
 	 * 	</a>
 	 */
-	@ParameterGroup(name = "OTLP Trace Exporter")
+	@ParameterGroup(name = "Trace Exporter Properties")
 	@Summary("OpenTelemetry Protocol Trace Exporter Configuration.  <b>Note:  System or Environment Variables will BE overriden by this configuration.</b>")
-	@Placement(order = 3)
-	//@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private OtlpTraceExporterConfig traceExporter;
 
+	@ParameterGroup(name = "Metric Exporter Properties")
+	@Summary("OpenTelemetry Protocol Metric Exporter Configuration.  <b>Note:  System or Environment Variables will BE overriden by this configuration.</b>")
+	private OtlpMetricExporterConfig metricExporter;
+
+	@ParameterGroup(name = "Span Generation Bypass")
+	@Summary("Select if Message Processors spans should be added to the trace in general.  You can bypass certain Message Processors by adding them to list below.")
+	private SpanGenerationConfig spanGenerationConfig;
+	
+    //------------------------------------------------------------------------------
+    //  Helper Methods
+    //------------------------------------------------------------------------------	
+    public  OtlpMetricExporterConfig getMetricExporter() 
+    {
+        return metricExporter;
+    }
+    
 	public  OtlpTraceExporterConfig getTraceExporter() 
 	{
-		return traceExporter;
+	    return traceExporter;
 	}
-	
-	@ParameterGroup(name = "Span Generation")
-	@Summary("Select if Message Processors spans should be added to the trace in general.  You can bypass certain Message Processors by adding them to list below.")
-	@Placement(order = 4)
-	//@Expression(ExpressionSupport.NOT_SUPPORTED)
-	private SpanGenerationConfig spanGenerationConfig;
 
 	public  SpanGenerationConfig getSpanGenerationConfig() 
 	{
 		return spanGenerationConfig;
 	}
-	
 	
 	@Inject
 	NotificationListenerRegistry notificationListenerRegistry;
@@ -139,6 +145,9 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	@Inject 
 	MuleConfiguration muleConfiguration;
 
+	@Inject
+	ExpressionManager expressionManager;
+	
 	@SuppressWarnings("unused")
 	@Override
 	public void start() throws MuleException
@@ -148,15 +157,16 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 		//------------------------------------------------------------------------------
 		// Skip the startup if tracing is disabled
 		//------------------------------------------------------------------------------
-		if (this.getdisableAllTracing())
+		if (this.getdisableAllSignals())
 		{
 			System.setProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "false");
-			logger.info("All Tracing is DISABLED");
+			logger.info("Signal processing is DISABLED");
 			return;
 		}
 		else
 		{
 			System.setProperty(Constants.PROCESSOR_INTERCEPTOR_ENABLE, "true");
+	        logger.info("Signal processing is ENABLED");
 		}
 		
 		//------------------------------------------------------------------------------
@@ -170,8 +180,10 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 		//------------------------------------------------------------------------------
 		Supplier<OtelSdkConnection> otelSdkConnection = () -> OtelSdkConnection.getInstance(new OTelSdkConfig(getResource(), 
 				 						                                                                      getTraceExporter(),
+				 						                                                                      getMetricExporter(),
 				 						                                                                      muleConfiguration,
-				                                                                                              getSpanGenerationConfig()));
+				                                                                                              getSpanGenerationConfig(),
+				                                                                                              expressionManager));
 		
 		OTelMuleNotificationHandler otelMuleNotificationHandler = new OTelMuleNotificationHandler(otelSdkConnection);
 		

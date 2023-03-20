@@ -8,6 +8,7 @@ import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
 //----------------------------------------------------------------------------------
@@ -18,6 +19,7 @@ public class SpanGenerationConfig
 {
 
 	@Parameter()
+    @Placement(order = 10, tab = "OTLP Trace Exporter")
 	@DisplayName(value = "Generate Message Processor Spans")
 	@Summary("Generate Message Processor spans and them to the trace")
 	@Optional (defaultValue = "true")
@@ -25,6 +27,7 @@ public class SpanGenerationConfig
 	private boolean generateMessageProcessorsSpans;
 
 	@Parameter
+    @Placement(order = 20, tab = "OTLP Trace Exporter")
 	@DisplayName("Message Processor Span Bypass")
 	@Optional
 	@NullSafe

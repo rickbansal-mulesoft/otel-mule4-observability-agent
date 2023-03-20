@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
 import org.mule.runtime.core.api.config.MuleConfiguration;
+import org.mule.runtime.core.api.el.ExpressionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -38,12 +39,16 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
  *  
  *  @see #getInstance(MuleConfiguration)
  */
+
+
 public class MuleConnectorConfigStore
 {
 	private static Logger logger = LoggerFactory.getLogger(MuleConnectorConfigStore.class);
 	
 	private static MuleConnectorConfigStore muleConnectorConfigStore = null;
 
+	private static ExpressionManager expressionManager = null;
+	
 	//--------------------------------------------------------------------------------------------
 	//	Collection of configuration details for a variety of Mule connectors.  
 	//--------------------------------------------------------------------------------------------
@@ -52,10 +57,12 @@ public class MuleConnectorConfigStore
 	//--------------------------------------------------------------------------------------------
 	//	Singleton constructor  
 	//--------------------------------------------------------------------------------------------
-	private MuleConnectorConfigStore(MuleConfiguration muleConfiguration)
+	private MuleConnectorConfigStore(MuleConfiguration muleConfiguration, ExpressionManager em)
 	{
 	    DefaultMuleConfiguration defaultMuleConfiguration = (DefaultMuleConfiguration)muleConfiguration;
 		
+	    expressionManager = em;
+	    
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	    dbf.setNamespaceAware(true);
 	    
@@ -161,11 +168,8 @@ public class MuleConnectorConfigStore
                             String configName = e.getAttribute("name");
                             
                             Element e2 = (Element)e.getElementsByTagNameNS(anypointMQNS, "connection").item(0);
-                            String type = e2.getLocalName();
                             String url = e2.getAttribute("url");
                             String clientId = e2.getAttribute("clientId");
-                            //String user = e2.getAttribute("user");
-                            //String database = e2.getAttribute("database");
                             
                             //--------------------------------------------------------------------
                             //  Create and store a DbConfig into the configuration store
@@ -193,11 +197,12 @@ public class MuleConnectorConfigStore
 	 * 
 	 * @return Singleton {@code MuleConnectorConfigStore}
 	 */
-	public static synchronized MuleConnectorConfigStore getInstance(MuleConfiguration muleConfiguration)
+	public static synchronized MuleConnectorConfigStore getInstance(MuleConfiguration muleConfiguration,
+	                                                                ExpressionManager expressionManager)
 	{
 		if (muleConnectorConfigStore == null)
 		{
-			muleConnectorConfigStore = new MuleConnectorConfigStore(muleConfiguration);
+			muleConnectorConfigStore = new MuleConnectorConfigStore(muleConfiguration, expressionManager);
 		}
 		return muleConnectorConfigStore;
 	}
@@ -206,7 +211,7 @@ public class MuleConnectorConfigStore
 	//	Retrieve either a DB, Anypoint MQ or HTTP Requester Configuration
 	//------------------------------------------------------------------------------------------------
 	/**
-	 * 	Retrieve either a DB or HTTP Requester Configuration
+	 * 	Retrieve either a DB, Anypoint MQ or HTTP Requester Configuration
 	 * 
 	 * @param key - name of the {@code config-reg} to retrieve
 	 * 
@@ -217,19 +222,58 @@ public class MuleConnectorConfigStore
 		return (T) configurations.get(key);
 	}
 	
+	public static ExpressionManager getExpressionManager()
+	{
+	    return expressionManager;
+	}
+	
+	
+	public static String resolveProperty(String property)
+	{
+	    String value = property;
+	    String exp;
+	    
+	    try
+	    {
+    	    //
+    	    //  Check if property is a placeholder
+    	    //
+            //if (property.matches("^\${.*}$"))
+            if (property.startsWith("${") && property.endsWith("}"))
+    	    {
+    	        // strip off beginning and ending of placeholder syntax
+    	        property = property.substring(2, property.length()-1);
+    	        
+    	        // create expression for evaluating a property
+    	        exp = "#[p(\"" + property + "\")]";
+    	        
+    	        value = (String) expressionManager.evaluate(exp).getValue();
+    	    }
+    	    else if (expressionManager.isExpression(property))
+    	    {
+    	        value = (String) expressionManager.evaluate(property).getValue();
+    	    }
+	    }
+	    catch (Exception e)
+	    {
+	        logger.debug(e.getMessage());
+	    }
+	    
+	    return value;
+	}
+	
 	//------------------------------------------------------------------------------------------------
     //  Nested class for storing some configuration details on the Anypoint MQ Connector.
     //------------------------------------------------------------------------------------------------
     public static class AnypointMQConfig
     {
-        //private String url;
         private String clientId;
         private URL url;
         
         public AnypointMQConfig(String url, String clientId) throws MalformedURLException
         {
-            this.url = new URL(url);
-            this.clientId = clientId;
+            this.url = new URL(resolveProperty(url));
+            this.clientId = resolveProperty(clientId);
         }
         
         public String getClientId()
@@ -277,9 +321,9 @@ public class MuleConnectorConfigStore
 		
 		public HttpRequesterConfig(String host, String port, String protocol)
 		{
-			this.host = host;
-			this.port = port;
-			this.protocol = protocol;
+		    this.host = resolveProperty(host);
+		    this.port = resolveProperty(port);
+		    this.protocol = resolveProperty(protocol);
 		}
 		
 		public String getHost()
@@ -311,11 +355,12 @@ public class MuleConnectorConfigStore
 		
 		public DbConfig(String host, String port, String user, String dbName, String connectionType)
 		{
-			this.host = host;
-			this.port = port;
-			this.user = user;
-			this.dbName = dbName;
-			this.connectionType = connectionType;
+		    this.host = resolveProperty(host);
+		    this.port = resolveProperty(port);
+		    this.user = resolveProperty(user);
+		    this.dbName = resolveProperty(dbName);
+		    this.connectionType = resolveProperty(connectionType);
+	
 		}
 		
 		public String getHost()

@@ -3,7 +3,9 @@ package org.mule.extension.otel.mule4.observablity.agent.internal.config;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.OTelResourceConfig;
+import org.mule.runtime.api.component.ConfigurationProperties;
 import org.mule.runtime.core.api.config.MuleConfiguration;
+import org.mule.runtime.core.api.el.ExpressionManager;
 
 //----------------------------------------------------------------------------------
 //	This class is a helper/wrapper class which stores all of the high level config
@@ -16,19 +18,27 @@ import org.mule.runtime.core.api.config.MuleConfiguration;
  */
 public class OTelSdkConfig
 {
-	private final OTelResourceConfig 	resourceConfig;
-	private final OtlpExporterConfig 	traceExporterConfig;
-	private final MuleConfiguration		muleConfiguration;
-	private final SpanGenerationConfig	spanGenerationConfig;
+	private final OTelResourceConfig   resourceConfig;
+	private final OtlpExporterConfig   traceExporterConfig;
+	private final OtlpExporterConfig   metricExporterConfig;
+	private final MuleConfiguration	   muleConfiguration;
+	private final SpanGenerationConfig spanGenerationConfig;
+	private final ExpressionManager    expressionManager;
 
-	public OTelSdkConfig(OTelResourceConfig r, OtlpExporterConfig t, MuleConfiguration m, SpanGenerationConfig s)
+	public OTelSdkConfig(OTelResourceConfig r, OtlpExporterConfig t, OtlpExporterConfig mt, 
+	                     MuleConfiguration m, SpanGenerationConfig s, ExpressionManager e)
 	{
 		this.resourceConfig = r;
 		this.traceExporterConfig = t;
+	    this.metricExporterConfig = mt;
 		this.muleConfiguration = m;
 		this.spanGenerationConfig = s;
+		this.expressionManager = e;
 	}
 
+    //------------------------------------------------------------------------------
+    //  Helper Methods
+    //------------------------------------------------------------------------------	
 	public OTelResourceConfig getResourceConfig()
 	{
 		return resourceConfig;
@@ -39,6 +49,11 @@ public class OTelSdkConfig
 		return traceExporterConfig;
 	}
 	
+    public OtlpExporterConfig getMetricExporterConfig()
+    {
+        return metricExporterConfig;
+    }
+	
 	public MuleConfiguration getMuleConfiguration()
 	{
 		return muleConfiguration;
@@ -47,5 +62,10 @@ public class OTelSdkConfig
 	public SpanGenerationConfig getSpanGenerationConfig()
 	{
 		return spanGenerationConfig;
+	}
+	
+	public ExpressionManager getExpressionManager()
+	{
+	    return expressionManager;
 	}
 }

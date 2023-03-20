@@ -1,7 +1,6 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.notification.parser.service.provider;
 
 import java.util.Map;
-
 import org.mule.extension.otel.mule4.observablity.agent.internal.store.config.MuleConnectorConfigStore;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.NotificationParserUtils;
@@ -14,7 +13,7 @@ import io.opentelemetry.api.trace.SpanBuilder;
 public class DatabaseConnectorParser extends BaseNotificationParser
 {
 	private static Logger logger = LoggerFactory.getLogger(DatabaseConnectorParser.class);
-
+	
 	// --------------------------------------------------------------------------------------------
 	// Verify if this Parser can handle this notification
 	// --------------------------------------------------------------------------------------------	
@@ -35,7 +34,7 @@ public class DatabaseConnectorParser extends BaseNotificationParser
 			                                      MuleConnectorConfigStore muleConnectorConfigStore, 
 			                                      SpanBuilder spanBuilder)
 	{
-		super.startProcessorNotification(notification, muleConnectorConfigStore, spanBuilder);
+	    super.startProcessorNotification(notification, muleConnectorConfigStore, spanBuilder);
 		
 		return addDatabaseAttributesToSpan(notification, muleConnectorConfigStore, spanBuilder);
 	}

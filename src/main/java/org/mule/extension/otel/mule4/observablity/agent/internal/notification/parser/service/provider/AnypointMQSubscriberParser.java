@@ -13,7 +13,6 @@ import org.mule.runtime.api.notification.PipelineMessageNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.context.Context;
@@ -35,7 +34,7 @@ public class AnypointMQSubscriberParser extends BaseNotificationParser
         int action = Integer.parseInt(notification.getAction().getIdentifier());
         
         // ----------------------------------------------------------------------------------------
-        // Only parse HTTP Listener notifications which are a source/trigger to the start of a flow
+        // Only parse MQ Listener notifications which are a source/trigger to the start of a flow
         // ----------------------------------------------------------------------------------------
         if ( sourceComponent.equalsIgnoreCase(Constants.ANYPOINT_MQ_SUBSCRIBER)  && 
              action == PipelineMessageNotification.PROCESS_START )
@@ -83,7 +82,7 @@ public class AnypointMQSubscriberParser extends BaseNotificationParser
     // --------------------------------------------------------------------------------------------
     // Message Processor Start Notification Parsing Handler
     // -------------------------------------------------------------------------------------------- 
-    /*
+    
     @Override
     public SpanBuilder startProcessorNotification(EnrichedServerNotification notification,
                                                   MuleConnectorConfigStore muleConnectorConfigStore, 
@@ -93,7 +92,7 @@ public class AnypointMQSubscriberParser extends BaseNotificationParser
                 
         return addMQSubscriberConfigAttributesToSpan(notification, muleConnectorConfigStore, spanBuilder);
     }
-    */
+    
     
     // --------------------------------------------------------------------------------------------
     // Annotate the span with various MQ Subscriber attributes
@@ -121,7 +120,7 @@ public class AnypointMQSubscriberParser extends BaseNotificationParser
     // --------------------------------------------------------------------------------------------
     // Annotate the span with various MQ Subscriber configuration attributes
     // --------------------------------------------------------------------------------------------
-    /*
+    
     private SpanBuilder addMQSubscriberConfigAttributesToSpan(EnrichedServerNotification notification,
                                                               MuleConnectorConfigStore muleConnectorConfigStore,
                                                               SpanBuilder spanBuilder)
@@ -147,7 +146,7 @@ public class AnypointMQSubscriberParser extends BaseNotificationParser
 
         return spanBuilder;
     }    
-    */
+    
     // --------------------------------------------------------------------------------------------
     // Message Processor End Notification Parsing Handler
     // -------------------------------------------------------------------------------------------- 

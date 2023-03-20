@@ -9,6 +9,7 @@ import org.mule.extension.otel.mule4.observablity.agent.internal.util.Notificati
 import org.mule.runtime.api.component.ComponentIdentifier;
 import org.mule.runtime.api.notification.EnrichedServerNotification;
 import org.mule.runtime.api.notification.PipelineMessageNotification;
+import org.mule.runtime.api.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,12 +87,15 @@ public class HttpListenerParser extends BaseNotificationParser
 
 		try
 		{
+	        MultiMap<String, String> requestHeaders = httpRequestAttributes.getHeaders();
+
 			spanBuilder.setAttribute("scheme", httpRequestAttributes.getScheme());
 			spanBuilder.setAttribute("method", httpRequestAttributes.getMethod());
 			spanBuilder.setAttribute("remote.address", httpRequestAttributes.getRemoteAddress());
 			spanBuilder.setAttribute("request.path", httpRequestAttributes.getRequestPath());
-			spanBuilder.setAttribute("user.agent", httpRequestAttributes.getHeaders().get("user-agent"));
-			spanBuilder.setAttribute("host", httpRequestAttributes.getHeaders().get("host"));
+			
+			requestHeaders.forEach((key, collection) -> {spanBuilder.setAttribute("headers." + key, collection);});
+      
 		}
 		catch (Exception e)
 		{

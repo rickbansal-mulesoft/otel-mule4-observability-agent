@@ -18,9 +18,12 @@ import java.util.function.Supplier;
 
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.OTelSdkConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
+import org.mule.extension.otel.mule4.observablity.agent.internal.metric.MuleMetricMemoryUsage;
+import org.mule.extension.otel.mule4.observablity.agent.internal.metric.MuleMetricSystemWorkload;
 import org.mule.extension.otel.mule4.observablity.agent.internal.util.Constants;
 import org.mule.runtime.core.api.config.DefaultMuleConfiguration;
 import org.mule.runtime.core.api.config.MuleConfiguration;
+import org.mule.runtime.core.api.el.ExpressionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +50,8 @@ public final class OtelSdkConnection
 	private final MuleConfiguration muleConfiguration;
 	private final SpanGenerationConfig	spanGenerationConfig;
 	
+	private ExpressionManager expressionManager;
+	
 	//------------------------------------------------------------------------------------------------
 	//	Singleton 
 	//------------------------------------------------------------------------------------------------
@@ -69,6 +74,7 @@ public final class OtelSdkConnection
 	private OtelSdkConnection(String name, String version, OTelSdkConfig otelSdkConfig)
 	{
 		logger.info("Initializing the OpenTelemetry Mule 4 Observability Agent {}:{}", name, version);
+		
 		
 		//--------------------------------------------------------------------------------------------
 		//	Configure the OpenTelemetry SDK using the SDK's auto configuration builder.  
@@ -98,6 +104,11 @@ public final class OtelSdkConnection
 			{
 				configMap.putAll(otelSdkConfig.getTraceExporterConfig().getProperties());
 			}
+			
+			if (otelSdkConfig.getMetricExporterConfig() != null)
+			{
+			    configMap.putAll(otelSdkConfig.getMetricExporterConfig().getProperties());
+			}
 
 			Supplier<Map<String, String>> propertiesSupplier = () -> Collections.unmodifiableMap(configMap);
 
@@ -111,6 +122,10 @@ public final class OtelSdkConnection
 		muleConfiguration = otelSdkConfig.getMuleConfiguration();
 		
 		spanGenerationConfig = otelSdkConfig.getSpanGenerationConfig();
+		expressionManager = otelSdkConfig.getExpressionManager();
+		
+		MuleMetricMemoryUsage.setInstance(openTelemetry);
+		MuleMetricSystemWorkload.setInstance(openTelemetry);
 	}
 
 	public void invalidate()
@@ -284,5 +299,11 @@ public final class OtelSdkConnection
 	public Optional<SpanGenerationConfig> getSpanGenerationConfig()
 	{
 		return Optional.ofNullable(spanGenerationConfig);
+	}
+	
+	public Optional<ExpressionManager> getExpressionManager
+	()
+	{
+	    return Optional.ofNullable(expressionManager);
 	}
 }

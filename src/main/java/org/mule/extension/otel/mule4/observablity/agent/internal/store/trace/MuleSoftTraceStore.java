@@ -230,7 +230,7 @@ public class MuleSoftTraceStore
 	{
 		MuleSoftTrace muleSoftTrace = muleSoftTraces.get(mulesoftTraceId);
 		MuleSoftTrace.PipelineSpan pipelineSpan = muleSoftTrace.removePipelineSpan(pipelineId);
-		pipelineSpan.end(endInstant, e);
+		pipelineSpan.end(endInstant, e);		
 	}
 	
 	//------------------------------------------------------------------------
