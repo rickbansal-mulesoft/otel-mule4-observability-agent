@@ -146,15 +146,4 @@ public class AnypointMQSubscriberParser extends BaseNotificationParser
 
         return spanBuilder;
     }    
-    
-    // --------------------------------------------------------------------------------------------
-    // Message Processor End Notification Parsing Handler
-    // -------------------------------------------------------------------------------------------- 
-    /*
-    @Override
-    public void endProcessorNotification(EnrichedServerNotification notification, MuleSoftTraceStore traceStore)
-    {
-        super.endProcessorNotification(notification, traceStore);
-    }
-        */
 }

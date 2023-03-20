@@ -3,7 +3,6 @@ package org.mule.extension.otel.mule4.observablity.agent.internal.config;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.OTelResourceConfig;
-import org.mule.runtime.api.component.ConfigurationProperties;
 import org.mule.runtime.core.api.config.MuleConfiguration;
 import org.mule.runtime.core.api.el.ExpressionManager;
 

@@ -215,7 +215,7 @@ public class MuleConnectorConfigStore
 	 * 
 	 * @param key - name of the {@code config-reg} to retrieve
 	 * 
-	 * @return {@code DbConfig} or {@code HttpRequesterConfig }
+	 * @return {@code DbConfig}, {@code AnypointMQConfig} or {@code HttpRequesterConfig }
 	 */
 	public <T> T getConfig(String key)
 	{
@@ -228,6 +228,16 @@ public class MuleConnectorConfigStore
 	}
 	
 	
+    //------------------------------------------------------------------------------------------------
+    //  Dynamically resolve the value of a configuration property
+    //------------------------------------------------------------------------------------------------
+    /**
+     *  Dynamically resolve the value of a configuration property
+     * 
+     * @param property - property to resolve
+     * 
+     * @return resolved value
+     */	
 	public static String resolveProperty(String property)
 	{
 	    String value = property;
