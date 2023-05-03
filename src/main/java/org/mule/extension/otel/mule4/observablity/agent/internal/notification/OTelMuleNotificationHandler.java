@@ -113,9 +113,16 @@ public class OTelMuleNotificationHandler
 				                                                                 .setStartTimestamp(startInstant);
 		
 		spanBuilder.setAttribute(Constants.START_DATETIME_ATTRIBUTE, startInstant.toString());
-	       
+	    
+		String workload = (MuleMetricSystemWorkload.getWorkloadPercent() > 0) 
+		                  ? String.format("%.2f %%", MuleMetricSystemWorkload.getWorkloadPercent())
+		                  : "Data not available";
+	    /*    
 		spanBuilder.setAttribute(Constants.START_WORKLOAD_ATTRIBUTE, 
 		                         String.format("%.2f %%", MuleMetricSystemWorkload.getWorkloadPercent()));
+		*/
+		
+	    spanBuilder.setAttribute(Constants.START_WORKLOAD_ATTRIBUTE, workload);
 		
 	    spanBuilder.setAttribute(Constants.START_HEAP_USAGE_ATTRIBUTE, 
                                  String.format("%.2f MB", MuleMetricMemoryUsage.getHeapMemoryUsage()/1000000.0));
