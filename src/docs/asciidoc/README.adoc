@@ -876,6 +876,13 @@ through external log files, a user can simply look at the trace to find faults.
 
 image::dynatrace-distributed-db-error-event.png[title="Dynatrace - Database Processor Error Event", align="center"]
 
+==== Anypoint MQ Publisher/Subscriber Processor Summary
+
+Below is a diagram which depicts specific attributes for both the Anypoint MQ Publish and Subscribe Message Processors.  The extension 
+will generate connection related attributes such as the event location (i.e., Publish/Subscribe queue/topic), payload type and message id.
+
+image::dynatrace-distributed-mqSub-mqPub-summary.png[title="Dynatrace - Anypoint Publisher/Subscriber Processor Summary", align="center"]
+
 == Backends Tested Against
 
 include::../../../backendsTested.adoc[]
