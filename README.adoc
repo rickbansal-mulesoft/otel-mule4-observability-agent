@@ -1,9 +1,9 @@
 = Mule 4 OpenTelemetry (OTel) Agent Extension
 // Document header
 Rick Bansal <rick.bansal@mulesoft.com>
-:revnumber: 1.0.2
-:revdate: May 17, 2022
-:revremark: Initial Draft
+:revnumber: 1.2.0
+:revdate: June 27, 2023
+:revremark: 
 :doctype: book
 :icons: font
 :toc: left
@@ -42,6 +42,26 @@ endif::[]
 This work effort is a field extension; hence, it is delivered on an "*as-is*" basis.
 Please refrain from contacting MuleSoft Support for technical support. Instead. use *GitHub 
 Issues* to provide feedback, suggest enhancements or report a bug.
+
+== Release Notes
+
+=== Version 1.2.0
+* https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-{revnumber}-mule-plugin.jar[available here]
+* Updated OTel SDK to version 1.27.0
+* Added support to allow for OTel Collector endpoints using self-signed certificates.
+* Added support for generating and exporting distributed traces across the Anypoint MQ transport
+** Context propagation across Anypoint MQ flows is accomplished via WC3 Trace Headers inserted as AMQ user properties
+* Added support for OTel Metrics
+** Supported Metrics:
+*** Heap Usage
+*** Workload Utilization
+** Added a new configuration editor for Metrics Collector configuration
+* Updated README documentation 
+
+=== Version 1.0.2 
+* https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-1.0.2-mule-plugin.jar[available here]
+* Initial release
+
 
 == Links to the documentation
 

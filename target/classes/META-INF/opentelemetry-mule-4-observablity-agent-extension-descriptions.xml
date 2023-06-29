@@ -4,7 +4,7 @@
         <config name="config">
             <description><![CDATA[Default configuration]]></description>
             <parameters>
-                <parameter name="disableAllTracing">
+                <parameter name="disableAllSignals">
                     <description><![CDATA[]]></description>
                 </parameter>
                 <parameter name="expirationPolicy">
@@ -16,13 +16,22 @@
                 <parameter name="resourceAttributes">
                     <description><![CDATA[]]></description>
                 </parameter>
+                <parameter name="disableTraces">
+                    <description><![CDATA[]]></description>
+                </parameter>
                 <parameter name="traceCollectorEndpoint">
                     <description><![CDATA[]]></description>
                 </parameter>
-                <parameter name="transportProtocol">
+                <parameter name="traceCertificatePath">
                     <description><![CDATA[]]></description>
                 </parameter>
-                <parameter name="compression">
+                <parameter name="traceTransportProtocol">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="traceCompression">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="traceHeaders">
                     <description><![CDATA[]]></description>
                 </parameter>
                 <parameter name="maxQueueSize">
@@ -37,7 +46,25 @@
                 <parameter name="exportTimeout">
                     <description><![CDATA[]]></description>
                 </parameter>
-                <parameter name="headers">
+                <parameter name="disableMetrics">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="metricCollectorEndpoint">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="metricCertificatePath">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="metricTransportProtocol">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="metricCompression">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="metricHeaders">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="metricExportInterval">
                     <description><![CDATA[]]></description>
                 </parameter>
                 <parameter name="generateMessageProcessorsSpans">

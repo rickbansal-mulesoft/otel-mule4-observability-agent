@@ -636,7 +636,7 @@ Add the following snippet into your Mule project `pom.xml` file in the `<depende
 </dependency>
 ----
 <1> The version could be different based upon when you read this document and which version was downloaded.  Please make sure the version 
-element corresponds to the version you installed into your Maven repository.
+element corresponds to the version you installed into your Maven repository.  The latest version is `otel-mule4-observability-agent-{revnumber}-mule-plugin.jar`
 
 === Agent Configuration
 

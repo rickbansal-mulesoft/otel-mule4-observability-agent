@@ -2151,11 +2151,11 @@ Default configuration
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">DISABLE all Tracing</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">DISABLE all Signals</p></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>Boolean</p>
 </div></div></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Enable/Disable all tracing in this application.  If disabled, all other configuration details will be ignored.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Enable/Disable all tracing and metric signal gathering in this application.  If disabled, all other configuration details will be ignored.</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
@@ -2187,13 +2187,31 @@ Default configuration
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">DISABLE Trace Signals</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Boolean</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Enable/Disable tracing signal gathering in this application.  If disabled, all other configuration details will be ignored.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Trace Collector Endpoint</p></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>String</p>
 </div></div></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Traget URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Target URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.</p></td>
 <td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Endpoint Certificate Path</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">The path to the file containing trusted certificates to use when verifying an OTLP trace server's TLS credentials. The file should contain one or more X.509 certificates in PEM format. By default the host platform's trusted root certificates are used.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OTLP Transport Protocol</p></td>
@@ -2237,6 +2255,15 @@ Default configuration
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Trace Headers</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Array of <a href="#header">Header</a></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Key-value pairs separated by commas to pass as request headers on an OTLP trace export.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Max Queue Size</p></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>String</p>
@@ -2273,12 +2300,89 @@ Default configuration
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Trace Headers</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">DISABLE Metric Signals</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Boolean</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Enable/Disable metric signal gathering in this application.  If disabled, all other configuration details will be ignored.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">true</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Metric Collector Endpoint</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Target URL to which the OTLP Exporter sends metrics. Must be a URL with a scheme of either http or https based on the use of TLS.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Endpoint Certificate Path</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">The path to the file containing trusted certificates to use when verifying an OTLP trace server's TLS credentials. The file should contain one or more X.509 certificates in PEM format. By default the host platform's trusted root certificates are used.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OTLP Transport Protocol</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Enumeration, one of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GRPC</p>
+</li>
+<li>
+<p>HTTP_PROTOBUF</p>
+</li>
+<li>
+<p>HTTP_JSON</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">HTTP_PROTOBUF</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Compression Type</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Enumeration, one of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NONE</p>
+</li>
+<li>
+<p>GZIP</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">NONE</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Metric Headers</p></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>Array of <a href="#header">Header</a></p>
 </div></div></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Key-value pairs separated by commas to pass as request headers on an OTLP trace.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Key-value pairs separated by commas to pass as request headers on an OTLP trace export.</p></td>
 <td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Metric Export Interval (ms)</p></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>String</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">The interval, in milliseconds, between the start of two export attempts.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">60000</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>

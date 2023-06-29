@@ -1,14 +1,14 @@
 {
   "name": "OpenTelemetry Mule 4 Observablity Agent",
   "description": "This is the main class of an extension, is the entry point from which configurations, connection providers, operations and sources are going to be declared. \u003cp\u003e",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "vendor": "MuleSoft",
   "category": "COMMUNITY",
   "xmlDsl": {
     "prefix": "otel-mule4-observablity-agent",
     "namespace": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent",
     "schemaLocation": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent/current/mule-otel-mule4-observablity-agent.xsd",
-    "schemaVersion": "1.0.2",
+    "schemaVersion": "1.2.0",
     "xsdFileName": "mule-otel-mule4-observablity-agent.xsd"
   },
   "resources": [],
@@ -53,14 +53,13 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 1,
-                "tabName": "General"
+                "order": 2
               },
               "allowedStereotypeModels": [],
-              "name": "disableAllTracing",
+              "name": "disableAllSignals",
               "displayModel": {
-                "displayName": "DISABLE all Tracing",
-                "summary": "Enable/Disable all tracing in this application.  If disabled, all other configuration details will be ignored."
+                "displayName": "DISABLE all Signals",
+                "summary": "Enable/Disable all tracing and metric signal gathering in this application.  If disabled, all other configuration details will be ignored."
               },
               "description": "",
               "modelProperties": {}
@@ -161,7 +160,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 2,
+                "order": 3,
                 "tabName": "Advanced"
               },
               "allowedStereotypeModels": [],
@@ -214,7 +213,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 3
+                "order": 4
               },
               "allowedStereotypeModels": [],
               "name": "serviceName",
@@ -264,7 +263,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 4
+                "order": 5
               },
               "allowedStereotypeModels": [],
               "name": "resourceAttributes",
@@ -280,7 +279,7 @@
             "password": false,
             "text": false,
             "query": false,
-            "order": 2,
+            "order": 20,
             "tabName": "General"
           },
           "showInDsl": false,
@@ -293,12 +292,16 @@
             {
               "type": {
                 "format": "java",
-                "type": "String"
+                "type": "Boolean",
+                "annotations": {
+                  "typeId": "boolean"
+                }
               },
               "hasDynamicType": false,
-              "required": true,
+              "required": false,
               "isConfigOverride": false,
               "expressionSupport": "SUPPORTED",
+              "defaultValue": "false",
               "role": "BEHAVIOUR",
               "dslConfiguration": {
                 "allowsInlineDefinition": true,
@@ -309,14 +312,88 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 5
+                "order": 1,
+                "tabName": "OTLP Trace Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "disableTraces",
+              "displayModel": {
+                "displayName": "DISABLE Trace Signals",
+                "summary": "Enable/Disable tracing signal gathering in this application.  If disabled, all other configuration details will be ignored."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 10,
+                "tabName": "OTLP Trace Exporter"
               },
               "allowedStereotypeModels": [],
               "name": "traceCollectorEndpoint",
               "displayModel": {
                 "displayName": "Trace Collector Endpoint",
-                "summary": "Traget URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.",
+                "summary": "Target URL to which the OTLP Exporter sends traces. Must be a URL with a scheme of either http or https based on the use of TLS.",
                 "example": "http://mycollector.com:4317/v1/traces"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 20,
+                "tabName": "OTLP Trace Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "traceCertificatePath",
+              "displayModel": {
+                "displayName": "Endpoint Certificate Path",
+                "summary": "The path to the file containing trusted certificates to use when verifying an OTLP trace server\u0027s TLS credentials. The file should contain one or more X.509 certificates in PEM format. By default the host platform\u0027s trusted root certificates are used.",
+                "example": "mycert.pem",
+                "pathModel": {
+                  "type": "FILE",
+                  "fileExtensions": [
+                    "txt"
+                  ],
+                  "acceptsUrls": true,
+                  "location": "ANY"
+                }
               },
               "description": "",
               "modelProperties": {}
@@ -352,10 +429,11 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 6
+                "order": 30,
+                "tabName": "OTLP Trace Exporter"
               },
               "allowedStereotypeModels": [],
-              "name": "transportProtocol",
+              "name": "traceTransportProtocol",
               "displayModel": {
                 "displayName": "OTLP Transport Protocol"
               },
@@ -392,136 +470,13 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 7
+                "order": 40,
+                "tabName": "OTLP Trace Exporter"
               },
               "allowedStereotypeModels": [],
-              "name": "compression",
+              "name": "traceCompression",
               "displayModel": {
                 "displayName": "Compression Type"
-              },
-              "description": "",
-              "modelProperties": {}
-            },
-            {
-              "type": {
-                "format": "java",
-                "type": "String"
-              },
-              "hasDynamicType": false,
-              "required": false,
-              "isConfigOverride": false,
-              "expressionSupport": "SUPPORTED",
-              "defaultValue": "2048",
-              "role": "BEHAVIOUR",
-              "dslConfiguration": {
-                "allowsInlineDefinition": true,
-                "allowsReferences": true,
-                "allowTopLevelDefinition": false
-              },
-              "layoutModel": {
-                "password": false,
-                "text": false,
-                "query": false,
-                "order": 8
-              },
-              "allowedStereotypeModels": [],
-              "name": "maxQueueSize",
-              "displayModel": {
-                "displayName": "Max Queue Size",
-                "summary": "The maximum number of spans in the waiting queue. Any new spans are dropped once the queue is full."
-              },
-              "description": "",
-              "modelProperties": {}
-            },
-            {
-              "type": {
-                "format": "java",
-                "type": "String"
-              },
-              "hasDynamicType": false,
-              "required": false,
-              "isConfigOverride": false,
-              "expressionSupport": "SUPPORTED",
-              "defaultValue": "512",
-              "role": "BEHAVIOUR",
-              "dslConfiguration": {
-                "allowsInlineDefinition": true,
-                "allowsReferences": true,
-                "allowTopLevelDefinition": false
-              },
-              "layoutModel": {
-                "password": false,
-                "text": false,
-                "query": false,
-                "order": 9
-              },
-              "allowedStereotypeModels": [],
-              "name": "maxBatchExportSize",
-              "displayModel": {
-                "displayName": "Max Batch Export Size",
-                "summary": "The maximum number of spans to export in a single batch."
-              },
-              "description": "",
-              "modelProperties": {}
-            },
-            {
-              "type": {
-                "format": "java",
-                "type": "String"
-              },
-              "hasDynamicType": false,
-              "required": false,
-              "isConfigOverride": false,
-              "expressionSupport": "SUPPORTED",
-              "defaultValue": "5000",
-              "role": "BEHAVIOUR",
-              "dslConfiguration": {
-                "allowsInlineDefinition": true,
-                "allowsReferences": true,
-                "allowTopLevelDefinition": false
-              },
-              "layoutModel": {
-                "password": false,
-                "text": false,
-                "query": false,
-                "order": 10
-              },
-              "allowedStereotypeModels": [],
-              "name": "batchExportDelayInterval",
-              "displayModel": {
-                "displayName": "Batch Export Delay Interval (millisec)",
-                "summary": "The delay interval in milliseconds between two consecutive batch exports."
-              },
-              "description": "",
-              "modelProperties": {}
-            },
-            {
-              "type": {
-                "format": "java",
-                "type": "String"
-              },
-              "hasDynamicType": false,
-              "required": false,
-              "isConfigOverride": false,
-              "expressionSupport": "SUPPORTED",
-              "defaultValue": "30000",
-              "role": "BEHAVIOUR",
-              "dslConfiguration": {
-                "allowsInlineDefinition": true,
-                "allowsReferences": true,
-                "allowTopLevelDefinition": false
-              },
-              "layoutModel": {
-                "password": false,
-                "text": false,
-                "query": false,
-                "order": 11
-              },
-              "allowedStereotypeModels": [],
-              "name": "exportTimeout",
-              "displayModel": {
-                "displayName": "Batch Export Timeout (millsec)",
-                "summary": "Maximum time (milliseconds) the OTLP exporter will wait for a batch to export before cancelling the export."
               },
               "description": "",
               "modelProperties": {}
@@ -566,13 +521,142 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 12
+                "order": 45,
+                "tabName": "OTLP Trace Exporter"
               },
               "allowedStereotypeModels": [],
-              "name": "headers",
+              "name": "traceHeaders",
               "displayModel": {
                 "displayName": "Trace Headers",
-                "summary": "Key-value pairs separated by commas to pass as request headers on an OTLP trace."
+                "summary": "Key-value pairs separated by commas to pass as request headers on an OTLP trace export."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "2048",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 50,
+                "tabName": "OTLP Trace Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "maxQueueSize",
+              "displayModel": {
+                "displayName": "Max Queue Size",
+                "summary": "The maximum number of spans in the waiting queue. Any new spans are dropped once the queue is full."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "512",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 60,
+                "tabName": "OTLP Trace Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "maxBatchExportSize",
+              "displayModel": {
+                "displayName": "Max Batch Export Size",
+                "summary": "The maximum number of spans to export in a single batch."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "5000",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 70,
+                "tabName": "OTLP Trace Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "batchExportDelayInterval",
+              "displayModel": {
+                "displayName": "Batch Export Delay Interval (millisec)",
+                "summary": "The delay interval in milliseconds between two consecutive batch exports."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "30000",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 80,
+                "tabName": "OTLP Trace Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "exportTimeout",
+              "displayModel": {
+                "displayName": "Batch Export Timeout (millsec)",
+                "summary": "Maximum time (milliseconds) the OTLP exporter will wait for a batch to export before cancelling the export."
               },
               "description": "",
               "modelProperties": {}
@@ -583,11 +667,301 @@
             "password": false,
             "text": false,
             "query": false,
-            "order": 3,
-            "tabName": "General"
+            "order": 2
           },
           "showInDsl": false,
-          "name": "OTLP Trace Exporter",
+          "name": "Trace Exporter Properties",
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Boolean",
+                "annotations": {
+                  "typeId": "boolean"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "true",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "OTLP Metric Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "disableMetrics",
+              "displayModel": {
+                "displayName": "DISABLE Metric Signals",
+                "summary": "Enable/Disable metric signal gathering in this application.  If disabled, all other configuration details will be ignored."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 10,
+                "tabName": "OTLP Metric Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "metricCollectorEndpoint",
+              "displayModel": {
+                "displayName": "Metric Collector Endpoint",
+                "summary": "Target URL to which the OTLP Exporter sends metrics. Must be a URL with a scheme of either http or https based on the use of TLS.",
+                "example": "http://mycollector.com:4317/v1/metrics"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 20,
+                "tabName": "OTLP Metric Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "metricCertificatePath",
+              "displayModel": {
+                "displayName": "Endpoint Certificate Path",
+                "summary": "The path to the file containing trusted certificates to use when verifying an OTLP trace server\u0027s TLS credentials. The file should contain one or more X.509 certificates in PEM format. By default the host platform\u0027s trusted root certificates are used.",
+                "example": "mycert.pem",
+                "pathModel": {
+                  "type": "FILE",
+                  "fileExtensions": [
+                    "txt"
+                  ],
+                  "acceptsUrls": true,
+                  "location": "ANY"
+                }
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String",
+                "annotations": {
+                  "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterTransportProtocolType",
+                  "enum": {
+                    "type": "[Ljava.lang.String;",
+                    "values": [
+                      "GRPC",
+                      "HTTP_PROTOBUF",
+                      "HTTP_JSON"
+                    ]
+                  }
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "HTTP_PROTOBUF",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 30,
+                "tabName": "OTLP Metric Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "metricTransportProtocol",
+              "displayModel": {
+                "displayName": "OTLP Transport Protocol"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String",
+                "annotations": {
+                  "typeId": "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterCompressionType",
+                  "enum": {
+                    "type": "[Ljava.lang.String;",
+                    "values": [
+                      "NONE",
+                      "GZIP"
+                    ]
+                  }
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "NONE",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 40,
+                "tabName": "OTLP Metric Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "metricCompression",
+              "displayModel": {
+                "displayName": "Compression Type"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "Array",
+                "annotations": {
+                  "classInformation": {
+                    "classname": "java.util.List",
+                    "hasDefaultConstructor": false,
+                    "isInterface": true,
+                    "isInstantiable": false,
+                    "isAbstract": true,
+                    "isFinal": false,
+                    "implementedInterfaces": [
+                      "java.util.Collection"
+                    ],
+                    "parent": "",
+                    "genericTypes": [
+                      "org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header"
+                    ],
+                    "isMap": false
+                  }
+                },
+                "item": {
+                  "type": "@ref:org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.Header"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 50,
+                "tabName": "OTLP Metric Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "metricHeaders",
+              "displayModel": {
+                "displayName": "Metric Headers",
+                "summary": "Key-value pairs separated by commas to pass as request headers on an OTLP trace export."
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "60000",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 60,
+                "tabName": "OTLP Metric Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "metricExportInterval",
+              "displayModel": {
+                "displayName": "Metric Export Interval (ms)",
+                "summary": "The interval, in milliseconds, between the start of two export attempts."
+              },
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 3
+          },
+          "showInDsl": false,
+          "name": "Metric Exporter Properties",
           "description": "",
           "modelProperties": {}
         },
@@ -616,7 +990,8 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 13
+                "order": 10,
+                "tabName": "OTLP Trace Exporter"
               },
               "allowedStereotypeModels": [],
               "name": "generateMessageProcessorsSpans",
@@ -667,7 +1042,8 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 14
+                "order": 20,
+                "tabName": "OTLP Trace Exporter"
               },
               "allowedStereotypeModels": [],
               "name": "bypassComponents",
@@ -684,11 +1060,10 @@
             "password": false,
             "text": false,
             "query": false,
-            "order": 4,
-            "tabName": "General"
+            "order": 4
           },
           "showInDsl": false,
-          "name": "Span Generation",
+          "name": "Span Generation Bypass",
           "description": "",
           "modelProperties": {}
         }

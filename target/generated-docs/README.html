@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <meta name="keywords" content="Mule, MuleSoft, Observability, OpenTelemetry, OTel, Tracing, Instrumentation, Distributed">
 <meta name="author" content="Rick Bansal">
 <title>Mule 4 OpenTelemetry (OTel) Agent Extension</title>
@@ -86,10 +86,10 @@ code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;
 ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
 ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
-ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
-ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -445,8 +445,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">Rick Bansal</span><br>
 <span id="email" class="email"><a href="mailto:rick.bansal@mulesoft.com">rick.bansal@mulesoft.com</a></span><br>
-<span id="revnumber">version 1.0.2,</span>
-<span id="revdate">May 18, 2022</span>
+<span id="revnumber">version 1.2.0,</span>
+<span id="revdate">June 29, 2023</span>
 <br><span id="revremark">Initial Draft v3</span>
 </div>
 <div id="toc" class="toc2">
@@ -508,8 +508,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_add_dependency_to_pom_xml_file">Add Dependency to <code>pom.xml</code> file</a></li>
 </ul>
 </li>
-<li><a href="#_agent_configuration">Agent Configuration</a></li>
-<li><a href="#_trace_context_propagation">Trace Context Propagation</a></li>
+<li><a href="#_agent_configuration">Agent Configuration</a>
+<ul class="sectlevel3">
+<li><a href="#_general_configuration">General Configuration</a></li>
+<li><a href="#_metrics_configuration">Metrics Configuration</a></li>
+<li><a href="#_traces_configuration">Traces Configuration</a></li>
+</ul>
+</li>
+<li><a href="#_trace_context_propagation">Trace Context Propagation</a>
+<ul class="sectlevel3">
+<li><a href="#_context_extraction">Context Extraction</a></li>
+<li><a href="#_https_context_propagation">HTTP/S Context Propagation</a></li>
+<li><a href="#_anypoint_mq_context_propagation">Anypoint MQ Context Propagation</a></li>
+</ul>
+</li>
 <li><a href="#_demo_scenario">Demo Scenario</a>
 <ul class="sectlevel3">
 <li><a href="#_demo_architecture_using_dynatrace_backend">Demo Architecture using Dynatrace Backend</a></li>
@@ -523,6 +535,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_logger_message_processor_output">Logger Message Processor Output</a></li>
 <li><a href="#_database_processor_summary">Database Processor Summary</a></li>
 <li><a href="#_database_processor_error_event">Database Processor Error Event</a></li>
+<li><a href="#_anypoint_mq_publishersubscriber_processor_summary">Anypoint MQ Publisher/Subscriber Processor Summary</a></li>
 </ul>
 </li>
 </ul>
@@ -1542,8 +1555,8 @@ with the initial Mule Flow. In reality it is also a pipeline span.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Download the latest version, <code>otel-mule4-observability-agent-1.0.2-mule-plugin.jar</code>, of the extension from
-<a href="https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-1.0.2-mule-plugin.jar">here</a></p>
+<p>Download the latest version, <code>otel-mule4-observability-agent-1.2.0-mule-plugin.jar</code>, of the extension from
+<a href="https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-1.2.0-mule-plugin.jar">here</a></p>
 </li>
 </ul>
 </div>
@@ -1655,7 +1668,7 @@ prone.  It&#8217;s the preferred method, especially, if you aren&#8217;t very co
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>The version could be different based upon when you read this document and which version was downloaded.  Please make sure the version
-element corresponds to the version you installed into your Maven repository.</td>
+element corresponds to the version you installed into your Maven repository.  The latest version is <code>otel-mule4-observability-agent-1.2.0-mule-plugin.jar</code></td>
 </tr>
 </table>
 </div>
@@ -1673,26 +1686,30 @@ element corresponds to the version you installed into your Maven repository.</td
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Mule applications <strong>must add the agent</strong> to their configuration in order to generate and <strong>export</strong> trace data.
+Mule applications <strong>must add the agent/extension</strong> to their configuration in order to generate and <strong>export</strong> trace and/or metrics telemetry.
 </td>
 </tr>
 </table>
 </div>
+<div class="sect3">
+<h4 id="_general_configuration">General Configuration</h4>
 <div class="imageblock text-center">
 <div class="content">
-<img src="./Images/agent-connector-config.png" alt="800" width="800">
+<img src="./Images/agent-connector-config.png" alt="1000" width="1000">
 </div>
-<div class="title">Figure 19. Mule Agent Configuration</div>
+<div class="title">Figure 19. Mule Agent Configuration - General</div>
 </div>
+<div class="exampleblock">
+<div class="content">
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Add an OpenTelemetry Mule 4 Observability Configuration to the Mule project.</td>
+<td><strong>Add</strong> an OpenTelemetry Mule 4 Observability Configuration to the Mule project.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td><strong>Enable/Disable</strong> tracing at the application level.  If disabled, no traces will be generated or exported.</td>
+<td><strong>Enable/Disable</strong> telemetry generation at the application level.  If disabled, no signals (e.g., traces, metrics, &#8230;&#8203;) will be generated or exported.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -1700,31 +1717,127 @@ Mule applications <strong>must add the agent</strong> to their configuration in 
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Configure <strong>Collector Endpoint</strong> for trace data - must be the entire URL, including the scheme (HTTP/S) and port.</td>
+<td>Optionally provide application level <strong>resource attributes</strong> as <code>&lt;key, value&gt;</code> pairs</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_metrics_configuration">Metrics Configuration</h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Metrics generation is in an <strong><em>"experimental"</em></strong> stage and currently, only the following metrics are generated and exported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Heap usage:</p>
+<div class="paragraph">
+<p>The amount of heap memory (in megabytes) being used when the flow starts</p>
+</div>
+</li>
+<li>
+<p>Workload utilization:</p>
+<div class="paragraph">
+<p>Calculated by <code>[workload average/total CPUs] * 100%</code> where the <em>workload average</em> is the sum of the number of runnable entities queued to
+the available processors and the number of runnable entities running on the available processors averaged over the last minute of time.</p>
+</div>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/agent-connector-config-metrics.png" alt="1000" width="1000">
+</div>
+<div class="title">Figure 20. Mule Agent Configuration - Metrics</div>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><strong>Enable/Disable</strong> metrics generation at the application level.  If disabled (default), no metrics signals will be generated or exported.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure <strong>Collector Endpoint</strong> for metrics data - must be the entire URL, including the scheme (HTTP/S) and port.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>Configure OTLP <strong>Transport Protocol</strong>  - the following transports are supported:  <code>GRPC</code>, <code>HTTP_JSON</code> and <code>HTTP_PROTOBUF</code>.</td>
 </tr>
 <tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Add any necessary vendor-specific <strong>headers</strong> (e.g., <code>Authorization</code> header with <code>API Token</code> key for authentication)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Optionally set metrics data <strong>export interval</strong> - default is <code>60000 milliseconds</code>.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_traces_configuration">Traces Configuration</h4>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/agent-connector-config-traces.png" alt="1000" width="1000">
+</div>
+<div class="title">Figure 21. Mule Agent Configuration - Traces</div>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><strong>Enable/Disable</strong> tracing at the application level.  If disabled, no trace signals will be generated or exported.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure <strong>Collector Endpoint</strong> for trace data - must be the entire URL, including the scheme (HTTP/S) and port.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Configure OTLP <strong>Transport Protocol</strong>  - the following transports are supported:  <code>GRPC</code>, <code>HTTP_JSON</code> and <code>HTTP_PROTOBUF</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Add any necessary vendor-specific <strong>headers</strong> (e.g., <code>Authorization</code> header with <code>API Token</code> key for authentication)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Various configuration parameters to control trace/span batch <strong>export rate</strong>.</td>
+</tr>
+<tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Various configuration parameters to control trace/span batch export rate.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>Add any necessary vendor-specific headers (e.g., <code>Authorization</code> header with <code>API Token</code> key for authentication)</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="8"></i><b>8</b></td>
 <td>Optionally disable generating span data for all Message Processors - default behavior is generate span data for all
 Message Processors.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
 <td>Or mute individual Message Processor(s) from generating span data (this maybe helpful in eliminating "noise" from the trace
 and let you more effectively focus in on Message Processors(s) of concern).</td>
 </tr>
 </table>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1732,10 +1845,12 @@ and let you more effectively focus in on Message Processors(s) of concern).</td>
 <div class="paragraph">
 <p>Currently, trace context propagation is only supported via WC3 Trace Context headers:  <code>traceparent</code> and <code>tracestate</code>.</p>
 </div>
+<div class="sect3">
+<h4 id="_context_extraction">Context Extraction</h4>
 <div class="paragraph">
-<p>The agent will automatically <strong>extract</strong> the trace headers from the incoming HTTP request and <strong>inject</strong> the headers into the application via
-an event <strong>variable</strong> named: <code>OTEL_TRACE_CONTEXT</code> of type:  <code>Map&lt;String, String&gt;</code>, where <code>Map&lt;String, String&gt;</code> contains the
-following:</p>
+<p>The agent will automatically <strong>extract</strong> the trace headers from an incoming HTTP request or a message received on an Anypoint MQ queue and
+<strong>inject</strong> the headers into the application via an event <strong>variable</strong> named: <code>OTEL_TRACE_CONTEXT</code> of type:  <code>Map&lt;String, String&gt;</code>,
+where <code>Map&lt;String, String&gt;</code> contains the following:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. <code>OTEL_TRACE_CONTEXT</code> &lt;key, value&gt; Map</caption>
@@ -1758,6 +1873,9 @@ following:</p>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect3">
+<h4 id="_https_context_propagation">HTTP/S Context Propagation</h4>
 <div class="paragraph">
 <p>In order to <strong>propagate the trace header</strong> information to other web applications, the Mule HTTP Requester Configuration <strong>must</strong>
 have default headers configured in the following way:</p>
@@ -1766,7 +1884,7 @@ have default headers configured in the following way:</p>
 <div class="content">
 <img src="./Images/http-requester-config.png" alt="600" width="600">
 </div>
-<div class="title">Figure 20. Mule HTTP Requester Configuration</div>
+<div class="title">Figure 22. Mule HTTP Requester Configuration</div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 3. HTTP Requester Configuration for Default Headers</caption>
@@ -1812,10 +1930,54 @@ have default headers configured in the following way:</p>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_anypoint_mq_context_propagation">Anypoint MQ Context Propagation</h4>
+<div class="paragraph">
+<p>In order to <strong>propagate the trace header</strong> information to other Anypoint MQ based applications, the Mule Anypoint Publisher
+<strong>must</strong> have User Properties configured in the following way:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/amq-publisher-userprops.png" alt="800" width="800">
+</div>
+<div class="title">Figure 23. Mule Anypoint MQ Publisher User Properties</div>
+</div>
+<div class="listingblock">
+<div class="title">Mule configuration xml for setting User Properties in the Anypoint MQ Publisher</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td>
+  <td class="code"><pre><span style="color:#070;font-weight:bold">&lt;anypoint-mq:publish</span> <span style="color:#b48">doc:name</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Publish</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">doc:id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">50a6b30f-e1a0-44a9-b885-55d005233636</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">config-ref</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Anypoint_MQ_Config</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">destination</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">mq-demo-q1-fifo</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;anypoint-mq:properties&gt;</span>
+        <span style="font-weight:bold;color:#666">&lt;![CDATA[</span>#[%dw 2.0
+          output application/java
+          ---
+          {
+             traceparent : vars.OTEL_TRACE_CONTEXT.traceparent default '' as String, <i class="conum" data-value="1"></i><b>(1)</b>
+             tracestate : vars.OTEL_TRACE_CONTEXT.tracestate default '' as String <i class="conum" data-value="2"></i><b>(2)</b>
+          }]<span style="font-weight:bold;color:#666">]]&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;/anypoint-mq:properties&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/anypoint-mq:publish&gt;</span></pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_demo_scenario">Demo Scenario</h3>
 <div class="paragraph">
-<p>Below is a description of the demo scenario used to generate distributed trace information from 2 Mule applications and have it
+<p>Below is a description of the demo scenario used to generate distributed trace information from <strong>3 Mule applications</strong> and have it
 render in a Dynatrace backend.</p>
 </div>
 <div class="sect3">
@@ -1824,36 +1986,44 @@ render in a Dynatrace backend.</p>
 <div class="content">
 <img src="./Images/Demo-Distributed-App-Arch.png" alt="1200" width="1200">
 </div>
-<div class="title">Figure 21. Demo Architecture</div>
+<div class="title">Figure 24. Demo Architecture</div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>External application sending a request to Mule Application 1 with WC3 Trace Context Headers</td>
+<td>External application sending a request to Mule App_1 with WC3 Trace Context Headers</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Mule App 1 sending a request to Mule App 2 and propagating the trace context via WC3 Trace Context Headers</td>
+<td>Mule App 1 sending a request to Mule App_2 and propagating the trace context via WC3 Trace Context Headers</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Responses coming back to calling application</td>
+<td>Response coming back to calling application</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Responses coming back to calling application</td>
+<td>Mule App_1 sending a message to Mule App_3 via Anypoint MQ</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Both Mule applications sending log and metrics data to Anypoint Monitoring</td>
+<td>Response coming back to external calling application</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Mule 4 OTel Agent sending trace information to Dynatrace OTel Collector</td>
+<td>Mule App_3 <strong>asynchronously</strong> processing incoming message from Mule App_1 via Anypoint MQ</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>All Mule applications sending log and metrics data to Anypoint Monitoring</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>All Mule 4 OTel Agent sending trace/metrics information to Dynatrace OTel Collector</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>Dynatrace Collector forwarding the data to Dynatrace dashboard for rendering</td>
 </tr>
 </table>
@@ -1862,9 +2032,26 @@ render in a Dynatrace backend.</p>
 <div class="sect3">
 <h4 id="_demo_architecture_mule_implementation_diagram">Demo Architecture Mule Implementation Diagram</h4>
 <div class="paragraph">
-<p>Below is an <strong>implementation</strong> of the demo architecture described above. At a high-level, <strong>Mule_App_1</strong> receives the initial request from
-the <strong>external client</strong>, performs various functions including making a request to an external application, <strong>Mule_App_2</strong>, and calling a secondary
-flow within Mule_App_1 before returning a response to the calling client application.</p>
+<p>Below is an <strong>implementation</strong> of the demo architecture described above. At a high-level:</p>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><strong>Mule_App_1</strong> receives the initial request from the <strong>external client</strong>, performs various functions including making a</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Synchronous request to external application, <strong>Mule_App_2</strong> via HTTP, and making an</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Asynchronous request to external application <strong>Mule_App_3</strong> via Anypoint MQ</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Other sub-flows are executed within Mule_App_1 before returning a response to the calling client application.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1883,7 +2070,7 @@ including error events and log output.
 <div class="content">
 <img src="./Images/Distributed-Mule-App-Diagram.png" alt="Distributed Mule App Diagram">
 </div>
-<div class="title">Figure 22. Demo Mule Application Diagram</div>
+<div class="title">Figure 25. Demo Mule Application Diagram</div>
 </div>
 </div>
 </div>
@@ -1899,7 +2086,7 @@ by the Mule 4 OTel Agent and visualized by observability backend.</p>
 <div class="content">
 <img src="./Images/dynatrace-distributed-span.png" alt="dynatrace distributed span">
 </div>
-<div class="title">Figure 23. Dynatrace - Complete Distributed Trace</div>
+<div class="title">Figure 26. Dynatrace - Complete Distributed Trace</div>
 </div>
 <div class="paragraph">
 <p>As you can see in the graph above, the Agent generates spans in a manner which is <strong>hierarchically consistent</strong> with the progression of
@@ -1913,12 +2100,12 @@ a transaction through and between Mule applications.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Represents the overall set of <strong>spans</strong> associated with the <strong>external Mule application</strong> (Mule_App_2). Nested (child) spans are
+<td>Represents the overall set of <strong>spans</strong> associated with the <strong>external Mule application (Mule_App_2)</strong>. Nested (child) spans are
 indented appropriately.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Represents the overall set of <strong>spans</strong> associated with the <strong>secondary flow</strong> in Mule_App_1. Nested (child) spans are indented
+<td>Represents the overall set of <strong>spans</strong> associated with the <strong>external Mule application (Mule_App_3)</strong>. Nested (child) spans are indented
 appropriately.</td>
 </tr>
 </table>
@@ -1935,7 +2122,7 @@ the protocol (HTTP or HTTPs), the URI, the remote address, etc.</p>
 <div class="content">
 <img src="./Images/dynatrace-distributed-rootspan-summary.png" alt="dynatrace distributed rootspan summary">
 </div>
-<div class="title">Figure 24. Dynatrace - Root Span Summary</div>
+<div class="title">Figure 27. Dynatrace - Root Span Summary</div>
 </div>
 <div class="colist arabic">
 <table>
@@ -1946,10 +2133,82 @@ the protocol (HTTP or HTTPs), the URI, the remote address, etc.</p>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>The <strong>Attributes</strong> data is generated by the Agent and specific to the span type, either a Flow(Pipeline) or Message Processor span
-and if a Message Processor span then Message Processor type (e.g. Logger, Transform, DB, HTTP Requester, &#8230;&#8203;).</td>
+and if a Message Processor span then Message Processor type (e.g. Logger, Transform, DB, HTTP Requester, MQ Publisher, &#8230;&#8203;).
+<div class="ulist">
+<ul>
+<li>
+<p>For root spans, there two interesting <strong>metric attributes</strong> which are generated:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>mule.start.heap.usage.mbytes</code>:</p>
+<div class="paragraph">
+<p>The amount of heap memory (in megabytes) being used when the flow starts</p>
+</div>
+</li>
+<li>
+<p><code>mule.start.workload.utilization</code>:</p>
+<div class="paragraph">
+<p><code>= [workload average/total CPUs] * 100%</code> when the flow starts.</p>
+</div>
+<div class="paragraph">
+<p>The <em>workload average</em> is the sum of the
+number of runnable entities queued to the available processors and the number of runnable entities running on the available processors
+averaged over the last minute of time. The system load average indicates not only CPU demand but also file I/O demand, network I/O
+demand, disk I/0 demand, and cycles waiting for locks.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div></td>
 </tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
 <tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">Example:</div>
+<div class="paragraph">
+<p>Assume the <strong>workload average is 6</strong> over the last minute, then for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CPU = 1,</p>
+<div class="paragraph">
+<p><code>mule.start.workload.utilization = workloadAverage/#CPUs = 6/1 * 100% = 600%</code></p>
+</div>
+<div class="paragraph">
+<p>which means the system was <strong>over-utilized by 500%</strong>, that is, the system had 5x more work queued up then the system could handle
+over the past minute.</p>
+</div>
+</li>
+<li>
+<p>CPU = 12,</p>
+<div class="paragraph">
+<p><code>mule.start.workload.utilization = workloadAverage/#CPUs = 6/12 * 100% = 50%</code></p>
+</div>
+<div class="paragraph">
+<p>which means the system was <strong>under-utilized by 50%</strong>, that is, the system could&#8217;ve handled an additional 2x more work over
+the past minute.</p>
+</div>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>The <strong>Resource Attributes</strong> are specified in the configuration of the Agent.  Resource Attributes can be a very convenient and
 meaningful way of tagging the trace with information such as the application name, runtime environment (e.g., Production, QA,
 Development,&#8230;&#8203;), hosting region, etc. for easier correlation and search.</td>
@@ -1966,7 +2225,7 @@ Development,&#8230;&#8203;), hosting region, etc. for easier correlation and sea
 <div class="content">
 <img src="./Images/dynatrace-distributed-span-logger-event.png" alt="dynatrace distributed span logger event">
 </div>
-<div class="title">Figure 25. Dynatrace - Logger Processor Output Event</div>
+<div class="title">Figure 28. Dynatrace - Logger Processor Output Event</div>
 </div>
 </div>
 <div class="sect3">
@@ -1979,7 +2238,7 @@ connection type, host, port, database name and user as well operational attribut
 <div class="content">
 <img src="./Images/dynatrace-distributed-db-summary.png" alt="dynatrace distributed db summary">
 </div>
-<div class="title">Figure 26. Dynatrace - Database Processor Summary</div>
+<div class="title">Figure 29. Dynatrace - Database Processor Summary</div>
 </div>
 </div>
 <div class="sect3">
@@ -1993,7 +2252,20 @@ through external log files, a user can simply look at the trace to find faults.<
 <div class="content">
 <img src="./Images/dynatrace-distributed-db-error-event.png" alt="dynatrace distributed db error event">
 </div>
-<div class="title">Figure 27. Dynatrace - Database Processor Error Event</div>
+<div class="title">Figure 30. Dynatrace - Database Processor Error Event</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_anypoint_mq_publishersubscriber_processor_summary">Anypoint MQ Publisher/Subscriber Processor Summary</h4>
+<div class="paragraph">
+<p>Below is a diagram which depicts specific attributes for both the Anypoint MQ Publish and Subscribe Message Processors.  The extension
+will generate connection related attributes such as the event location (i.e., Publish/Subscribe queue/topic), payload type and message id.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="./Images/dynatrace-distributed-mqSub-mqPub-summary.png" alt="dynatrace distributed mqSub mqPub summary">
+</div>
+<div class="title">Figure 31. Dynatrace - Anypoint Publisher/Subscriber Processor Summary</div>
 </div>
 </div>
 </div>
@@ -2093,8 +2365,8 @@ in the development of this extension as well as their ongoing support.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.2<br>
-Last updated 2022-05-02 13:40:10 -0600
+Version 1.2.0<br>
+Last updated 2023-06-27 13:58:41 -0700
 </div>
 </div>
 </body>
