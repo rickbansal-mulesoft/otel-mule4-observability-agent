@@ -666,7 +666,7 @@ The amount of heap memory (in megabytes) being used when the flow starts
 Calculated by `[workload average/total CPUs] * 100%` where the _workload average_ is the sum of the number of runnable entities queued to 
 the available processors and the number of runnable entities running on the available processors averaged over the last minute of time. 
 ====
-image::agent-connector-config-metrics.png[1000, 1000, title="Mule Agent Configuration - Metrics", align="center"]
+image::agent-connector-config-metrics.png[800, 800, title="Mule Agent Configuration - Metrics", align="center"]
 ====
 <1> *Enable/Disable* metrics generation at the application level.  If disabled (default), no metrics signals will be generated or exported.
 <2> Configure *Collector Endpoint* for metrics data - must be the entire URL, including the scheme (HTTP/S) and port.
@@ -676,7 +676,7 @@ image::agent-connector-config-metrics.png[1000, 1000, title="Mule Agent Configur
 ====
 
 ==== Traces Configuration
-image::agent-connector-config-traces.png[1000, 1000, title="Mule Agent Configuration - Traces", align="center"]
+image::agent-connector-config-traces.png[800, 800, title="Mule Agent Configuration - Traces", align="center"]
 ====
 <1> *Enable/Disable* tracing at the application level.  If disabled, no trace signals will be generated or exported.
 <2> Configure *Collector Endpoint* for trace data - must be the entire URL, including the scheme (HTTP/S) and port.
