@@ -53,6 +53,7 @@ The latest version of the extension, `otel-mule4-observability-agent-{revnumber}
 * https://github.com/rickbansal-mulesoft/otel-mule4-observability-agent/tree/main/target/otel-mule4-observability-agent-{revnumber}-mule-plugin.jar[available here]
 * Updated OTel SDK to version 1.27.0
 * Added support to allow for OTel Collector endpoints using self-signed certificates.
+* Added support for dynamic resolution of configuration properties
 * Added support for generating and exporting distributed traces across the Anypoint MQ transport
 ** Context propagation across Anypoint MQ flows is accomplished via WC3 Trace Headers inserted as AMQ user properties
 * Added support for OTel Metrics
