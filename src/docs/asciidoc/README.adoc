@@ -687,9 +687,9 @@ image::agent-connector-config-traces.png[800, 800, title="Mule Agent Configurati
 Message Processors.
 <7> Or mute individual Message Processor(s) from generating span data (this maybe helpful in eliminating "noise" from the trace
 and let you more effectively focus in on Message Processors(s) of concern).
-<8> Select whether or not to export custom attributes to each flow span, each message processor span, neither or both - default 
+<8> Select whether or not to export *custom attributes* to each flow span, each message processor span, neither or both - default 
 behavior is to not export custom attributes for flows or message processors.
-<9> Define custom attributes as `<key, value>` pairs. Either the `key` or `value` can be defined by a DataWeave expression.
+<9> Define *custom attributes* as `<key, value>` pairs. Either the `key` or `value` can be defined by a DataWeave expression.
 
 Note:  If using DataWeave expressions, put quotes (`""`) around the expression (e.g., `"#[vars.orderId]"`.
 
