@@ -1,8 +1,10 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.util;
 
 import org.mule.runtime.core.api.el.ExpressionManager;
+import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.api.el.ExpressionLanguageSession;
+import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.notification.EnrichedServerNotification;
 import org.slf4j.Logger;
@@ -18,9 +20,11 @@ import java.util.stream.Collectors;
 public abstract class KeyValuePair
 {
 
+    @Expression(ExpressionSupport.NOT_SUPPORTED)
 	@Parameter
 	private String key;
 
+    @Expression(ExpressionSupport.NOT_SUPPORTED)
 	@Parameter
 	private String value;
 

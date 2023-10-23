@@ -1,14 +1,14 @@
 {
   "name": "OpenTelemetry Mule 4 Observablity Agent",
   "description": "This is the main class of an extension, is the entry point from which configurations, connection providers, operations and sources are going to be declared. \u003cp\u003e",
-  "version": "1.2.0-10",
+  "version": "1.3.0",
   "vendor": "MuleSoft",
   "category": "COMMUNITY",
   "xmlDsl": {
     "prefix": "otel-mule4-observablity-agent",
     "namespace": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent",
     "schemaLocation": "http://www.mulesoft.org/schema/mule/otel-mule4-observablity-agent/current/mule-otel-mule4-observablity-agent.xsd",
-    "schemaVersion": "1.2.0-10",
+    "schemaVersion": "1.3.0",
     "xsdFileName": "mule-otel-mule4-observablity-agent.xsd"
   },
   "resources": [],
@@ -1072,6 +1072,76 @@
             {
               "type": {
                 "format": "java",
+                "type": "Boolean",
+                "annotations": {
+                  "typeId": "boolean"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "NOT_SUPPORTED",
+              "defaultValue": "false",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 30,
+                "tabName": "OTLP Trace Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "sendCustomAttributesPerFlow",
+              "displayModel": {
+                "displayName": "Send Custom Attributes for Flow Spans",
+                "summary": "Generate and send custom attributes when a flow starts"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "Boolean",
+                "annotations": {
+                  "typeId": "boolean"
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "expressionSupport": "NOT_SUPPORTED",
+              "defaultValue": "false",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": true,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 40,
+                "tabName": "OTLP Trace Exporter"
+              },
+              "allowedStereotypeModels": [],
+              "name": "sendCustomAttributesPerProcessor",
+              "displayModel": {
+                "displayName": "Send Custom Attributes for Message Proccesor Spans",
+                "summary": "Generate and send custom attributes when a message proccesor starts"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
                 "type": "Array",
                 "annotations": {
                   "classInformation": {
@@ -1109,7 +1179,7 @@
                 "password": false,
                 "text": false,
                 "query": false,
-                "order": 30,
+                "order": 50,
                 "tabName": "OTLP Trace Exporter"
               },
               "allowedStereotypeModels": [],
@@ -1793,7 +1863,7 @@
           },
           "annotations": {
             "expressionSupport": {
-              "value": "SUPPORTED"
+              "value": "NOT_SUPPORTED"
             }
           }
         },
@@ -1807,7 +1877,7 @@
           },
           "annotations": {
             "expressionSupport": {
-              "value": "SUPPORTED"
+              "value": "NOT_SUPPORTED"
             }
           }
         }
@@ -1845,7 +1915,7 @@
           },
           "annotations": {
             "expressionSupport": {
-              "value": "SUPPORTED"
+              "value": "NOT_SUPPORTED"
             }
           }
         },
@@ -1859,7 +1929,7 @@
           },
           "annotations": {
             "expressionSupport": {
-              "value": "SUPPORTED"
+              "value": "NOT_SUPPORTED"
             }
           }
         }

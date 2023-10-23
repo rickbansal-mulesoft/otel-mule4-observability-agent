@@ -1,6 +1,5 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.Attribute;
@@ -25,8 +24,24 @@ import io.opentelemetry.api.trace.SpanBuilder;
 //----------------------------------------------------------------------------------
 public class CustomAttributesConfig
 {
-    @Parameter
+    @Parameter()
     @Placement(order = 30, tab = "OTLP Trace Exporter")
+    @DisplayName(value = "Send Custom Attributes for Flow Spans")
+    @Summary("Generate and send custom attributes when a flow starts")
+    @Optional (defaultValue = "false")
+    @Expression(ExpressionSupport.NOT_SUPPORTED)
+    private boolean sendCustomAttributesPerFlow;
+    
+    @Parameter()
+    @Placement(order = 40, tab = "OTLP Trace Exporter")
+    @DisplayName(value = "Send Custom Attributes for Message Proccesor Spans")
+    @Summary("Generate and send custom attributes when a message proccesor starts")
+    @Optional (defaultValue = "false")
+    @Expression(ExpressionSupport.NOT_SUPPORTED)
+    private boolean sendCustomAttributesPerProcessor;
+    
+    @Parameter
+    @Placement(order = 50, tab = "OTLP Trace Exporter")
     @DisplayName("User Defined Custom Attributes")
     @Optional
     @NullSafe
@@ -36,6 +51,16 @@ public class CustomAttributesConfig
     
     private static Logger logger = LoggerFactory.getLogger(CustomAttributesConfig.class);
 
+    public boolean getSendCustomAttributesPerFlow()
+    {
+        return this.sendCustomAttributesPerFlow;
+    }
+    
+    public boolean getSendCustomAttributesPerProcessor()
+    {
+        return this.sendCustomAttributesPerProcessor;
+    }
+    
     public List<Attribute> getCustomAttributes()
     {
         return this.customAttributes;
@@ -45,21 +70,7 @@ public class CustomAttributesConfig
     {
         try
         {
-            /*
-            Iterator<Attribute> it = customAttributes.iterator();
-
-            String key, value;
-
-            while (it.hasNext()) 
-            {
-                Attribute a = it.next();
-                key = Constants.CUSTOM_ATTRIBUTE + a.getKey(em, n);
-                value = a.getValue(em, n);
-                spanBuilder.setAttribute(key, value);
-            }
-            */
             customAttributes.forEach((a) -> spanBuilder.setAttribute(Constants.CUSTOM_ATTRIBUTE + a.getKey(em, n), a.getValue(em, n)));  
-         
         }
         catch (Exception e)
         {

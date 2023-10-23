@@ -11,6 +11,9 @@ import java.util.List;
  */
 public class Constants
 {
+    public static final int    PIPELINE_EVENT_ACTION_ID         = 1;
+    public static final int    PROCESSOR_EVENT_ACTION_ID        = 2;
+
 	public static final String PROCESSOR_INTERCEPTOR_ENABLE 	= "mule.otel.processor.interceptor.enable";
 	public static final String TRACE_TRANSACTION_ID 			= "TRACE_TRANSACTION_ID";
 	public static final String TRACE_CONTEXT_MAP_KEY 			= "OTEL_TRACE_CONTEXT";	

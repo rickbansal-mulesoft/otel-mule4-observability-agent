@@ -7,6 +7,7 @@ import org.mule.runtime.api.notification.EnrichedServerNotification;
 import org.mule.runtime.api.notification.MessageProcessorNotification;
 import org.mule.runtime.api.notification.PipelineMessageNotification;
 import org.mule.runtime.core.api.config.MuleConfiguration;
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.CustomAttributesConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.connection.OtelSdkConnection;
 import org.mule.extension.otel.mule4.observablity.agent.internal.metric.MuleMetricMemoryUsage;
@@ -97,14 +98,28 @@ public class OTelMuleNotificationHandler
 	    return muleConnectorConfigStore;
 	}
 	
-	private void setCustomAttributes(SpanBuilder sb, EnrichedServerNotification n)
+	private void setCustomAttributes(SpanBuilder sb, EnrichedServerNotification n, int action)
 	{
 	    if (otelSdkConnection == null)
 	    {
 	        otelSdkConnection = sdkConnectionSupplier.get();
 	    }
 	    
-	    otelSdkConnection.getCustomAttributesConfig().get().setAttributes(sb, otelSdkConnection.getExpressionManager().get(), n);
+	    CustomAttributesConfig cac =  otelSdkConnection.getCustomAttributesConfig().get();
+	    Boolean setAttributes = true;
+	    
+	    switch (action)
+	    {
+	        case Constants.PIPELINE_EVENT_ACTION_ID:
+	            setAttributes = cac.getSendCustomAttributesPerFlow();
+	            break;
+	        case Constants.PROCESSOR_EVENT_ACTION_ID:
+	            setAttributes = cac.getSendCustomAttributesPerProcessor();
+	            break;
+	    }
+	    
+	    if (setAttributes)
+	        cac.setAttributes(sb, otelSdkConnection.getExpressionManager().get(), n);
 	}
 	
 	// ============================================================================================
@@ -141,7 +156,7 @@ public class OTelMuleNotificationHandler
 	    //
 	    // add custom attributes to the trace
 	    //
-	    setCustomAttributes(spanBuilder, notification);
+	    setCustomAttributes(spanBuilder, notification, Constants.PIPELINE_EVENT_ACTION_ID);
 	    
 	      
 		NotificationParser notificationParser = NotificationParserService.getInstance().getParserFor(notification)
@@ -225,7 +240,7 @@ public class OTelMuleNotificationHandler
 	    //
         // add custom attributes to the span
         //
-        setCustomAttributes(spanBuilder, notification);
+        setCustomAttributes(spanBuilder, notification, Constants.PROCESSOR_EVENT_ACTION_ID);
 		
 		notificationParser.startProcessorNotification(notification, getMuleConnectorConfigStore(), spanBuilder);
 		
