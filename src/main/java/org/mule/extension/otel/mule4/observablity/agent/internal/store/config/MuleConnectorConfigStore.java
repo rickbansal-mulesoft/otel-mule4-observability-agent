@@ -35,12 +35,14 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
  *  <ul>
  *  	<li> {@code Database Connector} </li>
  *  	<li> {@code HTTP Request Connector} </li>
+ *      <li> {@code Anypoint MQ Connector} </li>
  *  </ul>
  *  
  *  @see #getInstance(MuleConfiguration)
  */
 
 
+@SuppressWarnings("restriction")
 public class MuleConnectorConfigStore
 {
 	private static Logger logger = LoggerFactory.getLogger(MuleConnectorConfigStore.class);
@@ -56,6 +58,10 @@ public class MuleConnectorConfigStore
 	
 	//--------------------------------------------------------------------------------------------
 	//	Singleton constructor  
+	//
+	//  Process all Mule configuration files and within each configuration file, process all 
+	//  message processor configurations for the following processor types:  HTTP, MQ and DB. Store
+	//  these configurations for later use.
 	//--------------------------------------------------------------------------------------------
 	private MuleConnectorConfigStore(MuleConfiguration muleConfiguration, ExpressionManager em)
 	{
@@ -222,11 +228,12 @@ public class MuleConnectorConfigStore
 		return (T) configurations.get(key);
 	}
 	
+	/*
 	public static ExpressionManager getExpressionManager()
 	{
 	    return expressionManager;
 	}
-	
+	*/
 	
     //------------------------------------------------------------------------------------------------
     //  Dynamically resolve the value of a configuration property

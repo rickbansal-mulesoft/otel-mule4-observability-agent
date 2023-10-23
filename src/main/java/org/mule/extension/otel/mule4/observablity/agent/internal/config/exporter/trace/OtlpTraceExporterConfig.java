@@ -156,7 +156,7 @@ public class OtlpTraceExporterConfig implements OtlpExporterConfig
 	public String getExportTimeout()
 	{
 	    return exportTimeout;
-	}
+	}	
 
 	public Map<String, String> getProperties()
 	{

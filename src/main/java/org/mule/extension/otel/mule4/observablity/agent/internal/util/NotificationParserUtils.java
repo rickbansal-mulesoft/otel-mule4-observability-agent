@@ -31,6 +31,7 @@ import org.mule.runtime.api.notification.PipelineMessageNotification;
  *	</ul>
  *
  */
+@SuppressWarnings("restriction")
 public class NotificationParserUtils
 {
 	// --------------------------------------------------------------------------------------------

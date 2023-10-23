@@ -1,5 +1,6 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.config;
 
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.CustomAttributesConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.metric.OtlpMetricExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.trace.OtlpTraceExporterConfig;
@@ -121,6 +122,10 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 	@Summary("Select if Message Processors spans should be added to the trace in general.  You can bypass certain Message Processors by adding them to list below.")
 	private SpanGenerationConfig spanGenerationConfig;
 	
+	@ParameterGroup(name = "Custom Attributes")
+	@Summary(" Key-Value pairs of custom (application specific) attributes.")
+	private CustomAttributesConfig customAttributesConfig;
+	
     //------------------------------------------------------------------------------
     //  Helper Methods
     //------------------------------------------------------------------------------	
@@ -139,6 +144,11 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 		return spanGenerationConfig;
 	}
 	
+    public  CustomAttributesConfig getCustomAttributesConfig() 
+    {
+        return customAttributesConfig;
+    }
+    	
 	@Inject
 	NotificationListenerRegistry notificationListenerRegistry;
 	
@@ -183,7 +193,8 @@ public class OTelMule4ObservablityAgentConfiguration implements Startable
 				 						                                                                      getMetricExporter(),
 				 						                                                                      muleConfiguration,
 				                                                                                              getSpanGenerationConfig(),
-				                                                                                              expressionManager));
+				                                                                                              expressionManager,
+				                                                                                              getCustomAttributesConfig()));
 		
 		OTelMuleNotificationHandler otelMuleNotificationHandler = new OTelMuleNotificationHandler(otelSdkConnection);
 		

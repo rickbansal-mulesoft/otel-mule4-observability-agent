@@ -42,6 +42,7 @@ public class Constants
 	public static final String MULE_TRACE_ID_ATTRIBUTE			= "mule.trace.id";
     public static final String START_WORKLOAD_ATTRIBUTE         = "mule.start.workload.utilization";
     public static final String START_HEAP_USAGE_ATTRIBUTE       = "mule.start.heap.usage.mbytes";
+    public static final String CUSTOM_ATTRIBUTE                 = "mule.custom.";
 	
 	public static final String INSTRUMENTATION_VERSION_DEFAULT 	= "0.0.1";
 	public static final String INSTRUMENTATION_NAME 			= "org.mulesoft.extension.otel.mule4.observability.agent";

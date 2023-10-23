@@ -31,6 +31,7 @@ public class SpanGenerationConfig
 	@DisplayName("Message Processor Span Bypass")
 	@Optional
 	@NullSafe
+    @Expression(ExpressionSupport.NOT_SUPPORTED)
 	@Summary("List of Message Processors to bypass when generating Message Processor spans.")
 	private List<MuleComponent> bypassComponents;
 	

@@ -1,5 +1,6 @@
 package org.mule.extension.otel.mule4.observablity.agent.internal.config;
 
+import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.CustomAttributesConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.advanced.SpanGenerationConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.exporter.OtlpExporterConfig;
 import org.mule.extension.otel.mule4.observablity.agent.internal.config.resource.OTelResourceConfig;
@@ -17,15 +18,17 @@ import org.mule.runtime.core.api.el.ExpressionManager;
  */
 public class OTelSdkConfig
 {
-	private final OTelResourceConfig   resourceConfig;
-	private final OtlpExporterConfig   traceExporterConfig;
-	private final OtlpExporterConfig   metricExporterConfig;
-	private final MuleConfiguration	   muleConfiguration;
-	private final SpanGenerationConfig spanGenerationConfig;
-	private final ExpressionManager    expressionManager;
+	private final OTelResourceConfig       resourceConfig;
+	private final OtlpExporterConfig       traceExporterConfig;
+	private final OtlpExporterConfig       metricExporterConfig;
+	private final MuleConfiguration	       muleConfiguration;
+	private final SpanGenerationConfig     spanGenerationConfig;
+	private final ExpressionManager        expressionManager;
+	private final CustomAttributesConfig   customAttributesConfig;
 
 	public OTelSdkConfig(OTelResourceConfig r, OtlpExporterConfig t, OtlpExporterConfig mt, 
-	                     MuleConfiguration m, SpanGenerationConfig s, ExpressionManager e)
+	                     MuleConfiguration m, SpanGenerationConfig s, ExpressionManager e,
+	                     CustomAttributesConfig cac)
 	{
 		this.resourceConfig = r;
 		this.traceExporterConfig = t;
@@ -33,6 +36,7 @@ public class OTelSdkConfig
 		this.muleConfiguration = m;
 		this.spanGenerationConfig = s;
 		this.expressionManager = e;
+		this.customAttributesConfig = cac;
 	}
 
     //------------------------------------------------------------------------------
@@ -66,5 +70,10 @@ public class OTelSdkConfig
 	public ExpressionManager getExpressionManager()
 	{
 	    return expressionManager;
+	}
+	
+	public CustomAttributesConfig getCustomAttributesConfig()
+	{
+	    return customAttributesConfig;
 	}
 }

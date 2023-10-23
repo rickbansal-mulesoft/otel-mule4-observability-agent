@@ -40,3 +40,4 @@ replay_pid*
 
 *.deprecated
 
+/target/

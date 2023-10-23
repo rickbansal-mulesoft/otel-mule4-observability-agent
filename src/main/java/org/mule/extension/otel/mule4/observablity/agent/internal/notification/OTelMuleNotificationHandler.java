@@ -3,6 +3,7 @@ package org.mule.extension.otel.mule4.observablity.agent.internal.notification;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.Tracer;
 
+import org.mule.runtime.api.notification.EnrichedServerNotification;
 import org.mule.runtime.api.notification.MessageProcessorNotification;
 import org.mule.runtime.api.notification.PipelineMessageNotification;
 import org.mule.runtime.core.api.config.MuleConfiguration;
@@ -30,7 +31,7 @@ public class OTelMuleNotificationHandler
 	private static MuleSoftTraceStore traceStore = new MuleSoftTraceStore();
 	
 	private OtelSdkConnection otelSdkConnection;
-	private MuleConnectorConfigStore muleConnectorConfigStore;
+    private MuleConnectorConfigStore muleConnectorConfigStore;
 	private final Supplier<OtelSdkConnection> sdkConnectionSupplier;
 
 	// --------------------------------------------------------------------------------------------
@@ -82,18 +83,28 @@ public class OTelMuleNotificationHandler
 	
 	private MuleConnectorConfigStore getMuleConnectorConfigStore()
 	{
-		if (muleConnectorConfigStore == null)
-		{
-		      if (otelSdkConnection == null)
-		        {
-		            otelSdkConnection = sdkConnectionSupplier.get();
-		        }
-		    
-			muleConnectorConfigStore = MuleConnectorConfigStore.getInstance(getMuleConfiguration(), 
-			                                                                otelSdkConnection.getExpressionManager().get());
-		}
-		
-		return muleConnectorConfigStore;
+	    if (muleConnectorConfigStore == null)
+	    {
+	        if (otelSdkConnection == null)
+	        {
+	            otelSdkConnection = sdkConnectionSupplier.get();
+	        }
+
+	        muleConnectorConfigStore = MuleConnectorConfigStore.getInstance(getMuleConfiguration(), 
+	                                                                        otelSdkConnection.getExpressionManager().get());
+	    }
+
+	    return muleConnectorConfigStore;
+	}
+	
+	private void setCustomAttributes(SpanBuilder sb, EnrichedServerNotification n)
+	{
+	    if (otelSdkConnection == null)
+	    {
+	        otelSdkConnection = sdkConnectionSupplier.get();
+	    }
+	    
+	    otelSdkConnection.getCustomAttributesConfig().get().setAttributes(sb, otelSdkConnection.getExpressionManager().get(), n);
 	}
 	
 	// ============================================================================================
@@ -114,7 +125,7 @@ public class OTelMuleNotificationHandler
 		
 		spanBuilder.setAttribute(Constants.START_DATETIME_ATTRIBUTE, startInstant.toString());
 	    
-		String workload = (MuleMetricSystemWorkload.getWorkloadPercent() > 0) 
+		String workload = (MuleMetricSystemWorkload.getWorkloadPercent() >= 0) 
 		                  ? String.format("%.2f %%", MuleMetricSystemWorkload.getWorkloadPercent())
 		                  : "Data not available";
 	    /*    
@@ -126,6 +137,12 @@ public class OTelMuleNotificationHandler
 		
 	    spanBuilder.setAttribute(Constants.START_HEAP_USAGE_ATTRIBUTE, 
                                  String.format("%.2f MB", MuleMetricMemoryUsage.getHeapMemoryUsage()/1000000.0));
+	    
+	    //
+	    // add custom attributes to the trace
+	    //
+	    setCustomAttributes(spanBuilder, notification);
+	    
 	      
 		NotificationParser notificationParser = NotificationParserService.getInstance().getParserFor(notification)
 				                                                                       .orElse(new BaseNotificationParser());
@@ -204,6 +221,11 @@ public class OTelMuleNotificationHandler
                                                                          .orElse(new BaseNotificationParser());
 
 		SpanBuilder spanBuilder = getTracer().spanBuilder(NotificationParserUtils.getSpanName(notification));
+		
+	    //
+        // add custom attributes to the span
+        //
+        setCustomAttributes(spanBuilder, notification);
 		
 		notificationParser.startProcessorNotification(notification, getMuleConnectorConfigStore(), spanBuilder);
 		
