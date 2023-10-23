@@ -73,6 +73,15 @@
                 <parameter name="bypassComponents">
                     <description><![CDATA[]]></description>
                 </parameter>
+                <parameter name="sendCustomAttributesPerFlow">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="sendCustomAttributesPerProcessor">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="customAttributes">
+                    <description><![CDATA[]]></description>
+                </parameter>
             </parameters>
         </config>
     </configs>

@@ -67,6 +67,9 @@ Default configuration
 | Metric Export Interval (ms) a| String |  +++The interval, in milliseconds, between the start of two export attempts.+++ |  +++60000+++ | {nbsp}
 | Generate Message Processor Spans a| Boolean |  +++Generate Message Processor spans and them to the trace+++ |  +++true+++ | {nbsp}
 | Message Processor Span Bypass a| Array of <<MuleComponent>> |  +++List of Message Processors to bypass when generating Message Processor spans.+++ |  | {nbsp}
+| Send Custom Attributes for Flow Spans a| Boolean |  +++Generate and send custom attributes when a flow starts+++ |  +++false+++ | {nbsp}
+| Send Custom Attributes for Message Proccesor Spans a| Boolean |  +++Generate and send custom attributes when a message proccesor starts+++ |  +++false+++ | {nbsp}
+| User Defined Custom Attributes a| Array of <<attribute>> |  +++List of user defined custom attributes in name-value pairs.+++ |  | {nbsp}
 |======================
 
 ==== Connection Types
